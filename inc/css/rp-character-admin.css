@@ -1,0 +1,282 @@
+
+.rp-character-admin h2 {
+    white-space: nowrap;
+}
+
+.rp-character-admin-table-buttons {
+    text-align: right;
+    width: 100%;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Partys
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+#rp-character-admin-select-party {
+    margin-left: 10px;
+    margin-top: 0px;
+    min-width: 150px;
+}
+
+#rp-character-admin-table-party-add {
+    display: none;
+    margin-left: 0px;
+    margin-top: 13px;
+    border-top: 1px solid #ddd;
+}
+
+#rp-character-admin-create-party-name {
+    width: 241px;
+}
+
+#rp-character-admin-create-party-current-day {
+    width: 50px;
+    text-align: right;
+    margin-top: -3px;
+}
+
+#rp-character-admin-create-party-current-month {
+    width: 100px;
+    text-align: right;
+    margin-top: -3px;
+}
+
+#rp-character-admin-create-party-current-year {
+    width: 80px;
+    text-align: right;
+}
+
+#rp-character-admin-table-party-add-shading {
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Heroes
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.rp-character-admin-table-heroes {
+    margin-bottom: 10px;
+}
+
+.rp-character-admin-hero {
+    display: inline-block;
+    border: 1px solid black;
+}
+
+.rp-character-admin-hero-thumbnail {
+    position: relative;
+    top: 0px;
+    width: 81px;
+    height: 84px;
+}
+
+.rp-character-admin-hero-thumbnail:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.rp-character-admin-hero-thumbnail-name {
+    position: absolute;
+    bottom: 0px;
+    width: 81px;
+    background-color: rgba(0, 0, 0, 0.75);
+
+    color: #fff;
+    font-size: 11px;
+    font-family: Verdana, Geneva, sans-serif;
+    text-align: center;
+    
+    cursor: default;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.rp-character-admin-table-hero {
+    width: 100%;
+}
+
+.rp-character-admin-table-hero-details {
+    margin-bottom: 20px;
+}
+
+.rp-character-admin-table-hero-label {
+    width: 120px;
+    white-space: nowrap;
+}
+
+.rp-character-admin-table-hero-gp {
+    width: 40px;
+    text-align: center;
+}
+
+.rp-character-admin-table-hero-tgp {
+    width: 40px;
+    text-align: center;
+}
+
+.rp-character-admin-table-hero-ap {
+    width: 40px;
+    text-align: center;
+}
+
+.rp-character-admin-table-hero-name {
+    width: 240px;
+    max-width: 420px;
+    overflow-x: hidden;
+}
+
+.rp-character-admin-table-hero-label a:before {
+    content: "\f464";
+    top: -1px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none!important;
+    vertical-align: top;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Properties
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.rp-character-admin-table-properties {
+    margin-bottom: 10px;
+    border-spacing: 2px;
+}
+
+.rp-character-admin-table-properties td, .rp-character-admin-table-properties th {
+    height: 30px;
+    position: relative;
+    line-height: 30px;
+}
+
+.rp-character-admin-table-properties div {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    padding: 1px;
+}
+
+.rp-character-admin-table-properties input {
+    width: 100%;
+    position: absolute;
+    left: -1px;
+    top: 0px;
+}
+
+.rp-character-admin-table-property-value {
+    width: 40px;
+}
+
+.rp-character-admin-table-property-value input {
+    text-align: center;
+}
+
+.rp-character-admin-table-property-value div {
+    text-align: center;
+}
+
+.rp-character-admin-table-property-name {
+    width: 350px;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.rp-character-admin-table-property-name div a:before {
+    content: "\f464";
+    top: -2px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none!important;
+    vertical-align: middle;
+}
+
+.rp-character-admin-table-property-name span a:before {
+    content: "\f147";
+    top: -2px;
+    left: 100%;
+    margin-left: 5px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none!important;
+    vertical-align: middle;
+}
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Details
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.rp-character-admin-table-details {
+    margin-bottom: 10px;
+    border-spacing: 2px;
+}
+
+.rp-character-admin-table-details td {
+    height: 30px;
+    position: relative;
+    line-height: 30px;
+}
+
+.rp-character-admin-table-detail-name {
+    width: 150px;
+    text-align: left;
+    padding-left: 5px;
+    vertical-align: top;
+}
+
+.rp-character-admin-table-detail-value {
+    width: 350px;
+    vertical-align: top;
+}
+
+.rp-character-admin-table-detail-value input {
+    width: 320px;
+}
+
+.rp-character-admin-table-detail-value textarea {
+    width: 320px;
+    height: 200px;
+}
+
+.rp-character-admin-table-detail-value span {
+    float: right;
+}
+
+.rp-character-admin-table-detail-value span a:before {
+    content: "\f147";
+    top: -2px;
+    margin-left: 5px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none!important;
+    vertical-align: middle;
+}

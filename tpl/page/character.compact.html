@@ -1,0 +1,35 @@
+
+<div class="aventurien-character aventurien-character-[@CharacterAvailable]">
+	<div class="aventurien-window-title">[@Character]</div>
+	<div id="aventurien-character-window" class="aventurien-character-window-compact">
+		<div id="aventurien-character-compact" class="aventurien-character-portrait-[@PortraitClass]">
+			<div class="aventurien-character-portrait-container-compact"><div class="aventurien-character-portrait-compact" style="background-image: url('[@PluginBaseUri]/portraits/[@Portrait]');"></div></div>
+			<div class="aventurien-solo-buttons">
+				<div id="aventurien-solo-button-start">
+					<a class="ab-item" href="#" onclick="javascript:return start('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]')">Abenteuer starten</a>
+				</div>
+			</div>
+			<div class="aventurien-character-toggle-details"><a href="#" onclick="return showCharacterWindowContent('full');">Details anzeigen</a></div>
+		</div>
+		<div id="aventurien-character-import">
+			<p>Sie können einen Helden aus der Helden Software importieren. Exportieren sie ihn dazu in der Helden Software über den Menü-Eintrag Datei/Exportieren/Held Exportieren. Die Helden Software wird den Helden nun im XML Format an einen von ihnen ausgewählten lokalen Speicherort ablegen. <br>
+			Danach klicken sie hier auf dieser Seite den Knopf &quot;Datei Auswählen&quot; und wählen sie die gespeicherte XML Datei aus. <br>
+			Drücken sie nun noch auf &quot;Importieren&quot; und ihr Held wird für das Solo-Abenteuer hochgeladen.</p>
+			<strong>Gespeicherter Held (XML Datei):</strong>
+			<input type="file" id="aventurien-character-creation-import-file" name="file" accept=".xml" onchange="return validateCharacter(event);" />
+			<br>
+			<strong>Portrait (Bild ca. 200 x 200 Pixel):</strong>
+			<input type="file" id="aventurien-character-creation-import-portrait" name="portrait" accept="image/*" onchange="return validateCharacter(event);" />
+			<br>
+			<br>
+			<input type="button" id="aventurien-character-creation-upload" onclick="return uploadCharacter('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]');" value="Importieren" disabled="true" />
+			<p id="aventurien-character-creation-error"></p>
+			<br>
+			<a href="#" id="aventurien-character-creation-back" onclick="return showCharacterWindowContent('compact');">Zurück</a>
+		</div>
+		<div id="aventurien-character-full">
+			[@Content]
+			<div class="aventurien-character-toggle-details"><a href="#" onclick="return showCharacterWindowContent('compact');">Details ausblenden</a></div>
+		</div>
+	</div>
+</div>

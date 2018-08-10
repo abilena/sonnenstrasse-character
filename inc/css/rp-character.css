@@ -1,0 +1,287 @@
+
+.aventurien-character-content {
+	position: relative;
+	display: inline-block;
+	height: 300px;
+	width: 100%;
+}
+
+.aventurien-character-portrait-container {
+	position: relative;
+	display: inline-block;
+	height: 225px;
+	width: 321px;
+	float: left;
+}
+
+.aventurien-character-frame {
+	position: absolute;
+	background-image: url("../../../sonnenstrasse-base/img/portrait.dragons.frame.png");
+	background-position: -10px 0px;
+	width: 301px;
+	height: 220px;
+	z-index: 3;
+}
+
+.aventurien-character-portrait {
+	position: absolute;
+	top: 0px;
+	left: 50px;
+	height: 200px;
+	width: 200px;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.aventurien-character-empty .aventurien-character-portrait-color {
+	position: absolute;
+	top: 0px;
+	left: 50px;
+	height: 200px;
+	width: 200px;
+	background-color: #800080;
+}
+
+.aventurien-character-empty .aventurien-character-portrait-background {
+    position: absolute;
+    top: 0px;
+    left: 50px;
+    height: 200px;
+    width: 200px;
+    background-image: url("../../../sonnenstrasse-base/img/glow2.gif");
+    background-size: cover;
+    opacity: .5;
+    /*mix-blend-mode: multiply*/;
+}
+
+.aventurien-character-portrait-compact {
+	height: 64px;
+	width: 64px;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.aventurien-character-portrait-container-compact {
+	max-width: 100%;
+    background: #000;
+    display: inline-block;
+    float: none;
+    height: 64px;
+    margin: 1px auto 0;
+    padding: 8px 10px 11px 8px;
+    position: relative;
+    width: 64px;
+    overflow: hidden;
+	float: left;
+}
+
+.aventurien-character-portrait-empty .aventurien-character-portrait-container-compact {
+	background: #000 url(./../../../sonnenstrasse-base/img/no_avatar.gif) 50% 2px no-repeat;
+}
+
+.aventurien-character-portrait-image .aventurien-character-portrait-container-compact {
+    background: #000 url(./../../../sonnenstrasse-base/img/portrait-frame-clean.gif) no-repeat 50% 50%;
+}
+
+.aventurien-character-portrait-empty .aventurien-character-portrait-compact {
+	display: none;
+}
+
+#aventurien-character-window {
+	position: relative;
+	padding: 2px 4px 10px 4px;
+}
+
+.aventurien-character-window-import > #aventurien-character-import { display: block; }
+.aventurien-character-window-compact > #aventurien-character-compact { display: block; }
+.aventurien-character-window-full > #aventurien-character-full { display: block; }
+
+#aventurien-character-compact {
+	display: none;
+	width: 100%;
+    height: 85px;
+}
+
+#aventurien-character-import {
+    display: none;
+}
+
+#aventurien-character-full {
+	display: none;
+	padding-bottom: 20px;
+}
+
+.aventurien-character-toggle-details {
+	position: absolute;
+	bottom: 7px;
+	right: 4px;
+	height: 16px;
+	z-index: 10;
+    border: 1px solid #4b402e;
+    background-color: #000000;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.85);
+    border-radius: 2px;
+    text-align: left;
+}
+
+.aventurien-character-toggle-details a {
+	line-height: 14px;
+    display: block;
+	outline: 0;
+    border: none;
+    text-decoration: none;
+    background: 0 0;
+	margin: 1px 4px 0px 4px;
+    vertical-align: middle;
+    font-size: 10px;
+}
+
+.aventurien-character-toggle-details a:hover {
+	text-decoration: none;
+}
+
+#aventurien-character-import p {
+	line-height: 12px;
+    font-size: 10px;
+}
+
+#aventurien-character-window .aventurien-solo-menu {
+	top: 6px;
+	right: 4px;
+}
+
+/**************************************************************************************/
+/*** character sheet                                                                ***/
+/**************************************************************************************/
+
+#aventurien-character-sheet-container {
+	position: relative;
+	display: inline-block;
+	width: 293px;
+	padding-top: 2px;
+}
+
+.aventurien-character-sheet-border {
+	border: 1px solid #4b402e;
+	background: #000;
+	padding: 1px;
+}
+
+.aventurien-character-sheet-parchment {
+	background: url(../../../sonnenstrasse-base/img/parchment.sheet.png);
+    background-size: cover;
+	box-shadow: 0px 0px 0px 3px inset rgba(0,0,0,.25);
+	height: 380px;
+}
+
+.aventurien-character-sheet {
+	display: inline-block;
+	font-family: GentiumBasic;
+    font-size: 10pt;
+	line-height: 11pt;
+	color: #000;
+	padding: 25px 25px 10px 30px;
+}
+
+.aventurien-character-sheet-tabs {
+	line-height: 14px;
+	border: 1px solid #4b402e;
+	border-bottom: none;
+    background: #000;
+    padding: 1px 4px 1px 4px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	font-size: 10px;
+}
+
+.aventurien-character-sheet-tabs > div {
+	display: inline-block;
+}
+
+.aventurien-character-sheet-tabs > div:last-child::after {
+	content: "";
+}
+
+.aventurien-character-sheet-tabs > div::after {
+	content: " |";
+	color: #ccc;
+}
+
+.aventurien-character-sheet-tabs > div > a {
+	color: #ccc;
+}
+
+.aventurien-character-sheet-tabs > div > a:hover {
+	color: #f1bf44;
+	text-decoration: none;
+}
+
+.aventurien-character-sheet-tabs-selected-basis #aventurien-character-sheet-tabs-basis a { color: #f1bf44; }
+.aventurien-character-sheet-tabs-selected-vorteile #aventurien-character-sheet-tabs-vorteile a { color: #f1bf44; }
+.aventurien-character-sheet-tabs-selected-eigenschaften #aventurien-character-sheet-tabs-eigenschaften a { color: #f1bf44; }
+.aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-tabs-talente a { color: #f1bf44; }
+.aventurien-character-sheet-tabs-selected-liturgien #aventurien-character-sheet-tabs-liturgien a { color: #f1bf44; }
+.aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-tabs-zauber a { color: #f1bf44; }
+.aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-tabs-sonderfertigkeiten a { color: #f1bf44; }
+
+.aventurien-character-sheet-tabs-selected-basis #aventurien-character-sheet-basis { display: block; }
+.aventurien-character-sheet-tabs-selected-vorteile #aventurien-character-sheet-vorteile { display: block; }
+.aventurien-character-sheet-tabs-selected-eigenschaften #aventurien-character-sheet-eigenschaften { display: block; }
+.aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-talente { display: block; }
+.aventurien-character-sheet-tabs-selected-liturgien #aventurien-character-sheet-liturgien { display: block; }
+.aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-zauber { display: block; }
+.aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-sonderfertigkeiten { display: block; }
+
+.aventurien-character-sheet {
+	display: none;
+}
+
+.aventurien-character-sheet .aventurien-character-sheet-scrollcontent {
+	overflow-y: auto;
+	max-height: 272px;
+}
+
+.aventurien-character-sheet .aventurien-character-sheet-scrollcontent::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+.aventurien-character-sheet .aventurien-character-sheet-scrollcontent::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.aventurien-character-sheet .aventurien-character-sheet-scrollcontent::-webkit-scrollbar-thumb {
+  background-color: #56442b;
+  outline: 1px solid slategrey;
+}
+
+.aventurien-character-sheet h4 {
+	font-family: Mason;
+    font-size: 12pt;
+	-webkit-margin-before: 0.5em;
+    -webkit-margin-after: 1.0em;
+    color: #000;
+}
+
+.aventurien-character-sheet table {
+	border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+.aventurien-character-sheet table td:nth-child(1) {
+	font-family: Mason;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 12px;
+    vertical-align: top;
+}
+
+.aventurien-character-sheet table td:nth-child(2), .aventurien-character-sheet p {
+	font-family: Andalus;
+	font-size: 11px;
+	line-height: 12px;
+    vertical-align: top;
+	padding-top: 2px;
+	color: #4b402e;
+}
