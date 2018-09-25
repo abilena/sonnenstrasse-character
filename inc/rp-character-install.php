@@ -53,7 +53,7 @@ add_filter('plugin_action_links', 'rp_character_plugin_actions', 10, 2);
 
 function rp_character_plugin_actions($links, $file) {
  	if ($file == 'rp-character/rp-character.php' && function_exists("admin_url")) {
-		$settings_link = '<a href="' . admin_url('options-general.php?page=rp-character') . '">' . __('Settings', 'rp-character') . '</a>';
+		$settings_link = '<a href="' . admin_url('options-general.php?page=rp-character') . '">' . __('Tools', 'rp-character') . '</a>';
 		array_unshift($links, $settings_link); 
 	}
 	return $links;
@@ -63,7 +63,7 @@ add_action('admin_menu', 'rp_character_add_pages');
 
 function rp_character_add_pages() {
     // Add a new submenu under Options:
-	$css = add_options_page('Sonnenstrasse Characters', 'Sonnenstrasse Characters', 'manage_options', 'rp-character', 'rp_character_options');
+	$css = add_submenu_page( 'tools.php', 'Sonnenstrasse Characters', 'Character editor', 'manage_options', 'rp-character', 'rp_character_options');
 	add_action("admin_head-$css", 'rp_character_css');
 }
 
