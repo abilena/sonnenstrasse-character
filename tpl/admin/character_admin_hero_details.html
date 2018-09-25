@@ -2,7 +2,18 @@
     <table>
         <tr>
             <td><h2>[@Heading]</h2></td>
-            <td class="rp-character-admin-table-buttons"><input class="button-primary" type="button" value="Löschen" onclick="deleteHero([@Id])"></input></td>
+            <td class="rp-character-admin-table-buttons">
+				<input class="button-primary deleteHeroButton" type="button" value="Löschen" onclick="deleteHero([@Id])"></input>
+				<input class="button-primary regroupHeroButton" type="button" value="Verschieben"></input>
+				<div id="regroupHeroPopup">
+					<b>Held in andere Gruppe verschieben:</b>
+					<select id="regroupHeroPartys" size="5">
+						[@Partys]
+					</select>
+					<br>
+					<input class="button-primary regroupHeroOk" type="button" value="OK" onclick="regroupHero([@Id])"></input>
+				</div>
+			</td>
         </tr>
     </table>
     <table class="rp-character-admin-table-hero-details">

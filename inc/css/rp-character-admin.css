@@ -4,8 +4,44 @@
 }
 
 .rp-character-admin-table-buttons {
+	position: relative;
     text-align: right;
     width: 100%;
+}
+
+.rp-character-admin-table-buttons .regroupHeroButton:focus + #regroupHeroPopup, .rp-character-admin-table-buttons #regroupHeroPopup:hover {
+	display: block;
+}
+
+.rp-character-admin-table-buttons #regroupHeroPopup {
+	display: none;
+    position: absolute;
+    top: 45px;
+    right: 1px;
+    width: 300px;
+	background-color: #fff;
+    border: 1px solid;
+    border-radius: 3px;
+    padding: 4px;
+	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);
+}
+
+.rp-character-admin-table-buttons #regroupHeroPopup b {
+    display: block;
+    width: 100%;
+	text-align: left;
+	padding-left: 3px;
+}
+
+.rp-character-admin-table-buttons #regroupHeroPopup #regroupHeroPartys {
+    width: 298px;
+    height: 116px;
+}
+
+.rp-character-admin-table-buttons #regroupHeroPopup .regroupHeroOk {
+	margin-top: 3px;
+	margin-right: 1px;
+	margin-bottom: 1px;
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

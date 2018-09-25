@@ -27,6 +27,15 @@ function rp_character_create_tables() {
 			'current_day' => 1
 		);
 		$wpdb->insert($db_table_name, $values);
+
+		$values = array(
+			'party_id' => -2,
+			'name' => 'Archetypen Solo Characters', 
+			'current_year' => 1014, 
+			'current_month' => 6,
+			'current_day' => 1
+		);
+		$wpdb->insert($db_table_name, $values);
 	}
 
     $db_table_name = $wpdb->prefix . 'sonnenstrasse_heroes';
@@ -305,6 +314,19 @@ function rp_character_delete_hero($hero_id, $module = null, $user = null)
 	}
 	
 	$wpdb->query('COMMIT');
+
+	return "succeeded";
+}
+
+function rp_character_regroup_hero($hero_id, $group_id) {
+	global $wpdb;
+    $db_table_name = $wpdb->prefix . 'sonnenstrasse_heroes';
+
+    $wpdb->query('START TRANSACTION');
+
+    $updated = $wpdb->update($db_table_name, array('party' => $group_id), array('hero_id' => $hero_id));
+	
+    $wpdb->query('COMMIT');
 
 	return "succeeded";
 }

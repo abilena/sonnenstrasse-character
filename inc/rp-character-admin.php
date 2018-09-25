@@ -217,6 +217,7 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_details = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_hero_details.html");
                 $tpl_character_admin_hero_details->set("Id", $selected_hero->hero_id);
                 $tpl_character_admin_hero_details->set("Heading", $selected_hero->name);
+				$tpl_character_admin_hero_details->set("Partys", $partys_html);
                 $tpl_character_admin_hero_details->set("Name", rp_character_detail($selected_hero->hero_id, "name", "Kurzname", $selected_hero->name));
                 $tpl_character_admin_hero_details->set("DisplayName", rp_character_detail($selected_hero->hero_id, "display_name", "Name", $selected_hero->display_name));
                 $tpl_character_admin_hero_details->set("HeroType", rp_character_detail($selected_hero->hero_id, "hero_type", "Typ", $selected_hero->hero_type));

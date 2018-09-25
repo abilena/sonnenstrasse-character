@@ -211,6 +211,26 @@ function deleteParty() {
     xhttp.send();
 }
 
+function regroupHero(id) {
+	var partySelector = document.getElementById("regroupHeroPartys");
+	if (partySelector.selectedIndex < 0)
+        return;
+	
+	var selectedParty = partySelector.options[partySelector.selectedIndex];
+
+	var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText.substring(0, 9).toLowerCase() != "succeeded")
+                alert(this.responseText);
+
+            reloadScroll();
+        }
+    };
+    xhttp.open("GET", "../wp-content/plugins/sonnenstrasse-character/regroup-hero.php?id=" + id + "&group=" + selectedParty.value, true);
+    xhttp.send();
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Heroes
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
