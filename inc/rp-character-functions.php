@@ -280,7 +280,7 @@ function rp_character_hero_selector_html($solo_user, $selected_hero, $solo_modul
 		$template_menu_create_hero = new Sonnenstrasse\Template($path_templates . "/menu-item.html");
 		$template_menu_create_hero->set("Id", "create-hero");
 		$template_menu_create_hero->set("Header", "Neuen Charakter Erstellen");
-		$template_menu_create_hero->set("OnClick", "showCharacterWindowContent('import')");
+		$template_menu_create_hero->set("OnClick", "showCharacterWindowContent('create')");
 		$create = $template_menu_create_hero->output();
 	}
 	

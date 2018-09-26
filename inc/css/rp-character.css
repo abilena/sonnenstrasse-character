@@ -94,7 +94,7 @@
 	padding: 2px 4px 10px 4px;
 }
 
-.aventurien-character-window-import > #aventurien-character-import { display: block; }
+.aventurien-character-window-create > #aventurien-character-create { display: block; }
 .aventurien-character-window-compact > #aventurien-character-compact { display: block; }
 .aventurien-character-window-full > #aventurien-character-full { display: block; }
 
@@ -104,7 +104,7 @@
     height: 85px;
 }
 
-#aventurien-character-import {
+#aventurien-character-create {
     display: none;
 }
 
@@ -142,7 +142,7 @@
 	text-decoration: none;
 }
 
-#aventurien-character-import p {
+#aventurien-character-create p {
 	line-height: 12px;
     font-size: 10px;
 }
