@@ -12,6 +12,8 @@ include_once $path . '/wp-includes/pluggable.php';
 
 require_once('inc/rp-character-database.php');
 
+echo("ERROR: ");
+
 echo(rp_character_edit_detail($_REQUEST));
 
 ?>

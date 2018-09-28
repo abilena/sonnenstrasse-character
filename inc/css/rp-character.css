@@ -23,6 +23,92 @@
 	z-index: 3;
 }
 
+#aventurien-character-archetypes-list {
+	width: 100%;
+	height: 302px;
+	background-color: #000;
+    border: 1px solid #4b402e;
+	overflow-y: scroll;
+}
+
+#aventurien-character-archetypes-list::-webkit-scrollbar {
+	background-color: #1B1B1B;
+	width: 5px;
+}
+
+#aventurien-character-archetypes-list::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	-moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+#aventurien-character-archetypes-list::-webkit-scrollbar-thumb {
+	background-color: #ffffff;
+	outline: 1px solid slategrey;
+}
+
+#aventurien-character-archetypes-list .aventurien-character-archetype,
+#aventurien-character-archetypes-list .aventurien-character-archetype:hover {
+	text-decoration: none;
+	color: #cfb991;
+	display: block;
+	background-color: #1B1B1B;
+	margin: 1px;
+}
+
+#aventurien-character-archetypes-list .aventurien-character-archetype-portrait {
+	width: 80px;
+}
+
+#aventurien-character-archetypes-list .aventurien-character-archetype-portrait .aventurien-character-portrait-image {
+    height: 81px;
+    max-height: 81px;
+    display: block;
+	overflow: hidden;
+}
+
+#aventurien-character-archetypes-list table {
+	border-collapse: collapse;
+    border-spacing: 0px;
+    width: 100%;
+	table-layout: fixed;
+}
+
+#aventurien-character-archetypes-list tr td {
+	vertical-align: top;
+	font-size: 10px;
+	line-height: 12px;
+}
+
+#aventurien-character-archetypes-list .aventurien-character-archetype-details-name {
+	font-weight: bold;
+	font-size: 13px;
+	line-height: 26px;
+	color: #f3e6d0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+#aventurien-character-archetypes-list .aventurien-character-archetype-details-flavor {
+	height: 5em;
+	overflow: hidden;
+	padding-right: 10px;
+	position: relative;
+}
+
+#aventurien-character-archetypes-list .aventurien-character-archetype.selected {
+	background-color: #313131;
+}
+
+#aventurien-character-archetypes-list .aventurien-character-archetype.selected .aventurien-character-archetype-details-flavor {
+	height: auto;
+}
+
+#aventurien-character-creation-from-archetype, #aventurien-character-creation-upload {
+	margin: 5px 0px;
+}
+
 .aventurien-character-portrait {
 	position: absolute;
 	top: 0px;
@@ -69,7 +155,6 @@
     display: inline-block;
     float: none;
     height: 64px;
-    margin: 1px auto 0;
     padding: 8px 10px 11px 8px;
     position: relative;
     width: 64px;
@@ -78,11 +163,11 @@
 }
 
 .aventurien-character-portrait-empty .aventurien-character-portrait-container-compact {
-	background: #000 url(./../../../sonnenstrasse-base/img/no_avatar.gif) 50% 2px no-repeat;
+	background: url(./../../../sonnenstrasse-base/img/no_avatar.gif) 50% 2px no-repeat;
 }
 
 .aventurien-character-portrait-image .aventurien-character-portrait-container-compact {
-    background: #000 url(./../../../sonnenstrasse-base/img/portrait-frame-clean.gif) no-repeat 50% 50%;
+    background: url(./../../../sonnenstrasse-base/img/portrait-frame-clean.gif) no-repeat 50% 50%;
 }
 
 .aventurien-character-portrait-empty .aventurien-character-portrait-compact {
@@ -95,6 +180,8 @@
 }
 
 .aventurien-character-window-create > #aventurien-character-create { display: block; }
+.aventurien-character-window-import > #aventurien-character-import { display: block; }
+.aventurien-character-window-delete > #aventurien-character-delete { display: block; }
 .aventurien-character-window-compact > #aventurien-character-compact { display: block; }
 .aventurien-character-window-full > #aventurien-character-full { display: block; }
 
@@ -104,7 +191,7 @@
     height: 85px;
 }
 
-#aventurien-character-create {
+#aventurien-character-create, #aventurien-character-import, #aventurien-character-delete {
     display: none;
 }
 
@@ -142,7 +229,7 @@
 	text-decoration: none;
 }
 
-#aventurien-character-create p {
+#aventurien-character-window p {
 	line-height: 12px;
     font-size: 10px;
 }
@@ -160,7 +247,7 @@
 	position: relative;
 	display: inline-block;
 	width: 293px;
-	padding-top: 2px;
+	padding-top: 18px;
 }
 
 .aventurien-character-sheet-border {

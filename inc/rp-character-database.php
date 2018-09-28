@@ -268,6 +268,30 @@ function rp_character_create_hero($arguments) {
     $wpdb->query('COMMIT');    
 }
 
+function rp_character_create_hero_from_archetype($archetype_id, $user, $party) {
+   	global $wpdb;
+    $db_table_name = $wpdb->prefix . 'sonnenstrasse_heroes';
+
+	$hero = rp_character_get_hero($archetype_id);
+	$hero->hero_type = "hero";
+	$hero->creator = $user;
+	$hero->party = $party;
+	unset($hero->hero_id);
+	
+    $wpdb->query('START TRANSACTION');
+
+    $inserted = $wpdb->insert($db_table_name, (array) $hero);
+	if ($inserted !== 1)
+	{
+        $wpdb->query('ROLLBACK'); // // something went wrong, Rollback
+		return $inserted;
+	}
+	
+	$hero_id = $wpdb->insert_id;
+    $wpdb->query('COMMIT');
+	return $hero_id;
+}
+
 function rp_character_get_heroes_of_user($user) {
    	global $wpdb;
     $db_table_name = $wpdb->prefix . 'sonnenstrasse_heroes';
@@ -441,7 +465,7 @@ function rp_character_edit_detail($arguments) {
 
     $id = $arguments['hero'];
     $type = $arguments['type'];
-    $value = $arguments['value'];
+    $value = htmlentities(stripslashes($arguments['value']));
     $updated = FALSE;
 
     $hero = rp_character_get_hero($id);

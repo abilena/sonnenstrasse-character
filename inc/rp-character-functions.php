@@ -74,7 +74,10 @@ function rp_character_hero_html_by_id($hero_id, $solo_user, $style, $solo_module
 	
 	if ($style == "compact")
 	{
+		$archetypes_html = rp_character_hero_archetypes_html();
+		
 		$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.compact.html");
+		$tpl_character->setObject($hero);
 		$tpl_character->set("PluginBaseUri", $path_url);
 		$tpl_character->set("Character", $selector_html);
 		$tpl_character->set("CharacterAvailable", (!empty($hero->hero_id) && $allowSelection) ? "available" : "empty");
@@ -82,6 +85,7 @@ function rp_character_hero_html_by_id($hero_id, $solo_user, $style, $solo_module
 		$tpl_character->set("PortraitClass", (empty($hero->portrait) ? "empty" : "image"));
 		$tpl_character->set("Module", $solo_module);
 		$tpl_character->set("Content", $full_html);
+		$tpl_character->set("Archetypes", $archetypes_html);
 		$output = $tpl_character->output();
 	}
 	else
@@ -231,7 +235,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 		$properties_basic_html .= rp_character_format_proprerties_basic("Rasse", rp_character_get_properties($hero->hero_id, "race"), "", "");
 		$properties_basic_html .= rp_character_format_proprerties_basic("Kultur", rp_character_get_properties($hero->hero_id, "culture"), "", "");
 		$properties_basic_html .= rp_character_format_proprerties_basic("Profession", rp_character_get_properties($hero->hero_id, "profession"), "", "");
-		$properties_basic_html .= "<tr><td>Sozialstatus</td><td>".$basiswerte['Sozialstatus']." ".$hero->status."</td></tr>\n";
+		$properties_basic_html .= "<tr><td>Sozialstatus</td><td>".@$basiswerte['Sozialstatus']." ".$hero->status."</td></tr>\n";
 		$properties_basic_html .= "<tr><td>Titel</td><td>".$hero->title."</td></tr>\n";
 		$properties_basic_html .= "<tr><td>Geschlecht</td><td>".$hero->gender."</td></tr>\n";
 		$properties_basic_html .= "<tr><td>Alter</td><td>".$age." Götterläufe</td></tr>\n";
@@ -271,6 +275,7 @@ function rp_character_hero_selector_html($solo_user, $selected_hero, $solo_modul
 {
     $path_templates = plugin_dir_path(__FILE__) . "/../../sonnenstrasse-solo/tpl";
 	
+	$import = "";
 	$create = "";
 	$output = "";
 	$heroes = rp_character_get_heroes_of_user($solo_user);
@@ -281,7 +286,7 @@ function rp_character_hero_selector_html($solo_user, $selected_hero, $solo_modul
 		$template_menu_create_hero->set("Id", "create-hero");
 		$template_menu_create_hero->set("Header", "Neuen Charakter Erstellen");
 		$template_menu_create_hero->set("OnClick", "showCharacterWindowContent('create')");
-		$create = $template_menu_create_hero->output();
+		$create .= $template_menu_create_hero->output();
 	}
 	
 	if (count($heroes) == 0) {
@@ -305,17 +310,46 @@ function rp_character_hero_selector_html($solo_user, $selected_hero, $solo_modul
 		$output = $hero_selector_items_html = $template_character_selector->output();
 		
 		$output .= '<div id="aventurien-solo-character-name">' . @$selected_hero->display_name . '</div>';
+
+		$template_menu_import_hero = new Sonnenstrasse\Template($path_templates . "/menu-item.html");
+		$template_menu_import_hero->set("Id", "import-hero");
+		$template_menu_import_hero->set("Header", "Charakter Importieren");
+		$template_menu_import_hero->set("OnClick", "showCharacterWindowContent('import')");
+		$import = $template_menu_import_hero->output();
 		
 		$template_menu_delete_hero = new Sonnenstrasse\Template($path_templates . "/menu-item.html");
 		$template_menu_delete_hero->set("Id", "delete-hero");
 		$template_menu_delete_hero->set("Header", "Ausgewählten Charakter Löschen");
-		$template_menu_delete_hero->set("OnClick", "deleteCharacter('" . plugins_url() . "/sonnenstrasse-solo', '" . $solo_module . "', " . @$selected_hero->hero_id . ")");
+		$template_menu_delete_hero->set("OnClick", "showCharacterWindowContent('delete')");
+		// "deleteCharacter('" . plugins_url() . "/sonnenstrasse-solo', '" . $solo_module . "', " . @$selected_hero->hero_id . ")");
 		$delete = $template_menu_delete_hero->output();
 		
 		$template_menu = new Sonnenstrasse\Template($path_templates . "/menu.html");
 		$template_menu->set("MenuId", "aventurien-solo-menu-character-selection");
-		$template_menu->set("MenuItems", $create . $delete);
+		$template_menu->set("MenuTitle", "Charakter");
+		$template_menu->set("MenuItems", $create . $import . $delete);
 		$output .= $template_menu->output();
+	}
+	
+	return $output;
+}
+
+function rp_character_hero_archetypes_html()
+{
+	$path_local = plugin_dir_path(__FILE__);
+	
+	$output = "";
+	$party_id_archetypes = -2;
+	
+	$heroes = rp_character_get_heroes($party_id_archetypes);
+	foreach ($heroes as $hero)
+	{
+		$template_archetype = new Sonnenstrasse\Template($path_local . "../tpl/page/character.archetype.html");
+		$template_archetype->setObject($hero);
+		$template_archetype->set("Flavor", nl2br($hero->flavor));
+		$template_archetype->set("PortraitClass", (empty($hero->portrait) ? "empty" : "image"));
+		$template_archetype->set("PluginBaseUri", plugins_url() . "/sonnenstrasse-character");
+		$output .= $template_archetype->output();
 	}
 	
 	return $output;

@@ -323,7 +323,6 @@ function saveProperty(hero_id, property_type, property_id) {
 
     xhttp.open("POST", "../wp-content/plugins/sonnenstrasse-character/edit-property.php?property_id=" + property_id, true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("Content-length", parameters.length);
     xhttp.send(parameters);
 }
 
@@ -362,7 +361,6 @@ function saveDetail(hero_id, detail_type) {
 
     xhttp.open("POST", "../wp-content/plugins/sonnenstrasse-character/edit-detail.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("Content-length", parameters.length);
     xhttp.send(parameters);    
 }
 
