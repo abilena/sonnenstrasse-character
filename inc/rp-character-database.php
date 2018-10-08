@@ -281,13 +281,30 @@ function rp_character_create_hero_from_archetype($archetype_id, $user, $party) {
     $wpdb->query('START TRANSACTION');
 
     $inserted = $wpdb->insert($db_table_name, (array) $hero);
-	if ($inserted !== 1)
+    $hero_id = $wpdb->insert_id;
+	if (($inserted !== 1) || empty($hero_id))
 	{
         $wpdb->query('ROLLBACK'); // // something went wrong, Rollback
-		return $inserted;
+		return false;
 	}
 	
-	$hero_id = $wpdb->insert_id;
+    $db_table_name = $wpdb->prefix . 'sonnenstrasse_properties';
+    $properties = $wpdb->get_results("SELECT * FROM $db_table_name WHERE hero=$archetype_id");
+    foreach ($properties as $property)
+    {
+        unset($property->property_id);
+        $property->hero = $hero_id;
+
+        $succeeded = $wpdb->insert($db_table_name, (array) $property);
+	
+        if ($succeeded == false)
+        {
+            $type = $property->type;
+            $name = $property->name;
+            throw new Exception('Failed to set property $type on hero $hero_id with value $name.');
+        }
+    }
+
     $wpdb->query('COMMIT');
 	return $hero_id;
 }
