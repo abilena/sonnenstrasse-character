@@ -147,10 +147,75 @@ function rp_character_get_simple_proprerties($hero_id, $property_type)
 	
 	foreach ($properties as $property)
 	{
-		$result[$property->name] = $property->value;
+		$result[$property->name] = $property;
 	}
 	
 	return $result;
+}
+
+function rp_character_calculate_basic_properties($basissteigerungen, $eigenschaften, $vorteile, $sonderfertigkeiten)
+{
+	$mu = intval(@$eigenschaften['Mut']->value);
+	$kl = intval(@$eigenschaften['Klugheit']->value);
+	$in = intval(@$eigenschaften['Intuition']->value);
+	$ch = intval(@$eigenschaften['Charisma']->value);
+	$ff = intval(@$eigenschaften['Fingerfertigkeit']->value);
+	$ge = intval(@$eigenschaften['Gewandtheit']->value);
+	$ko = intval(@$eigenschaften['Konstitution']->value);
+	$kk = intval(@$eigenschaften['Körperkraft']->value);
+
+	$basiswerte = array();
+	$basiswerte['Magieresistenz']       = clone $basissteigerungen['Magieresistenz'];
+	$basiswerte['Initiative Basiswert'] = clone $basissteigerungen['Initiative Basiswert'];
+	$basiswerte['Attacke Basiswert']    = clone $basissteigerungen['Attacke Basiswert'];
+	$basiswerte['Parade Basiswert']     = clone $basissteigerungen['Parade Basiswert'];
+	$basiswerte['Fernkampf Basiswert']  = clone $basissteigerungen['Fernkampf Basiswert'];
+	$basiswerte['Ausweichen']           = clone $basissteigerungen['Parade Basiswert'];
+
+	$basiswerte['Magieresistenz']->value       = round(($mu + $kl + $ko) / 5) + @$basissteigerungen['Magieresistenz']->value + @$basissteigerungen['Magieresistenz']->mod;
+	$basiswerte['Initiative Basiswert']->value = round(($mu + $mu + $in + $ge) / 5);
+	$basiswerte['Attacke Basiswert']->value    = round(($mu + $ge + $kk) / 5);
+	$basiswerte['Parade Basiswert']->value     = round(($in + $ge + $kk) / 5);
+	$basiswerte['Fernkampf Basiswert']->value  = round(($in + $ff + $kk) / 5);
+	$basiswerte['Ausweichen']->value           = round(($in + $ff + $kk) / 5);
+	$basiswerte['Ausweichen']->name            = "Ausweichen";
+
+	return $basiswerte;
+}
+
+function rp_character_calculate_energy_properties($basissteigerungen, $eigenschaften, $vorteile, $sonderfertigkeiten)
+{
+	$mu = intval(@$eigenschaften['Mut']->value);
+	$kl = intval(@$eigenschaften['Klugheit']->value);
+	$in = intval(@$eigenschaften['Intuition']->value);
+	$ch = intval(@$eigenschaften['Charisma']->value);
+	$ff = intval(@$eigenschaften['Fingerfertigkeit']->value);
+	$ge = intval(@$eigenschaften['Gewandtheit']->value);
+	$ko = intval(@$eigenschaften['Konstitution']->value);
+	$kk = intval(@$eigenschaften['Körperkraft']->value);
+	$is_zauberer  = (array_key_exists("Vollzauberer", $vorteile) || 
+					 array_key_exists("Halbzauberer", $vorteile) || 
+					 array_key_exists("Viertelzauberer", $vorteile));
+	$is_geweihter = (array_key_exists("Geweiht [nicht-alveranische Gottheit]", $vorteile) || 
+					 array_key_exists("Geweiht [zwölfgöttliche Kirche]", $vorteile) || 
+					 array_key_exists("Spätweihe Alveranische Gottheit", $sonderfertigkeiten) || 
+					 array_key_exists("Spätweihe Nichtalveranische Gottheit", $sonderfertigkeiten));
+
+	$energiewerte = array();
+	$energiewerte['Lebensenergie'] = clone $basissteigerungen['Lebensenergie'];
+	$energiewerte['Ausdauer']      = clone $basissteigerungen['Ausdauer'];
+	$energiewerte['Astralenergie'] = clone $basissteigerungen['Astralenergie'];
+	$energiewerte['Karmaenergie']  = clone $basissteigerungen['Karmaenergie'];
+
+	$energiewerte['Lebensenergie']->value = round(($ko + $ko + $kk) / 2) + intval(@$basissteigerungen['Lebensenergie']->value) + intval(@$basissteigerungen['Lebensenergie']->mod);
+	$energiewerte['Ausdauer']->value      = round(($mu + $ko + $ge) / 2) + intval(@$basissteigerungen['Ausdauer']->value) + intval(@$basissteigerungen['Ausdauer']->mod);
+	$energiewerte['Astralenergie']->value = round(($mu + $in + $ch) / 2) + intval(@$basissteigerungen['Astralenergie']->value) + intval(@$basissteigerungen['Astralenergie']->mod);
+	$energiewerte['Karmaenergie']->value  =                                intval(@$basissteigerungen['Karmaenergie']->value) + intval(@$basissteigerungen['Astralenergie']->mod);
+
+	if (!$is_zauberer) { $energiewerte['Astralenergie']->value = "-"; }
+	if (!$is_geweihter) { $energiewerte['Karmaenergie']->value = "-"; }
+
+	return $energiewerte;
 }
 
 function rp_character_format_proprerties_basic($header, $properties)
@@ -222,35 +287,56 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$properties_vorteile_html = "";
 	$properties_eigenschaften_html = "";
 	$properties_basiswerte_html = "";
+	$properties_energiewerte_html = "";
 	$properties_talente_html = "";
 	$properties_zauber_html = "";
 	$properties_sonderfertigkeiten_html = "";
 	if (!empty($hero) && !empty($hero->name))
 	{
+		$status = $hero->status;
+		$title = $hero->title;
+		$gender = $hero->gender;
 		$age = 1014 - (int)($hero->birth_year);
+		$height = $hero->height;
+		$weight = $hero->weight;
+
+		$rassen = rp_character_get_properties($hero->hero_id, "race");
+		$kulturen = rp_character_get_properties($hero->hero_id, "culture");
+		$professionen = rp_character_get_properties($hero->hero_id, "profession");
 		$eigenschaften = rp_character_get_simple_proprerties($hero->hero_id, "ability");
-		$basiswerte = rp_character_get_simple_proprerties($hero->hero_id, "basic");
+		$basissteigerungen = rp_character_get_simple_proprerties($hero->hero_id, "basic");
+		$sozialstatus = @$basiswerte['Sozialstatus']->value;
+		$vorteile = rp_character_get_properties($hero->hero_id, "advantage");
+		$nachteile = rp_character_get_properties($hero->hero_id, "disadvantage");
+		$vorteile = array_merge($vorteile, $nachteile);
+		$talente = rp_character_get_properties($hero->hero_id, "skill");
+		$liturgien = rp_character_get_properties($hero->hero_id, "miracle");
+		$zauber = rp_character_get_properties($hero->hero_id, "spell");
+		$sonderfertigkeiten = rp_character_get_properties($hero->hero_id, "feat");
+		$basiswerte = rp_character_calculate_basic_properties($basissteigerungen, $eigenschaften, $vorteile, $sonderfertigkeiten);
+		$energiewerte = rp_character_calculate_energy_properties($basissteigerungen, $eigenschaften, $vorteile, $sonderfertigkeiten);
 		
 		$properties_basic_html .= "<tr><td>Name</td><td>".$hero->display_name."</td></tr>\n";
-		$properties_basic_html .= rp_character_format_proprerties_basic("Rasse", rp_character_get_properties($hero->hero_id, "race"), "", "");
-		$properties_basic_html .= rp_character_format_proprerties_basic("Kultur", rp_character_get_properties($hero->hero_id, "culture"), "", "");
-		$properties_basic_html .= rp_character_format_proprerties_basic("Profession", rp_character_get_properties($hero->hero_id, "profession"), "", "");
-		$properties_basic_html .= "<tr><td>Sozialstatus</td><td>".@$basiswerte['Sozialstatus']." ".$hero->status."</td></tr>\n";
-		$properties_basic_html .= "<tr><td>Titel</td><td>".$hero->title."</td></tr>\n";
-		$properties_basic_html .= "<tr><td>Geschlecht</td><td>".$hero->gender."</td></tr>\n";
-		$properties_basic_html .= "<tr><td>Alter</td><td>".$age." Götterläufe</td></tr>\n";
-		$properties_basic_html .= "<tr><td>Grösse</td><td>".$hero->height." Halbfinger</td></tr>\n";
-		$properties_basic_html .= "<tr><td>Gewicht</td><td>".$hero->weight." Stein</td></tr>\n";
+		$properties_basic_html .= rp_character_format_proprerties_basic("Rasse", $rassen, "", "");
+		$properties_basic_html .= rp_character_format_proprerties_basic("Kultur", $kulturen, "", "");
+		$properties_basic_html .= rp_character_format_proprerties_basic("Profession", $professionen, "", "");
+		$properties_basic_html .= "<tr><td>Sozialstatus</td><td>$sozialstatus $status</td></tr>\n";
+		$properties_basic_html .= "<tr><td>Titel</td><td>$title</td></tr>\n";
+		$properties_basic_html .= "<tr><td>Geschlecht</td><td>$gender</td></tr>\n";
+		$properties_basic_html .= "<tr><td>Alter</td><td>$age Götterläufe</td></tr>\n";
+		$properties_basic_html .= "<tr><td>Grösse</td><td>$height Halbfinger</td></tr>\n";
+		$properties_basic_html .= "<tr><td>Gewicht</td><td>$weight Stein</td></tr>\n";
 		$properties_basic_html .= "<tr><td>Haarfarbe</td><td></td></tr>\n";
 		$properties_basic_html .= "<tr><td>Augenfarbe</td><td></td></tr>\n";
 		$properties_basic_html .= "<tr><td>Aussehen</td><td></td></tr>\n";
 		
-		$properties_vorteile_html .= rp_character_format_proprerties_vorteile(rp_character_get_properties($hero->hero_id, "advantage"));
-		$properties_eigenschaften_html .= rp_character_format_proprerties_eigenschaften(rp_character_get_properties($hero->hero_id, "ability"));
-		$properties_basiswerte_html .= rp_character_format_proprerties_eigenschaften(rp_character_get_properties($hero->hero_id, "basic"));
-		$properties_talente_html .= rp_character_format_proprerties_talente(rp_character_get_properties($hero->hero_id, "skill"));
-		$properties_zauber_html .= rp_character_format_proprerties_talente(rp_character_get_properties($hero->hero_id, "spell"));
-		$properties_sonderfertigkeiten_html .= rp_character_format_proprerties_vorteile(rp_character_get_properties($hero->hero_id, "feat"));
+		$properties_vorteile_html .= rp_character_format_proprerties_vorteile($vorteile);
+		$properties_eigenschaften_html .= rp_character_format_proprerties_eigenschaften($eigenschaften);
+		$properties_basiswerte_html .= rp_character_format_proprerties_eigenschaften($basiswerte);
+		$properties_energiewerte_html .= rp_character_format_proprerties_eigenschaften($energiewerte);
+		$properties_talente_html .= rp_character_format_proprerties_talente($talente);
+		$properties_zauber_html .= rp_character_format_proprerties_talente($zauber);
+		$properties_sonderfertigkeiten_html .= rp_character_format_proprerties_vorteile($sonderfertigkeiten);
 	}
 
 	$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.html");
@@ -262,6 +348,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$tpl_character->set("PropertiesVorteile", $properties_vorteile_html);
 	$tpl_character->set("PropertiesEigenschaften", $properties_eigenschaften_html);
 	$tpl_character->set("PropertiesBasiswerte", $properties_basiswerte_html);
+	$tpl_character->set("PropertiesEnergiewerte", $properties_energiewerte_html);
 	$tpl_character->set("PropertiesTalente", $properties_talente_html);
 	$tpl_character->set("PropertiesZauber", $properties_zauber_html);
 	$tpl_character->set("PropertiesSonderfertigkeiten", $properties_sonderfertigkeiten_html);
