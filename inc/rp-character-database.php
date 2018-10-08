@@ -81,6 +81,7 @@ function rp_character_create_tables() {
         `variant` tinytext,
         `info` tinytext,
         `value` smallint,
+        `mod` smallint,
         `gp` smallint,
         `tgp` mediumint,
         `ap` mediumint,
@@ -405,7 +406,7 @@ function rp_character_property_parse_cost($value) {
     }
 }
 
-function rp_character_set_property($hero_id, $type, $name, $variant, $info, $value, $gp, $tgp, $ap) {
+function rp_character_set_property($hero_id, $type, $name, $variant, $info, $value, $mod, $gp, $tgp, $ap) {
    	global $wpdb;
     $db_table_name = $wpdb->prefix . 'sonnenstrasse_properties';
 
@@ -416,6 +417,7 @@ function rp_character_set_property($hero_id, $type, $name, $variant, $info, $val
         'variant' => $variant, 
         'info' => $info, 
         'value' => $value, 
+        'mod' => $mod,
         'gp' => rp_character_property_parse_cost($gp), 
         'tgp' => rp_character_property_parse_cost($tgp), 
         'ap' => rp_character_property_parse_cost($ap)
