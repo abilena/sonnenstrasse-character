@@ -52,6 +52,10 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
                 $tpl_character_admin_property->set("TGP", rp_character_property_format_cost($property->tgp));
                 $tpl_character_admin_property->set("AP", rp_character_property_format_cost($property->ap));
                 $tpl_character_admin_property->set("Name", $name);
+                $tpl_character_admin_property->set("Mod", @$property->mod);
+                $tpl_character_admin_property->set("Info", @$property->info);
+                $tpl_character_admin_property->set("Value", @$property->value);
+                $tpl_character_admin_property->set("Variant", @$property->variant);
                 $tpl_character_admin_property->set("BaseUrl", $path_url);
                 $property_html .= $tpl_character_admin_property->output();
 
@@ -74,6 +78,10 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
             $tpl_character_admin_property->set("TGP", $sum_tgp);
             $tpl_character_admin_property->set("AP", $sum_ap);
             $tpl_character_admin_property->set("Name", "");
+            $tpl_character_admin_property->set("Mod", "");
+            $tpl_character_admin_property->set("Info", "");
+            $tpl_character_admin_property->set("Value", "");
+            $tpl_character_admin_property->set("Variant", "");
             $tpl_character_admin_property->set("BaseUrl", $path_url);
             $property_html .= $tpl_character_admin_property->output();
         }
@@ -85,6 +93,10 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
         $tpl_character_admin_property->set("TGP", "");
         $tpl_character_admin_property->set("AP", "");
         $tpl_character_admin_property->set("Name", "");
+        $tpl_character_admin_property->set("Mod", "");
+        $tpl_character_admin_property->set("Info", "");
+        $tpl_character_admin_property->set("Value", "");
+        $tpl_character_admin_property->set("Variant", "");
         $tpl_character_admin_property->set("BaseUrl", $path_url);
         $property_html .= $tpl_character_admin_property->output();
     }
@@ -190,6 +202,10 @@ function rp_character_admin_options() { ?>
                     $tpl_character_admin_hero_property->set("GP", rp_character_property_format_cost($property->gp));
                     $tpl_character_admin_hero_property->set("TGP", rp_character_property_format_cost($property->tgp));
                     $tpl_character_admin_hero_property->set("AP", rp_character_property_format_cost($property->ap));
+                    $tpl_character_admin_hero_property->set("Mod", @$property->mod);
+                    $tpl_character_admin_hero_property->set("Info", @$property->info);
+                    $tpl_character_admin_hero_property->set("Value", @$property->value);
+                    $tpl_character_admin_hero_property->set("Variant", @$property->variant);
                     $tpl_character_admin_hero_property->set("EditQuery", $edit_query);
                     $properties_html .= $tpl_character_admin_hero_property->output();
                 }
@@ -204,6 +220,10 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_property->set("GP", "");
                 $tpl_character_admin_hero_property->set("TGP", "");
                 $tpl_character_admin_hero_property->set("AP", "");
+                $tpl_character_admin_hero_property->set("Mod", "");
+                $tpl_character_admin_hero_property->set("Info", "");
+                $tpl_character_admin_hero_property->set("Value", "");
+                $tpl_character_admin_hero_property->set("Variant", "");
                 $tpl_character_admin_hero_property->set("EditQuery", $edit_query);
                 $properties_html .= $tpl_character_admin_hero_property->output();
 

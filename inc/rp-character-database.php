@@ -446,9 +446,10 @@ function rp_character_edit_property($arguments) {
 		'hero' => $arguments['hero'], 
         'type' => $arguments['type'], 
         'name' => $arguments['name'], 
-        'variant' => $arguments['variant'], 
+        'mod' => $arguments['mod'], 
         'info' => $arguments['info'], 
         'value' => $arguments['value'], 
+        'variant' => $arguments['variant'], 
         'gp' => rp_character_property_parse_cost($arguments['gp']), 
         'tgp' => rp_character_property_parse_cost($arguments['tgp']), 
         'ap' => rp_character_property_parse_cost($arguments['ap'])

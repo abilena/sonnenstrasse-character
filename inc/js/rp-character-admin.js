@@ -279,17 +279,19 @@ function saveProperty(hero_id, property_type, property_id) {
     var tgp = document.getElementById("rp-character-admin-table-property-tgp").value;
     var ap = document.getElementById("rp-character-admin-table-property-ap").value;
     var name = document.getElementById("rp-character-admin-table-property-name").value;
-    var variant = "";
-    var info = "";
-    var value = "";
+    var mod = document.getElementById("rp-character-admin-table-property-mod").value;
+    var info = document.getElementById("rp-character-admin-table-property-info").value;
+    var value = document.getElementById("rp-character-admin-table-property-value").value;
+    var variant = document.getElementById("rp-character-admin-table-property-variant").value;
 
     hero_id = encodeURIComponent(hero_id);
     property_type = encodeURIComponent(property_type);
     property_id = encodeURIComponent(property_id);
     name = encodeURIComponent(name);
-    variant = encodeURIComponent(variant);
+    mod = encodeURIComponent(mod);
     info = encodeURIComponent(info);
     value = encodeURIComponent(value);
+    variant = encodeURIComponent(variant);
     gp = encodeURIComponent(gp);
     tgp = encodeURIComponent(tgp);
     ap = encodeURIComponent(ap);
@@ -297,9 +299,10 @@ function saveProperty(hero_id, property_type, property_id) {
     var parameters = "hero=" + hero_id;
     parameters += "&type=" + property_type;
     parameters += "&name=" + name;
-    parameters += "&variant=" + variant;
+    parameters += "&mod=" + mod;
     parameters += "&info=" + info;
     parameters += "&value=" + value;
+    parameters += "&variant=" + variant;
     parameters += "&gp=" + gp;
     parameters += "&tgp=" + tgp;
     parameters += "&ap=" + ap;
