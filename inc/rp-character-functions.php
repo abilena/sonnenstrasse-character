@@ -177,8 +177,6 @@ function rp_character_calculate_basic_properties($basissteigerungen, $eigenschaf
 	$basiswerte['Attacke Basiswert']->value    = round(($mu + $ge + $kk) / 5);
 	$basiswerte['Parade Basiswert']->value     = round(($in + $ge + $kk) / 5);
 	$basiswerte['Fernkampf Basiswert']->value  = round(($in + $ff + $kk) / 5);
-	$basiswerte['Ausweichen']->value           = round(($in + $ff + $kk) / 5);
-	$basiswerte['Ausweichen']->name            = "Ausweichen";
 
 	return $basiswerte;
 }

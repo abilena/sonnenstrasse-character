@@ -355,7 +355,6 @@
 .aventurien-character-sheet table {
 	border-collapse: collapse;
 	border-spacing: 0px;
-	width: 100%;
 }
 
 .aventurien-character-sheet table td:nth-child(1) {
@@ -366,20 +365,30 @@
 	vertical-align: top;
 }
 
-.aventurien-character-sheet table td:nth-child(2), .aventurien-character-sheet p {
+.aventurien-character-sheet table td:nth-child(2), 
+#aventurien-character-sheet-container p {
 	font-family: Andalus;
 	font-size: 11px;
 	line-height: 12px;
     vertical-align: top;
 	padding-top: 2px;
+	margin-block-start: 0em;
 	color: #4b402e;
 }
 
-#aventurien-character-sheet-eigenschaften table tr td {
-	width: 50%;
+#aventurien-character-sheet-basis table tr td:nth-child(1) {
+	width: 80px;
+}
+
+#aventurien-character-sheet-eigenschaften table tr td:nth-child(1) {
+	width: 120px;
+}
+
+#aventurien-character-sheet-eigenschaften table tr td:nth-child(2) {
+	width: 20px;
+	text-align: right;
 }
 
 #aventurien-character-sheet-eigenschaften .br {
     height: 5px;
-    display: block;
 }
