@@ -260,13 +260,16 @@ function rp_character_format_proprerties_eigenschaften($properties)
 	$properties_html = "";
 	foreach ($properties as $property)
 	{
-		$name = $property->name;
-		$value = $property->value;
+		$name = @$property->name;
+		$value = @$property->value;
 		$params = array();
-		if (!empty($property->variant)) { array_push($params, $property->variant); }
-		if (!empty($property->info)) { array_push($params, $property->info); }
-		if (count($params) > 0) { $name .= " (" . join(", ", $params) . ")"; }
-		$properties_html .= "<tr><td>$name</td><td>$value</td></tr>\n";
+		if (!empty($name))
+		{
+			if (!empty(@$property->variant)) { array_push($params, @$property->variant); }
+			if (!empty(@$property->info)) { array_push($params, @$property->info); }
+			if (count($params) > 0) { $name .= " (" . join(", ", $params) . ")"; }
+			$properties_html .= "<tr><td>$name</td><td>$value</td></tr>\n";
+		}
 	}
 	return $properties_html;
 }
