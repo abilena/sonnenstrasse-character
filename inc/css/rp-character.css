@@ -133,9 +133,9 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	-moz-box-shadow: #000 0px 0px 25px 10px inset;
-	-webkit-box-shadow: #000 0px 0px 25px 10px inset;
-	box-shadow: #000 0px 0px 25px 10px inset;
+	-moz-box-shadow: #000 0px 0px 50px 20px inset;
+	-webkit-box-shadow: #000 0px 0px 50px 20px inset;
+	box-shadow: #000 0px 0px 50px 20px inset;
 }
 
 .aventurien-character-portrait img {
