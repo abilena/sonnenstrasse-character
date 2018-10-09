@@ -153,6 +153,14 @@ function rp_character_get_simple_proprerties($hero_id, $property_type)
 	return $result;
 }
 
+function rp_character_clone_property($property)
+{
+	if (empty($property)) {
+		return new stdClass();
+	}
+	return (object) clone $property;
+}
+
 function rp_character_calculate_basic_properties($basissteigerungen, $eigenschaften, $vorteile, $sonderfertigkeiten)
 {
 	$mu = intval(@$eigenschaften['Mut']->value);
@@ -165,12 +173,12 @@ function rp_character_calculate_basic_properties($basissteigerungen, $eigenschaf
 	$kk = intval(@$eigenschaften['Körperkraft']->value);
 
 	$basiswerte = array();
-	$basiswerte['Magieresistenz']       = clone $basissteigerungen['Magieresistenz'];
-	$basiswerte['Initiative Basiswert'] = clone $basissteigerungen['Initiative Basiswert'];
-	$basiswerte['Attacke Basiswert']    = clone $basissteigerungen['Attacke Basiswert'];
-	$basiswerte['Parade Basiswert']     = clone $basissteigerungen['Parade Basiswert'];
-	$basiswerte['Fernkampf Basiswert']  = clone $basissteigerungen['Fernkampf Basiswert'];
-	$basiswerte['Ausweichen']           = clone $basissteigerungen['Parade Basiswert'];
+	$basiswerte['Magieresistenz']       = rp_character_clone_property(@$basissteigerungen['Magieresistenz']);
+	$basiswerte['Initiative Basiswert'] = rp_character_clone_property(@$basissteigerungen['Initiative Basiswert']);
+	$basiswerte['Attacke Basiswert']    = rp_character_clone_property(@$basissteigerungen['Attacke Basiswert']);
+	$basiswerte['Parade Basiswert']     = rp_character_clone_property(@$basissteigerungen['Parade Basiswert']);
+	$basiswerte['Fernkampf Basiswert']  = rp_character_clone_property(@$basissteigerungen['Fernkampf Basiswert']);
+	$basiswerte['Ausweichen']           = rp_character_clone_property(@$basissteigerungen['Parade Basiswert']);
 
 	$basiswerte['Magieresistenz']->value       = round(($mu + $kl + $ko) / 5) + @$basissteigerungen['Magieresistenz']->value + @$basissteigerungen['Magieresistenz']->mod;
 	$basiswerte['Initiative Basiswert']->value = round(($mu + $mu + $in + $ge) / 5);
@@ -200,15 +208,15 @@ function rp_character_calculate_energy_properties($basissteigerungen, $eigenscha
 					 array_key_exists("Spätweihe Nichtalveranische Gottheit", $sonderfertigkeiten));
 
 	$energiewerte = array();
-	$energiewerte['Lebensenergie'] = clone $basissteigerungen['Lebensenergie'];
-	$energiewerte['Ausdauer']      = clone $basissteigerungen['Ausdauer'];
-	$energiewerte['Astralenergie'] = clone $basissteigerungen['Astralenergie'];
-	$energiewerte['Karmaenergie']  = clone $basissteigerungen['Karmaenergie'];
+	$energiewerte['Lebensenergie'] = rp_character_clone_property(@$basissteigerungen['Lebensenergie']);
+	$energiewerte['Ausdauer']      = rp_character_clone_property(@$basissteigerungen['Ausdauer']);
+	$energiewerte['Astralenergie'] = rp_character_clone_property(@$basissteigerungen['Astralenergie']);
+	$energiewerte['Karmaenergie']  = rp_character_clone_property(@$basissteigerungen['Karmaenergie']);
 
 	$energiewerte['Lebensenergie']->value = round(($ko + $ko + $kk) / 2) + intval(@$basissteigerungen['Lebensenergie']->value) + intval(@$basissteigerungen['Lebensenergie']->mod);
-	$energiewerte['Ausdauer']->value      = round(($mu + $ko + $ge) / 2) + intval(@$basissteigerungen['Ausdauer']->value) + intval(@$basissteigerungen['Ausdauer']->mod);
+	$energiewerte['Ausdauer']->value      = round(($mu + $ko + $ge) / 2) + intval(@$basissteigerungen['Ausdauer']->value)      + intval(@$basissteigerungen['Ausdauer']->mod);
 	$energiewerte['Astralenergie']->value = round(($mu + $in + $ch) / 2) + intval(@$basissteigerungen['Astralenergie']->value) + intval(@$basissteigerungen['Astralenergie']->mod);
-	$energiewerte['Karmaenergie']->value  =                                intval(@$basissteigerungen['Karmaenergie']->value) + intval(@$basissteigerungen['Astralenergie']->mod);
+	$energiewerte['Karmaenergie']->value  =                                intval(@$basissteigerungen['Karmaenergie']->value)  + intval(@$basissteigerungen['Astralenergie']->mod);
 
 	if (!$is_zauberer) { $energiewerte['Astralenergie']->value = "-"; }
 	if (!$is_geweihter) { $energiewerte['Karmaenergie']->value = "-"; }
