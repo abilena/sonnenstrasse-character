@@ -115,9 +115,32 @@
 	left: 50px;
 	height: 200px;
 	width: 200px;
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
+	text-align: center;
+}
+
+.aventurien-character-portrait-shadow {
+	height: 200px;
+	position: relative;
+	width: fit-content;
+	margin: 0 auto;
+	z-index: 1;
+}
+
+.aventurien-character-portrait-shadow::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	-moz-box-shadow: #000 0px 0px 25px 10px inset;
+	-webkit-box-shadow: #000 0px 0px 25px 10px inset;
+	box-shadow: #000 0px 0px 25px 10px inset;
+}
+
+.aventurien-character-portrait img {
+	height: 200px;
+	z-index: -1;
 }
 
 .aventurien-character-empty .aventurien-character-portrait-color {
