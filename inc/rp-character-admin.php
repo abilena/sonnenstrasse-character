@@ -148,7 +148,7 @@ function rp_character_admin_options() { ?>
             if (filter_var($hero->portrait, FILTER_VALIDATE_URL)) {
                 $portrait = $hero->portrait;
             } else {
-                $portrait = $path_url . "../../uploads/portraits/" . $hero->portrait;
+                $portrait = $path_url . "../../../uploads/portraits/" . $hero->portrait;
             }
 
             if (empty($portrait)) {
