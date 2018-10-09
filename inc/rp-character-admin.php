@@ -145,7 +145,12 @@ function rp_character_admin_options() { ?>
                 $selected_hero = $hero;
             }
 
-            $portrait = $path_url . "/portraits/" . $hero->portrait;
+            if (filter_var($hero->portrait, FILTER_VALIDATE_URL)) {
+                $portrait = $hero->portrait;
+            } else {
+                $portrait = $path_url . "../../uploads/portraits/" . $hero->portrait;
+            }
+
             if (empty($portrait)) {
                 $portrait = $path_url . "/img/shapes/" . (($hero->gender == 'female') ? "portrait_female.png" : "portrait_male.png");
             }
