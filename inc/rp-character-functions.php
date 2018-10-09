@@ -314,7 +314,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 		$professionen = rp_character_get_properties($hero->hero_id, "profession");
 		$eigenschaften = rp_character_get_simple_proprerties($hero->hero_id, "ability");
 		$basissteigerungen = rp_character_get_simple_proprerties($hero->hero_id, "basic");
-		$sozialstatus = @$basiswerte['Sozialstatus']->value;
+		$sozialstatus = @$basissteigerungen['Sozialstatus']->value;
 		$vorteile = rp_character_get_properties($hero->hero_id, "advantage");
 		$nachteile = rp_character_get_properties($hero->hero_id, "disadvantage");
 		$vorteile = array_merge($vorteile, $nachteile);
