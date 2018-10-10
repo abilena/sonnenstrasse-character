@@ -54,22 +54,24 @@ function rp_character_xml_read_name($element, $nameattribute, $childattribute, $
 		$matches = null;
 	}
 
-	$matches = null;
-	if (preg_match_all("/\/([^\/]*)/", $name, $matches)) {
-		foreach ($matches as $match) {
-			array_push($details, (string)trim($match[1], "/ "));
-		}
-		$name = preg_replace("/\/([^\/]*)|/", "", $name);
+	if (($type != "skill") && ($type != "spell")) {
 		$matches = null;
-	}
+		if (preg_match_all("/\/([^\/]*)/", $name, $matches)) {
+			foreach ($matches as $match) {
+				array_push($details, (string)trim($match[1], "/ "));
+			}
+			$name = preg_replace("/\/([^\/]*)|/", "", $name);
+			$matches = null;
+		}
 
-	$matches = null;
-	if (preg_match_all("/\:([^\:]*)/", $name, $matches)) {
-		foreach ($matches as $match) {
-			array_push($details, (string)trim($match[1], ": "));
-		}
-		$name = preg_replace("/\:([^\:]*)|/", "", $name);
 		$matches = null;
+		if (preg_match_all("/\:([^\:]*)/", $name, $matches)) {
+			foreach ($matches as $match) {
+				array_push($details, (string)trim($match[1], ": "));
+			}
+			$name = preg_replace("/\:([^\:]*)|/", "", $name);
+			$matches = null;
+		}
 	}
 	
 	$value = null;

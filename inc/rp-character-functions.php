@@ -1,5 +1,6 @@
 <?php
 
+require_once('rp-character-constants.php');
 require_once('rp-character-database.php');
 
 function rp_character_hero_html($name) {
@@ -276,15 +277,59 @@ function rp_character_format_proprerties_eigenschaften($properties)
 
 function rp_character_format_proprerties_talente($properties)
 {
-	$properties_html = "";
+	global $talent_gruppe;
+
+	$gruppen_talente = array(
+		'Kampftechniken' => array(),
+		'Körperliche Talente' => array(),
+		'Gesellschaftliche Talente' => array(),
+		'Natur-talente' => array(),
+		'Wissenstalente' => array(),
+		'Sprachen' => array(),
+		'Schriften' => array(),
+		'Handwerkliche Talente' => array(),
+		'Gaben' => array());
+
 	foreach ($properties as $property)
 	{
-		$name = $property->name;
-		$value = $property->value;
-		$info = $property->info;
-		$properties_html .= "<tr><td>$name</td><td>$info</td><td>$value</td></tr>\n";
+		$gruppe = @$talent_gruppe[$property->name];
+		if (!isset($gruppe))
+			$gruppe = "Gaben";
+
+		$talente = @$gruppen_talente[$gruppe];
+		if (!isset($talente))
+		{
+			$talente = array();
+		}
+		array_push($talente, $property);
+		$gruppen_talente[$gruppe] = $talente;
+	}
+	
+	$properties_html = "";
+	foreach ($gruppen_talente as $gruppe => $talente)
+	{
+		$properties_html .= "<div>$gruppe</div><table>";
+		foreach ($talente as $talent)
+		{
+			$name = $talent->name;
+			$value = $talent->value;
+			$info = $talent->info;
+			
+			if (substr($name, 0, strlen("Sprachen kennen")) == "Sprachen kennen") {
+				$name = substr($name, strlen("Sprachen kennen") + 1);
+			}
+			if (substr($name, 0, strlen("Lesen/Schreiben")) == "Lesen/Schreiben") {
+				$name = substr($name, strlen("Lesen/Schreiben") + 1);
+			}
+			$properties_html .= "<tr><td>$name</td><td>$info</td><td>$value</td></tr>\n";
+		}
+		$properties_html .= "</table>";
 	}
 	return $properties_html;
+}
+
+function rp_character_format_proprerties_zauber($propertie)
+{
 }
 
 function rp_character_hero_full_html($hero, $solo_user)
@@ -344,7 +389,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 		$properties_basiswerte_html .= rp_character_format_proprerties_eigenschaften($basiswerte);
 		$properties_energiewerte_html .= rp_character_format_proprerties_eigenschaften($energiewerte);
 		$properties_talente_html .= rp_character_format_proprerties_talente($talente);
-		$properties_zauber_html .= rp_character_format_proprerties_talente($zauber);
+		$properties_zauber_html .= rp_character_format_proprerties_zauber($zauber);
 		$properties_sonderfertigkeiten_html .= rp_character_format_proprerties_vorteile($sonderfertigkeiten);
 	}
 
