@@ -75,7 +75,7 @@ function rp_character_hero_html_by_id($hero_id, $solo_user, $style, $solo_module
 	
 	if ($style == "compact")
 	{
-		$archetypes_html = rp_character_hero_archetypes_html();
+		$archetypes_html = rp_character_hero_archetypes_html($solo_module);
 		
 		$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.compact.html");
 		$tpl_character->setObject($hero);
@@ -475,14 +475,18 @@ function rp_character_hero_selector_html($solo_user, $selected_hero, $solo_modul
 	return $output;
 }
 
-function rp_character_hero_archetypes_html()
+function rp_character_hero_archetypes_html($solo_module)
 {
 	$path_local = plugin_dir_path(__FILE__);
 	
 	$output = "";
 	$party_id_archetypes = -2;
 	
-	$heroes = rp_character_get_heroes($party_id_archetypes);
+	$heroes = rp_character_get_heroes_of_user("SoloModule-" . $solo_module);
+	if (empty($heroes))
+	{
+		$heroes = rp_character_get_heroes($party_id_archetypes, $solo_module);
+	}
 	foreach ($heroes as $hero)
 	{
 		$template_archetype = new Sonnenstrasse\Template($path_local . "../tpl/page/character.archetype.html");
