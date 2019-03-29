@@ -155,18 +155,6 @@
 	background-color: #800080;
 }
 
-.aventurien-character-empty .aventurien-character-portrait-background {
-    position: absolute;
-    top: 0px;
-    left: 50px;
-    height: 200px;
-    width: 200px;
-    background-image: url("../../../sonnenstrasse-base/img/glow2.gif");
-    background-size: cover;
-    opacity: .5;
-    /*mix-blend-mode: multiply*/;
-}
-
 .aventurien-character-portrait-compact {
 	height: 64px;
 	width: 64px;

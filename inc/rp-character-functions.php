@@ -82,7 +82,7 @@ function rp_character_hero_html_by_id($hero_id, $solo_user, $style, $solo_module
 		$tpl_character->set("PluginBaseUri", $path_url);
 		$tpl_character->set("Character", $selector_html);
 		$tpl_character->set("CharacterAvailable", (!empty($hero->hero_id) && $allowSelection) ? "available" : "empty");
-		$tpl_character->set("Portrait", $hero->portrait);
+		$tpl_character->set("Portrait", (empty($hero->portrait) ? ($path_url . "/../sonnenstrasse-base/img/glow2.gif") : ($path_url . "/../../uploads/portraits/" . $hero->portrait)));
 		$tpl_character->set("PortraitClass", (empty($hero->portrait) ? "empty" : "image"));
 		$tpl_character->set("Module", $solo_module);
 		$tpl_character->set("Content", $full_html);
@@ -133,7 +133,7 @@ function rp_character_hero_html_by_id_old($hero_id, $solo_user, $style, $solo_mo
 	$tpl_character->set("PluginBaseUri", $path_url);
 	$tpl_character->set("Character", $character_html);
 	$tpl_character->set("Module", $solo_module);
-	$tpl_character->set("Portrait", $hero->portrait);
+	$tpl_character->set("Portrait", $path_url . "/../../uploads/portraits/" . $hero->portrait);
 	$tpl_character->set("PortraitClass", $portrait_class);
 	$tpl_character->set("Content", "");
 	$output = $tpl_character->output();
@@ -396,7 +396,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.html");
 	$tpl_character->set("PluginBaseUri", $path_url);
 	$tpl_character->set("Character", $hero->name);
-	$tpl_character->set("Portrait", $hero->portrait);
+    $tpl_character->set("Portrait", (empty($hero->portrait) ? ($path_url . "/../sonnenstrasse-base/img/glow2.gif") : ($path_url . "/../../uploads/portraits/" . $hero->portrait)));
 	$tpl_character->set("PortraitClass", (empty($hero->portrait) ? "empty" : "image"));
 	$tpl_character->set("PropertiesBasic", $properties_basic_html);
 	$tpl_character->set("PropertiesVorteile", $properties_vorteile_html);

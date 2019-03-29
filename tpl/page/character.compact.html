@@ -3,7 +3,7 @@
 	<div class="aventurien-window-title">[@Character]</div>
 	<div id="aventurien-character-window" class="aventurien-character-window-compact">
 		<div id="aventurien-character-compact" class="aventurien-character-portrait-[@PortraitClass]">
-			<div class="aventurien-character-portrait-container-compact"><div class="aventurien-character-portrait-compact" style="background-image: url('[@PluginBaseUri]/../../uploads/portraits/[@Portrait]');"></div></div>
+			<div class="aventurien-character-portrait-container-compact"><div class="aventurien-character-portrait-compact" style="background-image: url('[@Portrait]');"></div></div>
 			<div class="aventurien-solo-buttons">
 				<div id="aventurien-solo-button-start">
 					<a class="ab-item" href="#" onclick="javascript:return start('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]')">Abenteuer starten</a>
@@ -19,7 +19,7 @@
 				<div id="aventurien-character-archetypes-list" data-selected="">
 					[@Archetypes]
 				</div>
-				<input type="button" id="aventurien-character-creation-from-archetype" onclick="return createCharacterFromArchetype('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]');" value="Erstellen" disabled="true" />
+				<input type="button" id="aventurien-character-creation-from-archetype" onclick="return createCharacterFromArchetype('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]');" value="Erstellen" disabled="disabled" />
 				<p id="aventurien-character-archetypes-error"></p>
 				<br>
 				<a href="#" class="aventurien-character-creation-back" onclick="return showCharacterWindowContent('compact');">Zurück</a>
@@ -36,7 +36,7 @@
 			<strong>Portrait (Bild ca. 200 x 200 Pixel):</strong>
 			<input type="file" id="aventurien-character-creation-import-portrait" name="portrait" accept="image/*" onchange="return validateCharacter(event);" />
 			<br>
-			<input type="button" id="aventurien-character-creation-upload" onclick="return uploadCharacter('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]');" value="Importieren" disabled="true" />
+			<input type="button" id="aventurien-character-creation-upload" onclick="return uploadCharacter('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]');" value="Importieren" disabled="disabled" />
 			<p id="aventurien-character-creation-error"></p>
 			<br>
 			<a href="#" class="aventurien-character-creation-back" onclick="return showCharacterWindowContent('compact');">Zurück</a>
