@@ -283,6 +283,12 @@ function saveProperty(hero_id, property_type, property_id) {
     var info = document.getElementById("rp-character-admin-table-property-info").value;
     var value = document.getElementById("rp-character-admin-table-property-value").value;
     var variant = document.getElementById("rp-character-admin-table-property-variant").value;
+    var at = document.getElementById("rp-character-admin-table-property-at").value;
+    var pa = document.getElementById("rp-character-admin-table-property-pa").value;
+    var ebe = document.getElementById("rp-character-admin-table-property-ebe").value;
+    var rarity = document.getElementById("rp-character-admin-table-property-rarity").value;
+    var requirements = document.getElementById("rp-character-admin-table-property-requirements").value;
+    var progression = document.getElementById("rp-character-admin-table-property-progression").value;
 
     hero_id = encodeURIComponent(hero_id);
     property_type = encodeURIComponent(property_type);
@@ -295,6 +301,12 @@ function saveProperty(hero_id, property_type, property_id) {
     gp = encodeURIComponent(gp);
     tgp = encodeURIComponent(tgp);
     ap = encodeURIComponent(ap);
+    at = encodeURIComponent(at);
+    pa = encodeURIComponent(pa);
+    ebe = encodeURIComponent(ebe);
+    rarity = encodeURIComponent(rarity);
+    requirements = encodeURIComponent(requirements);
+    progression = encodeURIComponent(progression);
 
     var parameters = "hero=" + hero_id;
     parameters += "&type=" + property_type;
@@ -306,6 +318,12 @@ function saveProperty(hero_id, property_type, property_id) {
     parameters += "&gp=" + gp;
     parameters += "&tgp=" + tgp;
     parameters += "&ap=" + ap;
+    parameters += "&at=" + at;
+    parameters += "&pa=" + pa;
+    parameters += "&ebe=" + ebe;
+    parameters += "&rarity=" + rarity;
+    parameters += "&requirements=" + requirements;
+    parameters += "&progression=" + progression;
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

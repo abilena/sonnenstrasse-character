@@ -211,6 +211,12 @@ function rp_character_admin_options() { ?>
                     $tpl_character_admin_hero_property->set("Info", @$property->info);
                     $tpl_character_admin_hero_property->set("Value", @$property->value);
                     $tpl_character_admin_hero_property->set("Variant", @$property->variant);
+                    $tpl_character_admin_hero_property->set("AT", @$property->at);
+                    $tpl_character_admin_hero_property->set("PA", @$property->pa);
+                    $tpl_character_admin_hero_property->set("EBE", @$property->ebe);
+                    $tpl_character_admin_hero_property->set("Rarity", @$property->rarity);
+                    $tpl_character_admin_hero_property->set("Requirements", @$property->requirements);
+                    $tpl_character_admin_hero_property->set("Progression", @$property->progression);
                     $tpl_character_admin_hero_property->set("EditQuery", $edit_query);
                     $properties_html .= $tpl_character_admin_hero_property->output();
                 }
@@ -229,6 +235,12 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_property->set("Info", "");
                 $tpl_character_admin_hero_property->set("Value", "");
                 $tpl_character_admin_hero_property->set("Variant", "");
+                $tpl_character_admin_hero_property->set("AT", "");
+                $tpl_character_admin_hero_property->set("PA", "");
+                $tpl_character_admin_hero_property->set("EBE", "");
+                $tpl_character_admin_hero_property->set("Rarity", "");
+                $tpl_character_admin_hero_property->set("Requirements", "");
+                $tpl_character_admin_hero_property->set("Progression", "");
                 $tpl_character_admin_hero_property->set("EditQuery", $edit_query);
                 $properties_html .= $tpl_character_admin_hero_property->output();
 

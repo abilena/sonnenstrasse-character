@@ -85,6 +85,13 @@ function rp_character_create_tables() {
         `gp` smallint,
         `tgp` mediumint,
         `ap` mediumint,
+        `template` tinyint,
+        `at` tinyint,
+        `pa` tinyint,
+        `ebe` tinytext,
+        `progression` text,
+        `rarity` tinyint,
+        `requirements` tinytext,
 		UNIQUE KEY property_id (property_id)
 		);";
 
@@ -92,6 +99,16 @@ function rp_character_create_tables() {
 		dbDelta($sql);
 	}
 }
+
+/*
+        `template` tinyint, // e.g. 0 or 1
+        `at` tinyint, // e.g. 5
+        `pa` tinyint, // e.g. 9 (may be NULL, if at is NULL -> not a fighting talent, if at NOT NULL and pa IS NULL -> ranged fighting talent)
+        `ebe` tinytext, // e.g. BEx2
+        `progression` text, // e.g. [a;B][k;B][k][p][p][p][o;-][o;-][o;-][x][x][x][x][x;-;;Spezielle Erfahrung] (a: automatic, r: racial, k: kultur, p: profession, o: tgp, x: ap, x-: se) ; (a*,a-f: SKT column) ; (0.5: factor) ; (note)
+        `rarity` tinyint, // e.g. 0-7
+        `requirements` tinytext, // e.g. KK 12;TaW Anderthalbhänder 7;SF Binden
+*/
 
 function rp_character_drop_tables() {
     global $wpdb;
@@ -406,7 +423,7 @@ function rp_character_property_parse_cost($value) {
     }
 }
 
-function rp_character_set_property($hero_id, $type, $name, $variant, $info, $value, $mod, $gp, $tgp, $ap) {
+function rp_character_set_property($hero_id, $type, $name, $variant, $info, $value, $mod, $gp, $tgp, $ap, $at, $pa, $ebe, $rarity, $requirements, $progression) {
    	global $wpdb;
     $db_table_name = $wpdb->prefix . 'sonnenstrasse_properties';
 
@@ -420,7 +437,13 @@ function rp_character_set_property($hero_id, $type, $name, $variant, $info, $val
         'mod' => $mod,
         'gp' => rp_character_property_parse_cost($gp), 
         'tgp' => rp_character_property_parse_cost($tgp), 
-        'ap' => rp_character_property_parse_cost($ap)
+        'ap' => rp_character_property_parse_cost($ap), 
+        'at' => $at, 
+        'pa' => $pa, 
+        'ebe' => $ebe, 
+        'rarity' => $rarity, 
+        'requirements' => $requirements, 
+        'progression' => $progression
     );
 
     $succeeded = $wpdb->insert($db_table_name, $values);
@@ -452,7 +475,13 @@ function rp_character_edit_property($arguments) {
         'variant' => $arguments['variant'], 
         'gp' => rp_character_property_parse_cost($arguments['gp']), 
         'tgp' => rp_character_property_parse_cost($arguments['tgp']), 
-        'ap' => rp_character_property_parse_cost($arguments['ap'])
+        'ap' => rp_character_property_parse_cost($arguments['ap']), 
+        'at' => $arguments['at'], 
+        'pa' => $arguments['pa'], 
+        'ebe' => $arguments['ebe'], 
+        'rarity' => $arguments['rarity'], 
+        'requirements' => $arguments['requirements'], 
+        'progression' => $arguments['progression']
     );
 
     if ($id > 0) {
