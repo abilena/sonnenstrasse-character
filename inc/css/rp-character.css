@@ -146,15 +146,6 @@
 	z-index: -1;
 }
 
-.aventurien-character-empty .aventurien-character-portrait-color {
-	position: absolute;
-	top: 0px;
-	left: 50px;
-	height: 200px;
-	width: 200px;
-	background-color: #800080;
-}
-
 .aventurien-character-portrait-compact {
 	height: 64px;
 	width: 64px;
