@@ -262,6 +262,7 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_details->set("Flavor", rp_character_detail($selected_hero->hero_id, "flavor", "Flavor", $selected_hero->flavor));
                 $tpl_character_admin_hero_details->set("Portrait", rp_character_detail($selected_hero->hero_id, "portrait", "Portrait", $selected_hero->portrait));
                 $tpl_character_admin_hero_details->set("Gold", rp_character_detail($selected_hero->hero_id, "gold", "Gold", $selected_hero->gold));
+                $tpl_character_admin_hero_details->set("Ap", rp_character_detail($selected_hero->hero_id, "ap", "AP", $selected_hero->ap));
                 $tpl_character_admin_hero_details->set("Race", rp_character_property($selected_hero->hero_id, "race", "Rasse", true));
                 $tpl_character_admin_hero_details->set("Culture", rp_character_property($selected_hero->hero_id, "culture", "Kultur", true));
                 $tpl_character_admin_hero_details->set("Profession", rp_character_property($selected_hero->hero_id, "profession", "Profession", true));

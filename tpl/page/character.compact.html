@@ -9,7 +9,7 @@
 					<a class="ab-item" href="#" onclick="javascript:return start('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]')">Abenteuer starten</a>
 				</div>
 			</div>
-			<div class="aventurien-character-toggle-details"><a href="#" onclick="return showCharacterWindowContent('full');">Details anzeigen</a></div>
+			<div class="aventurien-character-button aventurien-character-toggle-details"><a href="#" onclick="return setClass('aventurien-character-window','aventurien-character-window-full');">Details anzeigen</a></div>
 		</div>
 		<div id="aventurien-character-create">
 			<div id="aventurien-character-archetypes">
@@ -22,7 +22,7 @@
 				<input type="button" id="aventurien-character-creation-from-archetype" onclick="return createCharacterFromArchetype('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]');" value="Erstellen" disabled="true" />
 				<p id="aventurien-character-archetypes-error"></p>
 				<br>
-				<a href="#" class="aventurien-character-creation-back" onclick="return showCharacterWindowContent('compact');">Zurück</a>
+				<a href="#" class="aventurien-character-creation-back" onclick="return setClass('aventurien-character-window','aventurien-character-window-compact');">Zurück</a>
 			</div>
 		</div>
 		<div id="aventurien-character-import">
@@ -39,7 +39,7 @@
 			<input type="button" id="aventurien-character-creation-upload" onclick="return uploadCharacter('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]');" value="Importieren" disabled="true" />
 			<p id="aventurien-character-creation-error"></p>
 			<br>
-			<a href="#" class="aventurien-character-creation-back" onclick="return showCharacterWindowContent('compact');">Zurück</a>
+			<a href="#" class="aventurien-character-creation-back" onclick="return setClass('aventurien-character-window','aventurien-character-window-compact');">Zurück</a>
 		</div>
 		<div id="aventurien-character-delete">
 			<h2>Helden löschen</h2>
@@ -48,11 +48,11 @@
 			<input type="button" id="aventurien-character-creation-upload" onclick="return deleteCharacter('[@PluginBaseUri]/../sonnenstrasse-solo', '[@Module]', [@HeroId]);" value="Löschen" />
 			<p id="aventurien-character-delete-error"></p>
 			<br>
-			<a href="#" class="aventurien-character-creation-back" onclick="return showCharacterWindowContent('compact');">Zurück</a>
+			<a href="#" class="aventurien-character-creation-back" onclick="return setClass('aventurien-character-window','aventurien-character-window-compact');">Zurück</a>
 		</div>
 		<div id="aventurien-character-full">
 			[@Content]
-			<div class="aventurien-character-toggle-details"><a href="#" onclick="return showCharacterWindowContent('compact');">Details ausblenden</a></div>
+			<div class="aventurien-character-button aventurien-character-toggle-details"><a href="#" onclick="return setClass('aventurien-character-window','aventurien-character-window-compact');">Details ausblenden</a></div>
 		</div>
 	</div>
 </div>

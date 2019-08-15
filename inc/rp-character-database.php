@@ -62,6 +62,8 @@ function rp_character_create_tables() {
         `biography` text NOT NULL,
         `flavor` text NOT NULL,
         `gold` float NOT NULL,
+        `ap` mediumint,
+        `ap_spent` mediumint,
 		UNIQUE KEY hero_id (hero_id)
 		);";
 

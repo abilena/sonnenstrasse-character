@@ -10,56 +10,114 @@
 	</div>
 </div>
 <div id="aventurien-character-sheet-container" class="aventurien-character-sheet-tabs-selected-basis">
-	<div class="aventurien-character-sheet-tabs">
-		<div id="aventurien-character-sheet-tabs-basis"><a href="#" onclick="return selectCharacterSheetTab('basis');">Basiswerte</a></div>
-		<div id="aventurien-character-sheet-tabs-vorteile"><a href="#" onclick="return selectCharacterSheetTab('vorteile');">Vor-/Nachteile</a></div>
-		<div id="aventurien-character-sheet-tabs-eigenschaften"><a href="#" onclick="return selectCharacterSheetTab('eigenschaften');">Eigenschaften</a></div>
-		<div id="aventurien-character-sheet-tabs-talente"><a href="#" onclick="return selectCharacterSheetTab('talente');">Talente</a></div>
-		<div id="aventurien-character-sheet-tabs-liturgien"><a href="#" onclick="return selectCharacterSheetTab('liturgien');">Liturgien</a></div>
-		<div id="aventurien-character-sheet-tabs-zauber"><a href="#" onclick="return selectCharacterSheetTab('zauber');">Zauber</a></div>
-		<div id="aventurien-character-sheet-tabs-sonderfertigkeiten"><a href="#" onclick="return selectCharacterSheetTab('sonderfertigkeiten');">Sonderfertigkeiten</a></div>
-	</div>
-	<div class="aventurien-character-sheet-border">
-		<div class="aventurien-character-sheet-parchment">
-			<div id="aventurien-character-sheet-basis" class="aventurien-character-sheet">
-				<h4>Heldendokument</h4>
-				<table>[@PropertiesBasic]</table>
-			</div>
-			<div id="aventurien-character-sheet-vorteile" class="aventurien-character-sheet">
-				<h4>Vor-/Nachteile</h4>
-				<div class="aventurien-character-sheet-scrollcontent">
-					<p>[@PropertiesVorteile]</p>
+	<div id="aventurien-character-sheet-full" class="aventurien-character-sheet-full">
+		<ul class="aventurien-character-sheet-tabs">
+			<li class="aventurien-character-sheet-tabs-basis"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-basis');">Basiswerte</a></li>
+			<li class="aventurien-character-sheet-tabs-vorteile"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-vorteile');">Vor-/Nachteile</a></li>
+			<li class="aventurien-character-sheet-tabs-eigenschaften"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-eigenschaften');">Eigenschaften</a></li>
+			<li class="aventurien-character-sheet-tabs-talente"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-talente');">Talente</a></li>
+			<li class="aventurien-character-sheet-tabs-liturgien"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-liturgien');">Liturgien</a></li>
+			<li class="aventurien-character-sheet-tabs-zauber"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-zauber');">Zauber</a></li>
+			<li class="aventurien-character-sheet-tabs-sonderfertigkeiten"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-sonderfertigkeiten');">Sonderfertigkeiten</a></li>
+		</ul>
+		<div class="aventurien-character-sheet-border">
+			<div class="aventurien-character-sheet-parchment">
+				<div id="aventurien-character-sheet-basis" class="aventurien-character-sheet">
+					<h4>Heldendokument</h4>
+					<table>[@PropertiesBasic]</table>
 				</div>
-			</div>
-			<div id="aventurien-character-sheet-eigenschaften" class="aventurien-character-sheet">
-				<h4>Eigenschaften</h4>
-				<table>[@PropertiesEigenschaften]</table>
-				<div class="br"></div>
-				<table>[@PropertiesEnergiewerte]</table>
-				<div class="br"></div>
-				<table>[@PropertiesBasiswerte]</table>
-			</div>
-			<div id="aventurien-character-sheet-talente" class="aventurien-character-sheet">
-				<h4>Talente</h4>
-				<div class="aventurien-character-sheet-scrollcontent">
-					[@PropertiesTalente]
+				<div id="aventurien-character-sheet-vorteile" class="aventurien-character-sheet">
+					<h4>Vor-/Nachteile</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						<p>[@PropertiesVorteile]</p>
+					</div>
 				</div>
-			</div>
-			<div id="aventurien-character-sheet-liturgien" class="aventurien-character-sheet">
-				<h4>Liturgien</h4>
-			</div>
-			<div id="aventurien-character-sheet-zauber" class="aventurien-character-sheet">
-				<h4>Zauber</h4>
-				<div class="aventurien-character-sheet-scrollcontent">
-					<table>[@PropertiesZauber]</table>
+				<div id="aventurien-character-sheet-eigenschaften" class="aventurien-character-sheet">
+					<h4>Eigenschaften</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						[@PropertiesEigenschaften]
+					</div>
 				</div>
-			</div>
-			<div id="aventurien-character-sheet-sonderfertigkeiten" class="aventurien-character-sheet">
-				<h4>Sonderfertigkeiten</h4>
-				<div class="aventurien-character-sheet-scrollcontent">
-					<p>[@PropertiesSonderfertigkeiten]</p>
+				<div id="aventurien-character-sheet-talente" class="aventurien-character-sheet">
+					<h4>Talente</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						[@PropertiesTalente]
+					</div>
+				</div>
+				<div id="aventurien-character-sheet-liturgien" class="aventurien-character-sheet">
+					<h4>Liturgien</h4>
+				</div>
+				<div id="aventurien-character-sheet-zauber" class="aventurien-character-sheet">
+					<h4>Zauber</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						[@PropertiesZauber]
+					</div>
+				</div>
+				<div id="aventurien-character-sheet-sonderfertigkeiten" class="aventurien-character-sheet">
+					<h4>Sonderfertigkeiten</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						<p>[@PropertiesSonderfertigkeiten]</p>
+					</div>
 				</div>
 			</div>
 		</div>
+
+		<div class="aventurien-character-button aventurien-character-toggle-levelup"><a href="#" onclick="return setClass('aventurien-character-window','aventurien-character-window-levelup');">Steigern</a></div>
+	</div>
+	<div id="aventurien-character-sheet-levelup" class="aventurien-character-sheet-levelup" data-total="[@ApTotal]" data-free="[@ApFree]" data-invest="0">
+		<ul class="aventurien-character-sheet-tabs">
+			<li class="aventurien-character-sheet-tabs-basis"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-basis');">Basiswerte</a></li>
+			<li class="aventurien-character-sheet-tabs-vorteile"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-vorteile');">Vor-/Nachteile</a></li>
+			<li class="aventurien-character-sheet-tabs-eigenschaften"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-eigenschaften');">Eigenschaften</a></li>
+			<li class="aventurien-character-sheet-tabs-talente"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-talente');">Talente</a></li>
+			<li class="aventurien-character-sheet-tabs-liturgien"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-liturgien');">Liturgien</a></li>
+			<li class="aventurien-character-sheet-tabs-zauber"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-zauber');">Zauber</a></li>
+			<li class="aventurien-character-sheet-tabs-sonderfertigkeiten"><a href="#" onclick="return setClass('aventurien-character-sheet-container', 'aventurien-character-sheet-tabs-selected-sonderfertigkeiten');">Sonderfertigkeiten</a></li>
+		</ul>
+		<div class="aventurien-character-sheet-border">
+			<div class="aventurien-character-sheet-parchment">
+				<div class="aventurien-character-sheet-levelup-overview">
+					<span id="aventurien-character-levelup-overview-ap-remaining">[@ApFree]</span> / <span id="aventurien-character-levelup-overview-ap-total">[@ApTotal]</span>
+				</div>
+				<div id="aventurien-character-sheet-basis" class="aventurien-character-sheet">
+					<h4>Heldendokument</h4>
+					<table>[@PropertiesBasic]</table>
+				</div>
+				<div id="aventurien-character-sheet-vorteile" class="aventurien-character-sheet">
+					<h4>Vor-/Nachteile</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						<p>[@PropertiesVorteile]</p>
+					</div>
+				</div>
+				<div id="aventurien-character-sheet-eigenschaften" class="aventurien-character-sheet">
+					<h4>Eigenschaften</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						[@LevelupEigenschaften]
+					</div>
+				</div>
+				<div id="aventurien-character-sheet-talente" class="aventurien-character-sheet">
+					<h4>Talente</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						[@LevelupTalente]
+					</div>
+				</div>
+				<div id="aventurien-character-sheet-liturgien" class="aventurien-character-sheet">
+					<h4>Liturgien</h4>
+				</div>
+				<div id="aventurien-character-sheet-zauber" class="aventurien-character-sheet">
+					<h4>Zauber</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						[@PropertiesZauber]
+					</div>
+				</div>
+				<div id="aventurien-character-sheet-sonderfertigkeiten" class="aventurien-character-sheet">
+					<h4>Sonderfertigkeiten</h4>
+					<div class="aventurien-character-sheet-scrollcontent">
+						[@LevelupSonderfertigkeiten]
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>levelupRecalculateDependencies();</script>
 	</div>
 </div>
