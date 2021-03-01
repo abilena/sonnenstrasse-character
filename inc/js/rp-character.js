@@ -6,6 +6,15 @@ function setClass(id, className)
 	return false;
 }
 
+function blink(target)
+{
+    target.addEventListener("animationend", function ()
+    {
+        this.classList.remove("blink");
+    });
+    target.classList.add("blink");
+}
+
 var SKT = [
   [1, 1, 1, 2, 4, 5, 6, 8, 9, 11, 12, 14, 15, 17, 19, 20, 22, 24, 25, 27, 29, 31, 32, 34, 36, 38, 40, 42, 43, 45, 48],
   [1, 2, 3, 4, 6, 7, 8, 10, 11, 13, 14, 16, 17, 19, 21, 22, 24, 26, 27, 29, 31, 33, 34, 36, 38, 40, 42, 44, 45, 47, 50],
@@ -66,17 +75,7 @@ function levelupUpdateProgressionSteps(id, progression, plan)
 function levelupChangeSe(inputElement, id)
 {
     var propertyElement = document.getElementById("aventurien-character-sheet-levelup-property-" + id);
-    var category = propertyElement.dataset.category;
-
-    if (inputElement.checked)
-    {
-        category = String.fromCharCode(category.charCodeAt(0) - 1);
-        if (category == "@")
-            category = "A*";
-    }
-
-    var categoryElement = document.getElementById("aventurien-character-sheet-levelup-property-" + id + "-category");
-    categoryElement.innerText = category;
+    propertyElement.dataset.se = inputElement.checked ? "1" : "0";
 }
 
 function levelupUpdateFreeAp()
@@ -97,14 +96,22 @@ function levelupUpdateFreeAp()
     levelupElement.dataset.invest = totalInvest;
     var remaining = free - totalInvest;
 
-    var remainingElement = document.getElementById("aventurien-character-levelup-overview-ap-remaining");
-    remainingElement.innerText = remaining;
+    var overviewElement = document.getElementById("aventurien-character-sheet-levelup-overview");
+    overviewElement.dataset.remaining = remaining;
 }
 
 function levelupRecalculateDependencies()
 {
     var propertyElements = document.getElementsByClassName("aventurien-character-sheet-levelup-property");
     var propertyElementsCount = propertyElements.length;
+    for (var i = 0; i < propertyElementsCount; i++)
+    {
+        levelupCleanupModifications(propertyElements[i]);
+    }
+    for (var i = 0; i < propertyElementsCount; i++)
+    {
+        levelupApplyModifications(propertyElements[i]);
+    }
     for (var i = 0; i < propertyElementsCount; i++)
     {
         var propertyElement = propertyElements[i];
@@ -114,34 +121,91 @@ function levelupRecalculateDependencies()
     levelupUpdateFreeAp();
 }
 
-function levelupRecalculateRequirements(propertyElement)
+function levelupCleanupModifications(propertyElement)
 {
-    var reqvalue = eval(propertyElement.dataset.req);
-    propertyElement.dataset.reqvalue = reqvalue;
-    if ((reqvalue == false) && (propertyElement.dataset.template == 'true'))
-        propertyElement.dataset.invest = 0;
+    propertyElement.dataset.category = propertyElement.dataset.initialcategory;
+    propertyElement.dataset.factor = 1.0;
 }
 
-function levelupHasPropertyValue(id, minimum)
+function levelupApplyModifications(propertyElement)
 {
+    var isTemplate = propertyElement.dataset.template;
+    var queryModifier = propertyElement.dataset.modquery;
+    if (queryModifier == null || queryModifier == "" || isTemplate != "false")
+        return;
+
+    var propertyElements = document.getElementsByClassName("aventurien-character-sheet-levelup-property");
+    var propertyElementsCount = propertyElements.length;
+    for (var i = 0; i < propertyElementsCount; i++)
+    {
+        var otherPropertyElement = propertyElements[i];
+        var matchModifier = otherPropertyElement.dataset.modmatch;
+        if (matchModifier != null && matchModifier.includes(queryModifier))
+        {
+            var categoryModifier = Number(propertyElement.dataset.modcategory);
+            if (categoryModifier != 0)
+            {
+                var category = otherPropertyElement.dataset.category.charCodeAt(0) - 64 + categoryModifier;
+                category = Math.max(0, Math.min(8, category));
+                otherPropertyElement.dataset.category = String.fromCharCode(category + 64);
+            }
+
+            var factorModifier = propertyElement.dataset.modfactor;
+            if (factorModifier != 0)
+            {
+                var factor = otherPropertyElement.dataset.factor;
+                factor *= factorModifier;
+                otherPropertyElement.dataset.factor = factor;
+            }
+        }
+    }
+}
+
+function levelupRecalculateRequirements(propertyElement)
+{
+	try
+	{
+		var reqvalue = eval(propertyElement.dataset.req);
+		propertyElement.dataset.reqvalue = reqvalue;
+		if ((reqvalue == false) && (propertyElement.dataset.template == 'true'))
+			propertyElement.dataset.invest = 0;
+	}
+	catch (e) { alert(e); }
+}
+
+function hasKampfAPs(ap)
+{
+	return false;
+}
+
+function has(id, minimum = 0)
+{
+    id = id.toLowerCase();
+    id = id.replace(' ', '-');
+    id = id.replace(' ', '-');
+    id = id.replace(':', '-');
+    id = id.replace('(', '-');
+    id = id.replace(')', '-');
+    id = id.replace('\'', '-');
+    id = id.replace('\u00df' /*ß*/, 'ss');
+    id = id.replace('\u00e4' /*ä*/, 'ae');
+    id = id.replace('\u00f6' /*ö*/, 'oe');
+    id = id.replace('\u00fc' /*ü*/, 'ue');
+
     var propertyElement = document.getElementById("aventurien-character-sheet-levelup-property-" + id);
     if (propertyElement == null)
         return false;
+
+	if (minimum <= 0)
+	{
+		return !(propertyElement.dataset.template == "true"); 
+	}
 
     var value = propertyElement.dataset.value;
     if (isNaN(value))
         return false;
 
     return (value >= minimum);
-}
-
-function levelupHasFeat(id)
-{
-    var propertyElement = document.getElementById("aventurien-character-sheet-levelup-property-" + id);
-    if (propertyElement == null)
-        return false;
-
-    return (Number(propertyElement.dataset.invest) > 0); 
 }
 
 function levelupRecalculateValue(propertyElement)
@@ -229,7 +293,11 @@ function levelupProperty(id, inc)
     var neededAp = newInvest - prevInvest;
 
     if (neededAp > freeAp)
+    {
+        var overview = document.getElementById("aventurien-character-sheet-levelup-overview");
+        blink(overview);
         return false;
+    }
 
     invest = newInvest;
 
@@ -255,8 +323,35 @@ function levelupFeat(propertyElement)
 
     var cost = Number(propertyElement.dataset.cost);
     var invest = Number(propertyElement.dataset.invest);
-    invest = (invest > 0) ? 0 : cost;
+    var factor = Number(propertyElement.dataset.factor);
+    invest = (invest > 0) ? 0 : (cost * factor);
+
+    var levelupElement = document.getElementById("aventurien-character-sheet-levelup");
+    var freeAp = Number(levelupElement.dataset.free) - Number(levelupElement.dataset.invest);
+    var neededAp = invest;
+
+    if (neededAp > freeAp)
+    {
+        var overview = document.getElementById("aventurien-character-sheet-levelup-overview");
+        blink(overview);
+        return false;
+    }
+
     propertyElement.dataset.invest = invest;
     levelupRecalculateDependencies();
     return false;
+}
+
+function levelupSave()
+{
+    var overview = document.getElementById("aventurien-character-sheet-levelup-overview");
+    blink(overview);
+    return false;
+}
+
+function levelupToggleActivate(groupElementId)
+{
+	var groupElement = document.getElementById(groupElementId);
+	groupElement.dataset.activate = !(groupElement.dataset.activate == "true");
+	return false;
 }

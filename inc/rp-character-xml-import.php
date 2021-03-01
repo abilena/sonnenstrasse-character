@@ -1,5 +1,7 @@
 <?php
 
+require_once('rp-character-constants.php');
+
 function rp_character_xml_replace($search, $replace, $subject)
 {
 	if (strpos($subject, $search) !== false) {
@@ -10,6 +12,19 @@ function rp_character_xml_replace($search, $replace, $subject)
 
 function rp_character_xml_read_steigerungen($xml, $text, $name, $property)
 {
+    global $character_const_dictionary;
+    $character_const_array = array();
+    $character_const_property = array();
+
+    if (array_key_exists("$text", $character_const_dictionary))
+        $character_const_array = $character_const_dictionary["$text"];
+    if (array_key_exists("$name", $character_const_array))
+        $character_const_property = $character_const_array["$name"];
+    if (array_key_exists("category", $character_const_property))
+        $category = $character_const_property["category"];
+
+    if (!empty($category)) { $category = ";$category"; }
+
 	$steigerungen = $xml->xpath('//helden/held/ereignisse/ereignis[@text="'.$text.'" and starts-with(@obj, "'.$name.'")]');
 
 	foreach ($steigerungen as $steigerung) {
@@ -21,10 +36,25 @@ function rp_character_xml_read_steigerungen($xml, $text, $name, $property)
 	
 	$steigerungen = $xml->xpath('//helden/held/ereignisse/ereignis[@obj="'.$name.'"]');
 	
+    $progression_steps = array();
 	foreach ($steigerungen as $steigerung) {
+        $new_value = $steigerung['Neu'];
 		$property->ap -= (int)$steigerung['Abenteuerpunkte'];
-		$property->value = max((int)$property->value, (int)$steigerung['Neu']);
-	}
+		$property->value = max((int)$property->value, (int)$new_value);
+        if (isset($new_value) && trim($new_value) !== '') {
+            $progression_steps[(int)$new_value] = "x$category";
+        }
+    }
+
+    $progression_steps_values = array();
+    for ($step = 0; $step < $property->value; $step++) {
+        $progression_step = @$progression_steps[$step];
+        if (empty($progression_step)) {
+            $progression_step = "a$category";
+        }
+        array_push($progression_steps_values, $progression_step);
+    }
+    $property->progression = join("|", $progression_steps_values);
 	
 	if (($property->type == "feat") && empty($property->value)) { $property->value = null; }
 	if (($property->type == "skill") && empty($property->value)) { $property->value = 0; }
@@ -36,15 +66,44 @@ function rp_character_xml_read_steigerungen($xml, $text, $name, $property)
 function rp_character_xml_read_name($element, $nameattribute, $childattribute, $type)
 {
 	$name = $element[$nameattribute];
+
+	$orig_name = $name;
+
 	$details = array();
 	array_push($details, (string)@$element["value"]);
 	$xml_details = $element->xpath('*/@'.$childattribute);
+
 	foreach ($xml_details as $xml_detail)
 	{
-		$xml_detail_splits = explode("/", (string)$xml_detail);
-		$details = array_merge($details, $xml_detail_splits);
+		if (($type == "profession") && ($name == ""))
+		{
+			$name = (string)$xml_detail;
+		}
+		else
+		{
+			$xml_detail_splits = explode("/", (string)$xml_detail);
+			$details = array_merge($details, $xml_detail_splits);
+		}
+	}
+
+	if (($type == "skill") || ($type == "spell"))
+	{
+		$matches = null;
+		if (preg_match_all("/\(([^\)]*)\)/", $name, $matches)) {
+			foreach ($matches as $match) {
+				array_push($details, (string)trim($match[1], "() "));
+			}
+			$name = preg_replace("/\(([^\)]*)\)/", "", $name);
+			$matches = null;
+		}
+	}
+
+	if (($type == "feat") && ((strpos($name, 'Talentspezialisierung') === 0) || (strpos($name, 'Zauberspezialisierung') === 0)))
+	{
+		$name = substr($name, 0, strpos($name, ' '));
 	}
 	
+	/*
 	$matches = null;
 	if (preg_match_all("/\(([^\)]*)\)/", $name, $matches)) {
 		foreach ($matches as $match) {
@@ -53,7 +112,9 @@ function rp_character_xml_read_name($element, $nameattribute, $childattribute, $
 		$name = preg_replace("/\(([^\)]*)\)/", "", $name);
 		$matches = null;
 	}
+	*/
 
+	/*
 	if (($type != "skill") && ($type != "spell")) {
 		$matches = null;
 		if (preg_match_all("/\/([^\/]*)/", $name, $matches)) {
@@ -73,6 +134,7 @@ function rp_character_xml_read_name($element, $nameattribute, $childattribute, $
 			$matches = null;
 		}
 	}
+	*/
 	
 	$value = null;
 	$varianten = array();
@@ -88,22 +150,30 @@ function rp_character_xml_read_name($element, $nameattribute, $childattribute, $
 			if (!in_array((string)$detail, $varianten)) {
 				if ((string)$detail != $name) {
 					array_push($varianten, (string)$detail);
-					$name = trim(str_replace((string)$detail, "", $name), "/ ");
+					// $name = trim(str_replace((string)$detail, "", $name), "/ ");
 				}
 			}
 		}
 	}
 	
+	/*
 	$name = preg_replace('/ nach$/', '', $name);
 	$name = preg_replace('/ gegen$/', '', $name);
 	$name = preg_replace('/ bzgl.$/', '', $name);
+	*/
 	
 	$property = new stdClass();
 	$property->name = trim($name, "/, ");
 	$property->type = $type;
-	$property->info = trim(@$element['probe'], " ()");
+	$property->info = ""; // trim(@$element['probe'], " ()");
 	$property->variante = join(", ", $varianten);
 	$property->value = $value;
+
+	if ($orig_name != $name)
+	{
+		echo("Changed '$orig_name' to '$name'.<br>");
+	}
+
 	return $property;
 }
 
@@ -219,7 +289,7 @@ function rp_character_set_property_xml_basis($xml, $hero_id, $type, $elementType
 	{
 		$property = rp_character_xml_read_name($element, 'string', 'name', $type);
 		$property = rp_character_xml_read_steigerungen($xml, "RKP", $elementText, $property);
-		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, $property->gp, "", $property->ap, null, null, null, null, null, null);
+		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, $property->gp, "", $property->ap, null, null, null, null, null, null, null, null, null, null);
 	}
 }
 
@@ -231,7 +301,7 @@ function rp_character_set_property_xml_vorteile($xml, $hero_id)
 	{
 		$property = rp_character_xml_read_name($element, 'name', 'value', 'advantage');
 		$property = rp_character_xml_read_steigerungen($xml, "VORTEILE", $element['name'], $property);
-		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, $property->gp, "", $property->ap, null, null, null, null, null, null);
+		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, $property->gp, "", $property->ap, null, null, null, null, null, null, null, null, null, null);
 	}
 }
 
@@ -278,7 +348,7 @@ function rp_character_set_property_xml_eigenschaften($xml, $hero_id)
 		$property->type = $typen[$property->name];
 
 		$property = rp_character_xml_read_steigerungen($xml, "EIGENSCHAFTEN", $element['name'], $property);
-		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, $property->mod, $property->gp, "", $property->ap, null, null, null, null, null, null);
+		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, $property->mod, null, $property->gp, "", $property->ap, null, null, null, null, null, $property->progression, null, null, null);
 	}
 }
 
@@ -290,7 +360,7 @@ function rp_character_set_property_xml_talente($xml, $hero_id)
 	{
 		$property = rp_character_xml_read_name($element, 'name', 'name', 'skill');
 		$property = rp_character_xml_read_steigerungen($xml, "TALENT", $element['name'], $property);
-		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, $property->gp, "", $property->ap, null, null, null, null, null, null);
+		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, null, $property->gp, "", $property->ap, null, null, null, null, null, $property->progression, null, null, null);
 	}
 }
 
@@ -302,7 +372,7 @@ function rp_character_set_property_xml_zauber($xml, $hero_id)
 	{
 		$property = rp_character_xml_read_name($element, 'name', 'name', 'spell');
 		$property = rp_character_xml_read_steigerungen($xml, "ZAUBER", $element['name'], $property);
-		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, $property->gp, "", $property->ap, null, null, null, null, null, null);
+		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, null, $property->gp, "", $property->ap, null, null, null, null, null, $property->progression, null, null, null);
 	}
 }
 
@@ -314,7 +384,7 @@ function rp_character_set_property_xml_sonderfertigkeiten($xml, $hero_id)
 	{
 		$property = rp_character_xml_read_name($element, 'name', 'name', 'feat');
 		$property = rp_character_xml_read_steigerungen($xml, "SF", $element['name'], $property);
-		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, $property->gp, "", $property->ap, null, null, null, null, null, null);
+		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, null, $property->gp, "", $property->ap, null, null, null, null, null, $property->progression, null, null, null);
 	}
 }
 

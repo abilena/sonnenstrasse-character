@@ -204,6 +204,7 @@ function rp_character_admin_options() { ?>
                     $tpl_character_admin_hero_property->set("Hero", $hero_id);
                     $tpl_character_admin_hero_property->set("Type", $property_type);
                     $tpl_character_admin_hero_property->set("Name", $property->name);
+                    $tpl_character_admin_hero_property->set("Cost", rp_character_property_format_cost($property->cost));
                     $tpl_character_admin_hero_property->set("GP", rp_character_property_format_cost($property->gp));
                     $tpl_character_admin_hero_property->set("TGP", rp_character_property_format_cost($property->tgp));
                     $tpl_character_admin_hero_property->set("AP", rp_character_property_format_cost($property->ap));
@@ -217,6 +218,9 @@ function rp_character_admin_options() { ?>
                     $tpl_character_admin_hero_property->set("Rarity", @$property->rarity);
                     $tpl_character_admin_hero_property->set("Requirements", @$property->requirements);
                     $tpl_character_admin_hero_property->set("Progression", @$property->progression);
+                    $tpl_character_admin_hero_property->set("Group", @$property->group);
+                    $tpl_character_admin_hero_property->set("Flavor", @$property->flavor);
+                    $tpl_character_admin_hero_property->set("Hyperlink", @$property->hyperlink);
                     $tpl_character_admin_hero_property->set("EditQuery", $edit_query);
                     $properties_html .= $tpl_character_admin_hero_property->output();
                 }
@@ -228,6 +232,7 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_property->set("Hero", $hero_id);
                 $tpl_character_admin_hero_property->set("Type", $property_type);
                 $tpl_character_admin_hero_property->set("Name", "");
+                $tpl_character_admin_hero_property->set("Cost", "");
                 $tpl_character_admin_hero_property->set("GP", "");
                 $tpl_character_admin_hero_property->set("TGP", "");
                 $tpl_character_admin_hero_property->set("AP", "");
@@ -241,6 +246,9 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_property->set("Rarity", "");
                 $tpl_character_admin_hero_property->set("Requirements", "");
                 $tpl_character_admin_hero_property->set("Progression", "");
+                $tpl_character_admin_hero_property->set("Group", "");
+                $tpl_character_admin_hero_property->set("Flavor", "");
+                $tpl_character_admin_hero_property->set("Hyperlink", "");
                 $tpl_character_admin_hero_property->set("EditQuery", $edit_query);
                 $properties_html .= $tpl_character_admin_hero_property->output();
 

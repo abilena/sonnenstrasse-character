@@ -80,20 +80,23 @@ function rp_character_create_tables() {
 		`hero` mediumint(9) NOT NULL,
         `type` tinytext NOT NULL,
         `name` tinytext NOT NULL,
+        `group` tinytext,
         `variant` tinytext,
         `info` tinytext,
         `value` smallint,
         `mod` smallint,
+        `cost` smallint,
         `gp` smallint,
         `tgp` mediumint,
         `ap` mediumint,
-        `template` tinyint,
         `at` tinyint,
         `pa` tinyint,
         `ebe` tinytext,
         `progression` text,
         `rarity` tinyint,
         `requirements` tinytext,
+        `flavor` tinytext,
+        `hyperlink` tinytext,
 		UNIQUE KEY property_id (property_id)
 		);";
 
@@ -251,6 +254,8 @@ function rp_character_get_hero($hero_id) {
     $hero->name = "";
     $hero->display_name = "";
     $hero->portrait = "";
+    $hero->ap = 0;
+    $hero->ap_spent = 0;
     return $hero;
 }
 
@@ -400,7 +405,7 @@ function rp_character_get_properties($hero_id, $property_type) {
    	global $wpdb;
     $db_table_name = $wpdb->prefix . 'sonnenstrasse_properties';
     
-    $db_results = $wpdb->get_results("SELECT * FROM $db_table_name WHERE hero=$hero_id AND type='$property_type' ORDER BY name");
+    $db_results = $wpdb->get_results("SELECT * FROM $db_table_name WHERE hero=$hero_id AND type LIKE '$property_type' ORDER BY name");
 
     return $db_results;
 }
@@ -425,7 +430,7 @@ function rp_character_property_parse_cost($value) {
     }
 }
 
-function rp_character_set_property($hero_id, $type, $name, $variant, $info, $value, $mod, $gp, $tgp, $ap, $at, $pa, $ebe, $rarity, $requirements, $progression) {
+function rp_character_set_property($hero_id, $type, $name, $variant, $info, $value, $mod, $cost, $gp, $tgp, $ap, $at, $pa, $ebe, $rarity, $requirements, $progression, $group, $flavor, $hyperlink) {
    	global $wpdb;
     $db_table_name = $wpdb->prefix . 'sonnenstrasse_properties';
 
@@ -437,6 +442,7 @@ function rp_character_set_property($hero_id, $type, $name, $variant, $info, $val
         'info' => $info, 
         'value' => $value, 
         'mod' => $mod,
+		'cost' => $cost,
         'gp' => rp_character_property_parse_cost($gp), 
         'tgp' => rp_character_property_parse_cost($tgp), 
         'ap' => rp_character_property_parse_cost($ap), 
@@ -445,7 +451,10 @@ function rp_character_set_property($hero_id, $type, $name, $variant, $info, $val
         'ebe' => $ebe, 
         'rarity' => $rarity, 
         'requirements' => $requirements, 
-        'progression' => $progression
+        'progression' => $progression, 
+        'group' => $group, 
+        'flavor' => $flavor, 
+        'hyperlink' => $hyperlink
     );
 
     $succeeded = $wpdb->insert($db_table_name, $values);
@@ -475,6 +484,7 @@ function rp_character_edit_property($arguments) {
         'info' => $arguments['info'], 
         'value' => $arguments['value'], 
         'variant' => $arguments['variant'], 
+		'cost' => rp_character_property_parse_cost($arguments['cost']), 
         'gp' => rp_character_property_parse_cost($arguments['gp']), 
         'tgp' => rp_character_property_parse_cost($arguments['tgp']), 
         'ap' => rp_character_property_parse_cost($arguments['ap']), 
@@ -483,7 +493,10 @@ function rp_character_edit_property($arguments) {
         'ebe' => $arguments['ebe'], 
         'rarity' => $arguments['rarity'], 
         'requirements' => $arguments['requirements'], 
-        'progression' => $arguments['progression']
+        'progression' => $arguments['progression'], 
+        'group' => $arguments['group'], 
+        'flavor' => $arguments['flavor'], 
+        'hyperlink' => $arguments['hyperlink']
     );
 
     if ($id > 0) {

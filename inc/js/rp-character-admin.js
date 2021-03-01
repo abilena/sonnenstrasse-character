@@ -275,6 +275,7 @@ function deleteHero(id) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function saveProperty(hero_id, property_type, property_id) {
+    var cost = document.getElementById("rp-character-admin-table-property-cost").value;
     var gp = document.getElementById("rp-character-admin-table-property-gp").value;
     var tgp = document.getElementById("rp-character-admin-table-property-tgp").value;
     var ap = document.getElementById("rp-character-admin-table-property-ap").value;
@@ -289,6 +290,9 @@ function saveProperty(hero_id, property_type, property_id) {
     var rarity = document.getElementById("rp-character-admin-table-property-rarity").value;
     var requirements = document.getElementById("rp-character-admin-table-property-requirements").value;
     var progression = document.getElementById("rp-character-admin-table-property-progression").value;
+    var group = document.getElementById("rp-character-admin-table-property-group").value;
+    var flavor = document.getElementById("rp-character-admin-table-property-flavor").value;
+    var hyperlink = document.getElementById("rp-character-admin-table-property-hyperlink").value;
 
     hero_id = encodeURIComponent(hero_id);
     property_type = encodeURIComponent(property_type);
@@ -298,6 +302,7 @@ function saveProperty(hero_id, property_type, property_id) {
     info = encodeURIComponent(info);
     value = encodeURIComponent(value);
     variant = encodeURIComponent(variant);
+    cost = encodeURIComponent(cost);
     gp = encodeURIComponent(gp);
     tgp = encodeURIComponent(tgp);
     ap = encodeURIComponent(ap);
@@ -307,6 +312,9 @@ function saveProperty(hero_id, property_type, property_id) {
     rarity = encodeURIComponent(rarity);
     requirements = encodeURIComponent(requirements);
     progression = encodeURIComponent(progression);
+    group = encodeURIComponent(group);
+    flavor = encodeURIComponent(flavor);
+    hyperlink = encodeURIComponent(hyperlink);
 
     var parameters = "hero=" + hero_id;
     parameters += "&type=" + property_type;
@@ -315,6 +323,7 @@ function saveProperty(hero_id, property_type, property_id) {
     parameters += "&info=" + info;
     parameters += "&value=" + value;
     parameters += "&variant=" + variant;
+    parameters += "&cost=" + cost;
     parameters += "&gp=" + gp;
     parameters += "&tgp=" + tgp;
     parameters += "&ap=" + ap;
@@ -324,6 +333,9 @@ function saveProperty(hero_id, property_type, property_id) {
     parameters += "&rarity=" + rarity;
     parameters += "&requirements=" + requirements;
     parameters += "&progression=" + progression;
+    parameters += "&group=" + group;
+    parameters += "&flavor=" + flavor;
+    parameters += "&hyperlink=" + hyperlink;
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

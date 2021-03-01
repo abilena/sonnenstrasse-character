@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once('rp-character-constants.php');
 require_once('rp-character-database.php');
@@ -263,6 +263,33 @@ function rp_character_calculate_energy_properties($basissteigerungen, $eigenscha
 	return $energiewerte;
 }
 
+function rp_character_calculate_meta_talent_properties($talente)
+{
+    $talent_array = array();
+    foreach ($talente as $talent) {
+        $talent_array[$talent->name] = $talent->value;
+    }
+
+	$bogen = intval(@$talent_array['Bogen']);
+	$schleichen = intval(@$talent_array['Schleichen']);
+    $selbstbeherrschung = intval(@$talent_array['Selbstbeherrschung']);
+	$sich_verstecken = intval(@$talent_array['Sich verstecken']);
+	$sinnenschaerfe = intval(@$talent_array['Sinnenschärfe']);
+	$faehrtensuchen = intval(@$talent_array['Fährtensuchen']);
+	$wildnisleben = intval(@$talent_array['Wildnisleben']);
+	$pflanzenkunde = intval(@$talent_array['Pflanzenkunde']);
+	$tierkunde = intval(@$talent_array['Tierkunde']);
+
+    $metatalente = array();
+    array_push($metatalente, (object) array( 'name' => 'Jagd: Ansitzjagd', 'value' => round(($wildnisleben + $tierkunde + $faehrtensuchen + $sich_verstecken + $bogen) / 5) ));
+    array_push($metatalente, (object) array( 'name' => 'Jagd: Pirschjagd', 'value' => round(($wildnisleben + $tierkunde + $faehrtensuchen + $schleichen + $bogen) / 5) ));
+    array_push($metatalente, (object) array( 'name' => 'Kräuter Suchen',   'value' => round(($wildnisleben + $sinnenschaerfe + $pflanzenkunde) / 3) ));
+    array_push($metatalente, (object) array( 'name' => 'Nahrung Sammeln',  'value' => round(($wildnisleben + $sinnenschaerfe + $pflanzenkunde) / 3) ));
+    array_push($metatalente, (object) array( 'name' => 'Wache Halten',     'value' => round(($selbstbeherrschung + $sinnenschaerfe + $sinnenschaerfe) / 3) ));
+
+    return $metatalente;
+}
+
 function rp_character_format_properties_basic($header, $properties)
 {
 	$properties_html = "";
@@ -277,32 +304,30 @@ function rp_character_format_properties_basic($header, $properties)
 	return $output;
 }
 
-function rp_character_format_properties_vorteile($properties)
+function rp_character_format_properties_vorteile($properties, $levelup, $all_properties)
 {
-	$properties_html = array();
-	foreach ($properties as $property)
-	{
-		$name = $property->name;
-		$params = array();
-		if (!empty($property->value)) { array_push($params, $property->value); }
-		if (!empty($property->variant)) { array_push($params, $property->variant); }
-		if (!empty($property->info)) { array_push($params, $property->info); }
-		if (count($params) > 0) { $name .= " (" . join(", ", $params) . ")"; }
-		array_push($properties_html, $name);
-	}
-	$output = join(", ", $properties_html) . "\n";
-	return $output;
+	global $vorteil_data;
+	global $vorteil_gruppe;
+	$gruppen_filter = array(
+		'vorteil' => array(),
+		'nachteil' => array());
+
+    return rp_character_format_properties_generic($properties, $vorteil_data, $vorteil_gruppe, $gruppen_filter, 'vorteil', $levelup, 'advantage', 'vorteile', $all_properties);
 }
 
 function rp_character_format_properties_template_id($name)
 {
-    $id = $name;
+    $id = utf8_decode($name);
     $id = strtolower($id);
     $id = str_replace(' ', '-', $id);
+    $id = str_replace(':', '-', $id);
+    $id = str_replace('(', '-', $id);
+    $id = str_replace(')', '-', $id);
     $id = str_replace('\'', '-', $id);
-    $id = str_replace('ä', 'a', $id);
-    $id = str_replace('ö', 'o', $id);
-    $id = str_replace('ü', 'u', $id);
+    $id = str_replace(utf8_decode("ß"), 'ss', $id);
+    $id = str_replace(utf8_decode("ä"), 'ae', $id);
+    $id = str_replace(utf8_decode("ö"), 'oe', $id);
+    $id = str_replace(utf8_decode("ü"), 'ue', $id);
     return $id;
 }
 
@@ -317,7 +342,7 @@ function rp_character_format_properties_display_name($property)
     return $name;
 }
 
-function rp_character_format_properties_eval_bonus($properties, $data, $property)
+function rp_character_format_properties_eval_bonus($data, $property)
 {
     $name = @$property->name;
     $mod = (isset($property->mod) && !empty($property->mod)) ? intval($property->mod) : 0;
@@ -345,45 +370,65 @@ function rp_character_format_properties_eval_bonus($properties, $data, $property
     return $resultString;
 }
 
-function rp_character_format_properties_eval_req($properties, $data, $property)
+function rp_character_format_properties_eval_display_has($properties, $name)
+{
+    foreach ($properties as $property) {
+		if ($property->name == $name) { return TRUE; }
+	}
+	return FALSE;
+}
+
+function rp_character_format_properties_eval_display($data, $property, $properties)
 {
     $name = @$property->name;
+    $display = (array_key_exists('display', $data[$name])) ? $data[$name]['display'] : 'true';
+	$display = str_replace('has("', 'rp_character_format_properties_eval_display_has($properties, "', $display);
+	$result = (eval("return ($display);") ? "true" : "false");
+	/*
+	if ($name == "Test") {
+		echo($name." : ".$display." = ".$result."<br>");
+	}
+	*/
+	return $result;
+}
+
+function rp_character_format_properties_eval_req($data, $property)
+{
+    $name = @$property->name;
+	$variant = empty(@$property->variant) ? "TaW" : explode(",", $property->variant, 2)[0];
     $req = (array_key_exists('req', $data[$name])) ? $data[$name]['req'] : '';
-    $resultString = "";
-    $flavorString = "";
-    
-    if (!empty($req))
-    {
-        $parts = explode(";", $req);
-        foreach ($parts as $part)
-        {
-            if (substr($part, 0, 3) == 'SF ')
-            {
-                $sf = substr($part, 3);
-                $sf_id = rp_character_format_properties_template_id($sf);
-                $resultString .= "levelupHasFeat('$sf_id')&&";
-                $flavorString .= "<span>SF <i>$sf</i></span>; ";
-            }
-            else if (strpos($part, '>') !== false)
-            {
-                $talent = substr($part, 0, strpos($part, '>'));
-                $talent_id = rp_character_format_properties_template_id($talent);
-                $min_value = substr($part, strpos($part, '>') + 1) + 1;
-                $resultString .= "levelupHasPropertyValue('$talent_id', $min_value)&&";
-                $flavorString .= "<span><i>$talent</i> $min_value</span>; ";
-            }
-        }
+	$req = str_replace("[@Variant]", $variant, $req);
+    $resultString = str_replace("'", "\'", $req);
+    $resultString = str_replace('"', "'", $resultString);
 
-        $resultString = rtrim($resultString, "&");
-        $flavorString = rtrim($flavorString, "; ");
-    }
+	if (empty($req))
+	{
+		$flavorString = "Keine";
+	}
+	else
+	{
+	    $flavorString = $req;
+		$flavorString = str_replace('has("', '', $flavorString);
+		$flavorString = str_replace('")', '', $flavorString);
+		$flavorString = preg_replace('/\", (\d+)\)/', ' ${1}', $flavorString);
+		$flavorString = str_replace(' &&', ',', $flavorString);
+		$flavorString = str_replace('||', 'oder', $flavorString);
+		$flavorString = str_replace('Mut', 'MU', $flavorString);
+		$flavorString = str_replace('Klugheit', 'KL', $flavorString);
+		$flavorString = str_replace('Intuition', 'IN', $flavorString);
+		$flavorString = str_replace('Charisma', 'CH', $flavorString);
+		$flavorString = str_replace('Fingerfertigkeit', 'FF', $flavorString);
+		$flavorString = str_replace('Gewandtheit', 'GE', $flavorString);
+		$flavorString = str_replace('Konstitution', 'KO', $flavorString);
+		$flavorString = str_replace('Körperkraft', 'KK', $flavorString);
+	}
 
-    $property->req_text = $flavorString;
+	$property->req_text = $flavorString;
 
     return $resultString;
 }
 
-function rp_character_format_properties_eigenschaften($properties, $levelup)
+function rp_character_format_properties_eigenschaften($properties, $levelup, $all_properties)
 {
 	global $eigenschaft_data;
 	global $eigenschaft_gruppe;
@@ -393,23 +438,31 @@ function rp_character_format_properties_eigenschaften($properties, $levelup)
 		'basiswert' => array(),
         'sozialstatus' => array());
 
-    return rp_character_format_properties_generic($properties, $eigenschaft_data, $eigenschaft_gruppe, $gruppen_filter, 'basiswert', $levelup, 'property');
+    return rp_character_format_properties_generic($properties, $eigenschaft_data, $eigenschaft_gruppe, $gruppen_filter, 'basiswert', $levelup, 'property', 'eigenschaften', $all_properties);
 }
 
-function rp_character_format_properties_sonderfertigkeiten($properties, $levelup)
+function rp_character_format_properties_sonderfertigkeiten($properties, $levelup, $all_properties)
 {
 	global $sf_data;
 	global $sf_gruppe;
 	$sf_filter = array(
+		'allgemein' => array(),
+		'gelände' => array(),
 		'kampf' => array(),
-		'magisch' => array(),
+		'fernkampf' => array(),
+		'manöver' => array(),
 		'klerikal' => array(),
-		'allgemein' => array());
+		'liturgie' => array(),
+		'magisch' => array(),
+		'elfenlied' => array(),
+		'ritual' => array(),
+		'objekt' => array(),
+		'schamanen' => array());
 
-    return rp_character_format_properties_generic($properties, $sf_data, $sf_gruppe, $sf_filter, 'allgemein', $levelup, 'feat');
+    return rp_character_format_properties_generic($properties, $sf_data, $sf_gruppe, $sf_filter, 'allgemein', $levelup, 'feat', 'sonderfertigkeiten', $all_properties);
 }
 
-function rp_character_format_properties_talente($properties, $levelup)
+function rp_character_format_properties_talente($properties, $levelup, $all_properties)
 {
 	global $talent_data;
     global $talent_gruppe;
@@ -418,26 +471,32 @@ function rp_character_format_properties_talente($properties, $levelup)
 		'koerper' => array(),
 		'gesellschaft' => array(),
 		'natur' => array(),
+		'meta' => array(),
 		'wissen' => array(),
 		'sprache' => array(),
 		'schrift' => array(),
 		'handwerk' => array(),
 		'gabe' => array());
 
-    return rp_character_format_properties_generic($properties, $talent_data, $talent_gruppe, $gruppen_filter, 'gabe', $levelup, 'property');
+    return rp_character_format_properties_generic($properties, $talent_data, $talent_gruppe, $gruppen_filter, 'gabe', $levelup, 'property', 'talente', $all_properties);
 }
 
-function rp_character_format_properties_zauber($properties, $levelup)
+function rp_character_format_properties_zauber($properties, $levelup, $all_properties)
 {
 	global $zauber_data;
     global $zauber_gruppe;
     $gruppen_filter = array(
 		'zauber' => array());
 
-    return rp_character_format_properties_generic($properties, $zauber_data, $zauber_gruppe, $gruppen_filter, 'zauber', $levelup, 'property');
+    return rp_character_format_properties_generic($properties, $zauber_data, $zauber_gruppe, $gruppen_filter, 'zauber', $levelup, 'property', 'zauber', $all_properties);
 }
 
-function rp_character_format_properties_generic($properties, $data, $gruppen_data, $gruppen_filter, $gruppen_default, $levelup, $property_display_type)
+function rp_character_sort_properties_generic($property1, $property2)
+{
+	return strcmp(@$property1->name, @$property2->name);
+}
+
+function rp_character_format_properties_generic($properties, $data, $gruppen_data, $gruppen_filter, $gruppen_default, $levelup, $property_display_type, $type, $all_properties)
 {
     $path_templates = plugin_dir_path(__FILE__) . "/../tpl";
     $tpl_display = ($levelup ? "levelup" : "display");
@@ -450,9 +509,11 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
         $property->id = rp_character_format_properties_template_id($property->name);
         $property->ap = NULL;
         $property->value = 0;
-        $property->info = NULL;
+        $property->probe = @$property->probe;
         $property->progression = "";
-        $property->template = "true";
+        $property->info = "";
+        $property->variant = "";
+        $property->template = (@$property->basis ? "false" : "true");
 		$gruppe = @$property->gruppe;
 		$gruppen_properties = @$gruppen_filter[$gruppe];
 		if (!isset($gruppen_properties)) { $gruppen_properties = array(); }
@@ -462,17 +523,37 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 
 	foreach ($properties as $property)
 	{
+		if(!isset($property->name))
+			continue;
+
         $property->template = "false";
         $property->id = rp_character_format_properties_template_id($property->name);
 		$gruppe = @$data[$property->name]['gruppe'];
+		if (!isset($gruppe)) { $gruppe = @$property->group; }
 		if (!isset($gruppe)) { $gruppe = $gruppen_default; }
 		$gruppen_properties = @$gruppen_filter[$gruppe];
 		if (!isset($gruppen_properties)) { $gruppen_properties = array(); }
         if (array_key_exists($property->name, $gruppen_properties))
         {
             $property_template = $gruppen_properties[$property->name];
-            $property_template = (object) array_merge((array) $property_template, (array) $property);
-            $gruppen_properties[$property->name] = $property_template;
+            $array_template = (array) $property_template;
+            $array_property = (array) $property;
+            $array_merged = $array_template;
+
+            // override template values
+            foreach ($array_property as $key => $value)
+            {
+                $array_merged[$key] = $value;
+            }
+
+			if ((@$property_template->variant === @$property->variant) || ((@$property_template->variant == NULL) && (@$property->variant == NULL)))
+			{
+				$gruppen_properties[$property->name] = (object) $array_merged;
+			}
+			else
+			{
+	            $gruppen_properties += [ ($property->name . @$property->variant) => (object) $array_merged ];
+			}
         }
         else
         {
@@ -484,15 +565,37 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 	$html = "";
 	foreach ($gruppen_filter as $gruppe => $gruppen_properties)
 	{
+		usort($gruppen_properties, "rp_character_sort_properties_generic");
+
+        $empty = "true";
         $properties_html = "";
+		$display_any = "false";
 	    foreach ($gruppen_properties as $gruppen_property)
 	    {
 		    $name = @$gruppen_property->name;
 		    $value = @$gruppen_property->value;
+
+			if (!array_key_exists($name, $data))
+			{
+				echo("<script>console.log('Index \"$name\" does not exist in \"$type\".');</script>");
+				$data[$gruppen_property->name] = (array) $gruppen_property;
+				$data[$gruppen_property->name]['flavor'] = @$gruppen_property->info;
+			}
+
             $gruppen_property_data = @$data[$gruppen_property->name];
-            $category = ($value == "-" || empty($gruppen_property_data) || !array_key_exists('category', $gruppen_property_data)) ? "" : $gruppen_property_data['category'];
-            $bonus = rp_character_format_properties_eval_bonus($properties, $data, $gruppen_property);
-            $req = rp_character_format_properties_eval_req($properties, $data, $gruppen_property);
+            $hyperlink = (!array_key_exists('hyperlink', $gruppen_property_data)) ? "" : $gruppen_property_data['hyperlink'];
+            $category = (/* $value == "-" ||*/ empty($gruppen_property_data) || !array_key_exists('category', $gruppen_property_data)) ? "" : $gruppen_property_data['category'];
+            $mod_match = "name=$name;" . @$gruppen_property_data['match'];
+            $mod_query = str_replace("[@Variant]", @$gruppen_property->variant, @$gruppen_property_data['mod_query']);
+            $mod_category = @$gruppen_property_data['mod_category'];
+            $mod_factor = @$gruppen_property_data['mod_factor'];
+            $bonus = rp_character_format_properties_eval_bonus($data, $gruppen_property);
+            $req = rp_character_format_properties_eval_req($data, $gruppen_property);
+            $display = rp_character_format_properties_eval_display($data, $gruppen_property, $all_properties);
+            $empty = (@$gruppen_property->template == "false") ? "false" : $empty;
+			if ($display == "true") {
+				$display_any = "true";
+			}
 
             $progression_native = rp_character_progression_decode_native(@$gruppen_property->progression);
             $progression_html = rp_character_progression_encode_html($progression_native);
@@ -504,20 +607,33 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 				$name = substr($name, strlen("Lesen/Schreiben") + 1);
 			}
 
+			$display_name = rp_character_format_properties_display_name($gruppen_property);
+			if (!$levelup && !empty($hyperlink)) {
+				$display_name = '<a href="'.$hyperlink.'" target="_blank">'.$display_name.'</a>';
+			}
+
 		    $template_row = new Sonnenstrasse\Template($path_templates . "/page/character.$tpl_display.$property_display_type.single.html");
             $template_row->setObject($gruppen_property);
-            $template_row->set("DisplayName", rp_character_format_properties_display_name($gruppen_property));
+            $template_row->set("DisplayName", $display_name);
             $template_row->set("ReqFunction", $req);
+            $template_row->set("DisplayValue", $display);
             $template_row->set("Name", $name);
             $template_row->set("Category", $category);
             $template_row->set("Bonus", $bonus);
             $template_row->set("ProgressionSteps", $progression_html);
             $template_row->set("Gruppe", $gruppen_data[$gruppe]);
+            $template_row->set("ModMatch", $mod_match);
+            $template_row->set("ModQuery", $mod_query);
+            $template_row->set("ModCategory", $mod_category);
+            $template_row->set("ModFactor", $mod_factor);
+            $template_row->set("Hyperlink", $hyperlink);
 		    $properties_html .= $template_row->output();
 	    }
 
 		$template_table = new Sonnenstrasse\Template($path_templates . "/page/character.$tpl_display.$property_display_type.all.html");
         $template_table->set("Gruppe", $gruppe);
+        $template_table->set("DisplayValue", $display_any);
+        $template_table->set("Empty", $empty);
         $template_table->set("Name", $gruppen_data[$gruppe]);
         $template_table->set("Properties", $properties_html);
 		$html .= $template_table->output();
@@ -538,6 +654,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$properties_talente_html = "";
 	$properties_zauber_html = "";
 	$properties_sonderfertigkeiten_html = "";
+    $levelup_vorteile_html = "";
     $levelup_eigenschaften_html = "";
 	$levelup_talente_html = "";
     $levelup_zauber_html = "";
@@ -551,6 +668,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 		$height = $hero->height;
 		$weight = $hero->weight;
 
+		$alles = rp_character_get_properties($hero->hero_id, "%");
 		$rassen = rp_character_get_properties($hero->hero_id, "race");
 		$kulturen = rp_character_get_properties($hero->hero_id, "culture");
 		$professionen = rp_character_get_properties($hero->hero_id, "profession");
@@ -566,6 +684,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 		$sonderfertigkeiten = rp_character_get_properties($hero->hero_id, "feat");
 		$basiswerte = rp_character_calculate_basic_properties($basissteigerungen, $eigenschaften, $vorteile, $sonderfertigkeiten);
 		$energiewerte = rp_character_calculate_energy_properties($basissteigerungen, $eigenschaften, $vorteile, $sonderfertigkeiten);
+		$metatalente = rp_character_calculate_meta_talent_properties($talente);
 		
 		$properties_basic_html .= "<tr><td>Name</td><td>".$hero->display_name."</td></tr>\n";
 		$properties_basic_html .= rp_character_format_properties_basic("Rasse", $rassen, "", "");
@@ -581,16 +700,17 @@ function rp_character_hero_full_html($hero, $solo_user)
 		$properties_basic_html .= "<tr><td>Augenfarbe</td><td></td></tr>\n";
 		$properties_basic_html .= "<tr><td>Aussehen</td><td></td></tr>\n";
 		
-		$properties_vorteile_html .= rp_character_format_properties_vorteile($vorteile);
-		$properties_eigenschaften_html .= rp_character_format_properties_eigenschaften(array_merge($eigenschaften, $energiewerte, $basiswerte), FALSE);
-		$properties_talente_html .= rp_character_format_properties_talente($talente, FALSE);
-		$properties_zauber_html .= rp_character_format_properties_zauber($zauber, FALSE);
-		$properties_sonderfertigkeiten_html .= rp_character_format_properties_vorteile($sonderfertigkeiten);
+		$properties_vorteile_html .= rp_character_format_properties_vorteile($vorteile, FALSE, $alles);
+		$properties_eigenschaften_html .= rp_character_format_properties_eigenschaften(array_merge($eigenschaften, $energiewerte, $basiswerte), FALSE, $alles);
+		$properties_talente_html .= rp_character_format_properties_talente(array_merge($talente, $metatalente), FALSE, $alles);
+		$properties_zauber_html .= rp_character_format_properties_zauber($zauber, FALSE, $alles);
+		$properties_sonderfertigkeiten_html .= rp_character_format_properties_sonderfertigkeiten($sonderfertigkeiten, FALSE, $alles);
 
-        $levelup_eigenschaften_html .= rp_character_format_properties_eigenschaften(array_merge($eigenschaften, $basissteigerungen), TRUE);
-        $levelup_talente_html .= rp_character_format_properties_talente($talente, TRUE);
-        $levelup_zauber_html .= rp_character_format_properties_zauber($zauber, TRUE);
-        $levelup_sonderfertigkeiten_html .= rp_character_format_properties_sonderfertigkeiten($sonderfertigkeiten, TRUE);
+        $levelup_vorteile_html .= rp_character_format_properties_vorteile($vorteile, TRUE, $alles);
+        $levelup_eigenschaften_html .= rp_character_format_properties_eigenschaften(array_merge($eigenschaften, $basissteigerungen), TRUE, $alles);
+        $levelup_talente_html .= rp_character_format_properties_talente($talente, TRUE, $alles);
+        $levelup_zauber_html .= rp_character_format_properties_zauber($zauber, TRUE, $alles);
+        $levelup_sonderfertigkeiten_html .= rp_character_format_properties_sonderfertigkeiten($sonderfertigkeiten, TRUE, $alles);
 	}
 
 	$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.html");
@@ -599,7 +719,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$tpl_character->set("Character", $hero->name);
     $tpl_character->set("Portrait", (empty($hero->portrait) ? ($path_url . "/../sonnenstrasse-base/img/glow2.gif") : ($path_url . "/../../uploads/portraits/" . $hero->portrait)));
 	$tpl_character->set("PortraitClass", (empty($hero->portrait) ? "empty" : "image"));
-    $tpl_character->set("ApTotal", $hero->ap);
+    $tpl_character->set("ApTotal", (empty($hero->ap) ? "0" : $hero->ap));
     $tpl_character->set("ApFree", $hero->ap - $hero->ap_spent);
 	$tpl_character->set("PropertiesBasic", $properties_basic_html);
 	$tpl_character->set("PropertiesVorteile", $properties_vorteile_html);
@@ -608,6 +728,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$tpl_character->set("PropertiesZauber", $properties_zauber_html);
 	$tpl_character->set("PropertiesSonderfertigkeiten", $properties_sonderfertigkeiten_html);
 
+    $tpl_character->set("LevelupVorteile", $levelup_vorteile_html);
 	$tpl_character->set("LevelupEigenschaften", $levelup_eigenschaften_html);
     $tpl_character->set("LevelupTalente", $levelup_talente_html);
     $tpl_character->set("LevelupZauber", $levelup_zauber_html);

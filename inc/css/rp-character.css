@@ -1,13 +1,5 @@
 
-:root {
-    --backColor: #000000;
-    --borderColor: #4b402e;
-    --baseColor: #a99877;
-    --headerColor: #f3e6d0;
-    --hoverColor: #ffffff;
-    --selectedColor: #f1bf44;
-    --disabledColor: #cccccc;
-}
+@import url("../../../sonnenstrasse-base/inc/sonnenstrasse-base-variables.css");
 
 .aventurien-character-content {
 	position: relative;
@@ -240,9 +232,11 @@
 	margin: 1px 4px 0px 4px;
     vertical-align: middle;
     font-size: 10px;
+    color: var(--baseColor);
 }
 
 .aventurien-character-button a:hover {
+    color: var(--hoverColor);
 	text-decoration: none;
 }
 
@@ -257,6 +251,13 @@
 	position: absolute;
 	bottom: -23px;
 	right: 100px;
+	height: 16px;
+}
+
+.aventurien-character-save-levelup {
+	position: absolute;
+	bottom: -23px;
+	right: 167px;
 	height: 16px;
 }
 
@@ -286,35 +287,38 @@
     display: none;
 }
 
+.aventurien-character-sheet-tabs {
+	overflow: hidden;
+}
+
 .aventurien-character-sheet-tabs > li {
-    display: inline-block;
+    display: inline;
+	white-space: nowrap;
+	margin-left: -6px;
+	margin-right: 6px;
 }
 
 .aventurien-character-sheet-tabs > li > a {
-    color: #ccc;
+    color: var(--baseColor);
 }
 
 .aventurien-character-sheet-tabs > li > a:hover {
-    color: var(--);
+    color: var(--hoverColor);
     text-decoration: none;
 }
 
-.aventurien-character-sheet-tabs > li:last-child::after {
-	content: "";
+.aventurien-character-sheet-tabs > li::before {
+	content: " | ";
+    font-weight: bold;
+	color: var(--baseColor);
 }
 
-.aventurien-character-sheet-tabs > li::after {
-	content: " |";
-	color: #ccc;
-}
-
-.aventurien-character-sheet-tabs-selected-basis .aventurien-character-sheet-tabs-basis a { color: #f1bf44; }
-.aventurien-character-sheet-tabs-selected-vorteile .aventurien-character-sheet-tabs-vorteile a { color: #f1bf44; }
-.aventurien-character-sheet-tabs-selected-eigenschaften .aventurien-character-sheet-tabs-eigenschaften a { color: #f1bf44; }
-.aventurien-character-sheet-tabs-selected-talente .aventurien-character-sheet-tabs-talente a { color: #f1bf44; }
-.aventurien-character-sheet-tabs-selected-liturgien .aventurien-character-sheet-tabs-liturgien a { color: #f1bf44; }
-.aventurien-character-sheet-tabs-selected-zauber .aventurien-character-sheet-tabs-zauber a { color: #f1bf44; }
-.aventurien-character-sheet-tabs-selected-sonderfertigkeiten .aventurien-character-sheet-tabs-sonderfertigkeiten a { color: #f1bf44; }
+.aventurien-character-sheet-tabs-selected-basis              .aventurien-character-sheet-tabs-basis              a { color: var(--hoverColor); }
+.aventurien-character-sheet-tabs-selected-vorteile           .aventurien-character-sheet-tabs-vorteile           a { color: var(--hoverColor); }
+.aventurien-character-sheet-tabs-selected-eigenschaften      .aventurien-character-sheet-tabs-eigenschaften      a { color: var(--hoverColor); }
+.aventurien-character-sheet-tabs-selected-talente            .aventurien-character-sheet-tabs-talente            a { color: var(--hoverColor); }
+.aventurien-character-sheet-tabs-selected-zauber             .aventurien-character-sheet-tabs-zauber             a { color: var(--hoverColor); }
+.aventurien-character-sheet-tabs-selected-sonderfertigkeiten .aventurien-character-sheet-tabs-sonderfertigkeiten a { color: var(--hoverColor); }
 
 
 
@@ -378,17 +382,15 @@
 .aventurien-character-sheet-tabs-selected-vorteile #aventurien-character-sheet-tabs-vorteile a { color: var(--selectedColor); }
 .aventurien-character-sheet-tabs-selected-eigenschaften #aventurien-character-sheet-tabs-eigenschaften a { color: var(--selectedColor); }
 .aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-tabs-talente a { color: var(--selectedColor); }
-.aventurien-character-sheet-tabs-selected-liturgien #aventurien-character-sheet-tabs-liturgien a { color: var(--selectedColor); }
 .aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-tabs-zauber a { color: var(--selectedColor); }
 .aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-tabs-sonderfertigkeiten a { color: var(--selectedColor); }
 
-.aventurien-character-sheet-tabs-selected-basis #aventurien-character-sheet-basis { display: block; }
-.aventurien-character-sheet-tabs-selected-vorteile #aventurien-character-sheet-vorteile { display: block; }
-.aventurien-character-sheet-tabs-selected-eigenschaften #aventurien-character-sheet-eigenschaften { display: block; }
-.aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-talente { display: block; }
-.aventurien-character-sheet-tabs-selected-liturgien #aventurien-character-sheet-liturgien { display: block; }
-.aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-zauber { display: block; }
-.aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-sonderfertigkeiten { display: block; }
+.aventurien-character-sheet-tabs-selected-basis #aventurien-character-sheet-basis, .aventurien-character-sheet-tabs-selected-basis #aventurien-character-sheet-levelup-basis { display: block; }
+.aventurien-character-sheet-tabs-selected-vorteile #aventurien-character-sheet-vorteile, .aventurien-character-sheet-tabs-selected-vorteile #aventurien-character-sheet-levelup-vorteile { display: block; }
+.aventurien-character-sheet-tabs-selected-eigenschaften #aventurien-character-sheet-eigenschaften, .aventurien-character-sheet-tabs-selected-eigenschaften #aventurien-character-sheet-levelup-eigenschaften { display: block; }
+.aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-talente, .aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-levelup-talente { display: block; }
+.aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-zauber, .aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-levelup-zauber { display: block; }
+.aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-sonderfertigkeiten, .aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-levelup-sonderfertigkeiten { display: block; }
 
 .aventurien-character-sheet {
 	display: none;
@@ -396,7 +398,7 @@
 
 .aventurien-character-sheet .aventurien-character-sheet-scrollcontent {
 	overflow-y: auto;
-	max-height: 272px;
+	max-height: 290px;
 	padding-right: 8px;
 }
 
@@ -421,6 +423,30 @@
     color: #000;
 }
 
+.aventurien-character-sheet-full .aventurien-character-sheet-propertytable[data-empty="true"],
+.aventurien-character-sheet-levelup .aventurien-character-sheet-propertytable[data-empty="true"] {
+    display: none;
+}
+
+.aventurien-character-sheet-full .aventurien-character-sheet-propertylist[data-empty="true"] {
+    display: none;
+}
+
+.aventurien-character-sheet-full .aventurien-character-sheet-propertylist:before {
+    content: attr(data-name);
+    display: block;
+    font-family: GentiumBasic;
+    font-size: 10pt;
+    font-weight: bold;
+    line-height: 11pt;
+    color: #000;
+    padding-bottom: 4px;
+}
+
+.aventurien-character-sheet-full .aventurien-character-sheet-propertylist span[data-template="false"] ~ span[data-template="false"]:before {
+    content:  ", ";
+}
+
 .aventurien-character-sheet table {
 	border-collapse: collapse;
 	border-spacing: 0px;
@@ -430,10 +456,24 @@
 .aventurien-character-sheet table th {
     text-align: left;
     padding-bottom: 4px;
+	color: var(--borderColor);
+	font-size: 13px;
 }
 
-.aventurien-character-sheet-full table .aventurien-character-sheet-display-property[data-template='true'] {
+.aventurien-character-sheet-full .aventurien-character-sheet-display-property[data-template='true'] {
     display: none;
+}
+
+.aventurien-character-sheet-full .aventurien-character-sheet-display-property a {
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	color: inherit;
+}
+
+.aventurien-character-sheet-full .aventurien-character-sheet-display-property a:hover {
+	text-decoration: underline;
+	text-decoration-style: solid;
+	color: inherit;
 }
 
 .aventurien-character-sheet-full .aventurien-character-sheet table td:nth-child(1) {
@@ -444,8 +484,8 @@
 	vertical-align: top;
 }
 
-.aventurien-character-sheet-full .aventurien-character-sheet table td, 
-#aventurien-character-sheet-container p {
+.aventurien-character-sheet-full .aventurien-character-sheet table td,
+#aventurien-character-window .aventurien-character-sheet-full p {
 	font-family: Andalus;
 	font-size: 11px;
 	line-height: 12px;
@@ -472,7 +512,8 @@
     height: 5px;
 }
 
-.aventurien-character-sheet-full #aventurien-character-sheet-talente table tr td:nth-child(1) {
+.aventurien-character-sheet-full #aventurien-character-sheet-talente table tr td:nth-child(1),
+.aventurien-character-sheet-full #aventurien-character-sheet-zauber table tr td:nth-child(1) {
 	width: 140px;
 	padding-left: 10px;
 	font-weight: normal;
@@ -486,12 +527,14 @@
 	color: #4b402e;
 }
 
-.aventurien-character-sheet-full #aventurien-character-sheet-talente table tr td:nth-child(2) {
+.aventurien-character-sheet-full #aventurien-character-sheet-talente table tr td:nth-child(2),
+.aventurien-character-sheet-full #aventurien-character-sheet-zauber table tr td:nth-child(2) {
 	width: 55px;
 	text-align: center;
 }
 
-.aventurien-character-sheet-full #aventurien-character-sheet-talente table tr td:nth-child(3) {
+.aventurien-character-sheet-full #aventurien-character-sheet-talente table tr td:nth-child(3),
+.aventurien-character-sheet-full #aventurien-character-sheet-zauber table tr td:nth-child(3) {
 	width: 20px;
 	text-align: center;
 }
@@ -509,37 +552,78 @@
  * LevelUp
  *************************************************************************************************/
 
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-overview {
+    color: var(--baseColor);
+    font-family: Arial;
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 13px;
+    vertical-align: top;
+    margin-block-start: 0em;
+    cursor: default;
+    padding: 2px 4px;
+    border-bottom: 1px solid var(--borderColor);
+    text-align: right;
+}
+
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-overview::before {
+    content: "Freie AP: " attr(data-remaining);
+}
+
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-overview::after {
+    content: attr(data-total);
+}
+
 .aventurien-character-sheet-levelup .aventurien-character-sheet {
-    padding: 8px 0px 8px 8px;
+    padding: 0px;
     height: 364px;
     color: var(--baseColor);
 }
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet h4 {
-    color: #fff;
+	color: #fff;
+	margin: 0px;
+	padding: 10px 4px 6px 4px;
+	border-bottom: 1px solid transparent;
+}
+
+.aventurien-character-sheet-levelup .aventurien-character-activate-levelup {
+	position: absolute;
+	right: 6px;
+	top: 73px;
+}
+
+.aventurien-character-sheet-levelup .aventurien-character-sheet[data-activate="true"] .aventurien-character-activate-levelup a {
+	color: var(--hoverColor);
 }
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet .aventurien-character-sheet-scrollcontent {
+    padding: 4px;
     padding-right: 0px;
+	height: 325px;
 }
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet-border {
     background: none;
+    padding: 0px;
 }
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet-parchment {
     background: none;
+    height:  382px;
 }
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet table td, 
 .aventurien-character-sheet-levelup .aventurien-character-sheet div,
-#aventurien-character-sheet-container p {
+.aventurien-character-sheet-levelup p {
+    color: var(--baseColor);
 	font-family: Arial;
 	font-size: 10px;
 	font-weight: normal;
 	line-height: 13px;
     vertical-align: top;
 	margin-block-start: 0em;
+    cursor: default;
 }
 
 .aventurien-character-sheet-levelup table tr th {
@@ -556,9 +640,16 @@
     text-align: center;
 }
 
-.aventurien-character-sheet-levelup table .aventurien-character-sheet-levelup-property[data-template='true'] {
+.aventurien-character-sheet-levelup .aventurien-character-sheet:not([data-activate="true"]) table .aventurien-character-sheet-levelup-property[data-template='true'],
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-advantage-vorteil .aventurien-character-sheet-levelup-property[data-template='true'],
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-advantage-nachteil .aventurien-character-sheet-levelup-property[data-template='true'] {
     display: none;
 }
+
+.aventurien-character-sheet-levelup .aventurien-character-sheet[data-activate="true"] table .aventurien-character-sheet-levelup-property[data-template='true'] td span {
+	color: var(--borderColor);
+}
+
 
 .aventurien-character-sheet-levelup table tr td .aventurien-character-sheet-levelup-property-se {
     display: none;
@@ -575,6 +666,11 @@
     margin: 0;
 }
 
+.aventurien-character-sheet-levelup table tr:hover td .aventurien-character-sheet-levelup-property-se-label {
+    background-position-x: -16px;
+    cursor: pointer;
+}
+
 .aventurien-character-sheet-levelup table tr td .aventurien-character-sheet-levelup-property-se:checked + .aventurien-character-sheet-levelup-property-se-label {
     background-position-x: -32px;
 }
@@ -587,11 +683,12 @@
 
 .aventurien-character-sheet-levelup table tr td:nth-child(2) {
 	width: 10px;
-	padding-left: 2px;
+	text-align: center;
 }
 
 .aventurien-character-sheet-levelup table tr td:nth-child(3) {
-	width: 130px;
+	width: 120px;
+    max-width: 120px;
 }
 
 .aventurien-character-sheet-levelup table tr td:nth-child(4) {
@@ -602,16 +699,31 @@
 .aventurien-character-sheet-levelup table tr td:nth-child(5) {
 	width: 50px;
 	text-align: center;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-talente table tr th:nth-child(3)::before {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-basis table tr td:nth-child(1) {
+    width: 80px;
+    line-height: 13px;
+    padding: 1px;
+}
+
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-basis table tr td:nth-child(2) {
+    width: 190px;
+    text-align: left;
+}
+
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-eigenschaften table tr th:nth-child(3)::before {
+    content: "Wert";
+}
+
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-talente table tr th:nth-child(3)::before {
     content: "TaW";
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-eigenschaften table tr th:nth-child(3)::before {
-    content: "Wert";
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-zauber table tr th:nth-child(3)::before {
+    content: "ZfW";
 }
 
 .aventurien-character-sheet-levelup table tr td .aventurien-character-sheet-levelup-property-category {
@@ -619,13 +731,34 @@
     width: 10px;
 }
 
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="A*"] .aventurien-character-sheet-levelup-property-category::before { content: "A*"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="A"] .aventurien-character-sheet-levelup-property-category::before { content: "A"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="B"] .aventurien-character-sheet-levelup-property-category::before { content: "B"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="C"] .aventurien-character-sheet-levelup-property-category::before { content: "C"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="D"] .aventurien-character-sheet-levelup-property-category::before { content: "D"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="E"] .aventurien-character-sheet-levelup-property-category::before { content: "E"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="F"] .aventurien-character-sheet-levelup-property-category::before { content: "F"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="G"] .aventurien-character-sheet-levelup-property-category::before { content: "G"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="H"] .aventurien-character-sheet-levelup-property-category::before { content: "H"; }
+
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="A*"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "A*"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="A"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "A*"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="B"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "A"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="C"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "B"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="D"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "C"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="E"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "D"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="F"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "E"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="G"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "F"; }
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category="H"][data-se="1"] .aventurien-character-sheet-levelup-property-category::before { content: "G"; }
+
+
 .aventurien-character-sheet-levelup table tr td .aventurien-character-sheet-levelup-property-progression {
     position: relative;
 }
 
 .aventurien-character-sheet-levelup table tr td .aventurien-character-sheet-levelup-property-progression-steps {
     position: absolute;
-    top: 12px;
+    top: 11px;
     left:  0px;
     width: 160px;
     height: 3px;
@@ -695,8 +828,16 @@
     background-color: #99ccff;
 }
 
-.aventurien-character-sheet-levelup table tr:hover {
-    color: var(--hoverColor); !important
+.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.aventurien-character-sheet-levelup table tr:hover td,
+.aventurien-character-sheet-levelup table tr:hover td span {
+    color: var(--hoverColor);
 }
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-ap-invest:nth-child(1) {
@@ -713,13 +854,13 @@
     display: none;
 }
 
-.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category=''] .aventurien-character-sheet-levelup-property-value-minus, 
-.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category=''] .aventurien-character-sheet-levelup-property-value-plus {
+.aventurien-character-sheet-levelup .aventurien-character-sheet:not([data-activate="true"]) .aventurien-character-sheet-levelup-property[data-category=''] .aventurien-character-sheet-levelup-property-value-minus, 
+.aventurien-character-sheet-levelup .aventurien-character-sheet:not([data-activate="true"]) .aventurien-character-sheet-levelup-property[data-category=''] .aventurien-character-sheet-levelup-property-value-plus {
     display: none;
 }
 
-.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category=''] .aventurien-character-sheet-levelup-property-se, 
-.aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-category=''] .aventurien-character-sheet-levelup-property-se-label {
+.aventurien-character-sheet-levelup .aventurien-character-sheet:not([data-activate="true"]) .aventurien-character-sheet-levelup-property[data-category=''] .aventurien-character-sheet-levelup-property-se, 
+.aventurien-character-sheet-levelup .aventurien-character-sheet:not([data-activate="true"]) .aventurien-character-sheet-levelup-property[data-category=''] .aventurien-character-sheet-levelup-property-se-label {
     display: none;
 }
 
@@ -763,38 +904,43 @@
     color: var(--selectedColor);
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property::before {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property::before {
     content: attr(data-name);
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-template='true'] {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-template='true'] {
     color: var(--baseColor);
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-template='true'][data-reqvalue='true']:hover {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-template='true'][data-reqvalue='true']:hover {
     color: var(--hoverColor);
     cursor: pointer;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-reqvalue='false'] {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-reqvalue='false'] {
     color: var(--borderColor);
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-template='false'] {
-    color: var(--baseColor);
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-template='false'] {
+    color: var(--headerColor);
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-invest]:not([data-invest='0']) {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-invest]:not([data-invest='0']) {
     color: var(--selectedColor);
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet[data-display='false'],
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-display='false'] {
+    display: none;
+}
+
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip {
     display: none;
     position: relative;
     padding: 0px;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip-content {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip-content {
     position: absolute;
     left: 20px;
     right: 20px;
@@ -805,46 +951,93 @@
     box-shadow: 0px 0px 3px #000;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-header {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-header {
     color: var(--headerColor);
     font-size: 11px;
     font-weight: bold;
     padding-bottom: 0px;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-subheader {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-subheader {
     color: var(--headerColor);
     padding-bottom: 4px;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-flavor {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-flavor {
     color: var(--baseColor);
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-requirements::before {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-requirements::before {
     content: "Voraussetzungen: ";
     font-weight: bold;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-requirements span {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-requirements span {
     white-space: nowrap;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-rarity::before {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-rarity::before {
     content: "Verbreitung: ";
     font-weight: bold;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-cost::before {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-cost::before {
     content: "Kosten: ";
     font-weight: bold;
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-cost:not(:empty)::after {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-tooltip .aventurien-character-sheet-levelup-property-tooltip-cost:not(:empty)::after {
     content: " AP";
 }
 
-.aventurien-character-sheet-levelup #aventurien-character-sheet-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-template='true']:hover .aventurien-character-sheet-levelup-property-tooltip {
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property:hover .aventurien-character-sheet-levelup-property-tooltip {
     display: block;
 }
 
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property:hover .aventurien-character-sheet-levelup-property-tooltip-content:hover {
+    display: none;
+}
+
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten ul {
+	border: 0px;
+	border-bottom: 1px solid var(--borderColor);
+}
+
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-allgemein #aventurien-character-sheet-tabs-allgemein a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-elfenlied #aventurien-character-sheet-tabs-elfenlied a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-gelände #aventurien-character-sheet-tabs-gelände a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-klerikal #aventurien-character-sheet-tabs-klerikal a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-fernkampf #aventurien-character-sheet-tabs-fernkampf a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-kampf #aventurien-character-sheet-tabs-kampf a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-manöver #aventurien-character-sheet-tabs-manöver a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-magisch #aventurien-character-sheet-tabs-magisch a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-merkmal #aventurien-character-sheet-tabs-merkmal a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-ritual #aventurien-character-sheet-tabs-ritual a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-objekt #aventurien-character-sheet-tabs-objekt a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-pakt #aventurien-character-sheet-tabs-pakt a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-schamanen #aventurien-character-sheet-tabs-schamanen a { color: var(--hoverColor); }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-liturgie #aventurien-character-sheet-tabs-liturgie a { color: var(--hoverColor); }
+
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-allgemein .aventurien-character-sheet-levelup-feat-allgemein { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-elfenlied .aventurien-character-sheet-levelup-feat-elfenlied { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-gelände .aventurien-character-sheet-levelup-feat-gelände { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-klerikal .aventurien-character-sheet-levelup-feat-klerikal { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-fernkampf .aventurien-character-sheet-levelup-feat-fernkampf { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-kampf .aventurien-character-sheet-levelup-feat-kampf { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-manöver .aventurien-character-sheet-levelup-feat-manöver { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-magisch .aventurien-character-sheet-levelup-feat-magisch { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-merkmal .aventurien-character-sheet-levelup-feat-merkmal { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-ritual .aventurien-character-sheet-levelup-feat-ritual { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-objekt .aventurien-character-sheet-levelup-feat-objekt { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-pakt .aventurien-character-sheet-levelup-feat-pakt { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-schamanen .aventurien-character-sheet-levelup-feat-schamanen { display: block; }
+.aventurien-character-sheet-levelup-sonderfertigkeiten-tabs-selected-liturgie .aventurien-character-sheet-levelup-feat-liturgie { display: block; }
+
+#aventurien-character-sheet-levelup-sonderfertigkeiten {
+	padding: 0px;
+	font: inherit;
+}
+
+#aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-tabs .aventurien-character-sheet-tab-hidden { display: none; }
+	
+	
