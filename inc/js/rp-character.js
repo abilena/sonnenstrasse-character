@@ -165,10 +165,14 @@ function levelupRecalculateRequirements(propertyElement)
 {
 	try
 	{
-		var reqvalue = eval(propertyElement.dataset.req);
-		propertyElement.dataset.reqvalue = reqvalue;
-		if ((reqvalue == false) && (propertyElement.dataset.template == 'true'))
-			propertyElement.dataset.invest = 0;
+		var req = propertyElement.dataset.req;
+		if (req != null)
+		{
+			var reqvalue = eval(req.replaceAll('DUP', 1));
+			propertyElement.dataset.reqvalue = reqvalue;
+			if ((reqvalue == false) && (propertyElement.dataset.template == 'true'))
+				propertyElement.dataset.invest = 0;
+		}
 	}
 	catch (e) { alert(e); }
 }
@@ -340,6 +344,74 @@ function levelupFeat(propertyElement)
     propertyElement.dataset.invest = invest;
     levelupRecalculateDependencies();
     return false;
+}
+
+function levelupFeatVariantFill(selectElement, variantMatch)
+{
+	if (selectElement.childNodes.length > 1)
+		return true;
+
+    var propertyElements = document.getElementsByClassName("aventurien-character-sheet-levelup-property");
+    var propertyElementsCount = propertyElements.length;
+    for (var i = 0; i < propertyElementsCount; i++)
+    {
+        var propertyElement = propertyElements[i];
+		var modmatch = propertyElement.dataset.modmatch;
+		if (modmatch)
+		{
+			if (modmatch.includes(variantMatch))
+			{
+				var option = document.createElement("option");
+				option.setAttribute("value", propertyElement.dataset.id);
+				var text = document.createTextNode(propertyElement.dataset.name);
+				option.appendChild(text);
+				selectElement.appendChild(option);
+			}
+		}
+    }
+	return true;
+}
+
+function levelupFeatVariant(id)
+{
+	var propertyTemplateElement = document.getElementById("aventurien-character-sheet-levelup-property-" + id);
+	var selectElement = propertyTemplateElement.getElementsByTagName("select")[0];
+	var selectValue = selectElement.value;
+	var selectText = selectElement.options[selectElement.selectedIndex].text;
+	var inputElement = propertyTemplateElement.getElementsByTagName("input")[0];
+	var inputValue = inputElement.value;
+	var cloneId = id + "-" + selectValue + "-" + inputValue;
+	cloneId = cloneId.toLowerCase().replaceAll(' ', '-');
+
+	var talentElement = document.getElementById("aventurien-character-sheet-levelup-property-" + selectValue);
+	var aktFaktor = talentElement.dataset.category.charCodeAt(0) - 64;
+
+	var duplicate = 1;
+    var propertyElements = document.getElementsByClassName("aventurien-character-sheet-levelup-property");
+    var propertyElementsCount = propertyElements.length;
+    for (var i = 0; i < propertyElementsCount; i++)
+    {
+        var propertyElement = propertyElements[i];
+		if (propertyElement.dataset.id == propertyTemplateElement.dataset.id)
+		{
+			var talentName = propertyElement.dataset.variant.substr(0, propertyElement.dataset.variant.indexOf(',')); 
+			if (talentName == selectText)
+			{
+				duplicate++;
+			}
+		}
+	}
+
+	var propertyCloneElement = propertyTemplateElement.cloneNode(false);
+	propertyCloneElement.id = "aventurien-character-sheet-levelup-property-" + cloneId;
+	propertyCloneElement.dataset.variant = selectText + ", " + inputValue;
+	propertyCloneElement.dataset.name = propertyTemplateElement.dataset.name + " (" + selectText + ", " + inputValue + ")";
+	propertyCloneElement.dataset.req = propertyCloneElement.dataset.req.replaceAll('TaW', selectText).replaceAll('DUP', duplicate);
+	propertyCloneElement.dataset.cost = eval(propertyTemplateElement.dataset.costformula.replaceAll('AKT', aktFaktor).replaceAll('DUP', duplicate));
+	propertyTemplateElement.parentNode.insertBefore(propertyCloneElement, propertyTemplateElement);
+
+	levelupRecalculateRequirements(propertyCloneElement);
+	return true;
 }
 
 function levelupSave()

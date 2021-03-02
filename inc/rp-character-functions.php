@@ -409,6 +409,7 @@ function rp_character_format_properties_eval_req($data, $property)
 	{
 	    $flavorString = $req;
 		$flavorString = str_replace('has("', '', $flavorString);
+		$flavorString = str_replace('DUP*', '', $flavorString);
 		$flavorString = str_replace('")', '', $flavorString);
 		$flavorString = preg_replace('/\", (\d+)\)/', ' ${1}', $flavorString);
 		$flavorString = str_replace(' &&', ',', $flavorString);
@@ -589,6 +590,7 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
             $mod_query = str_replace("[@Variant]", @$gruppen_property->variant, @$gruppen_property_data['mod_query']);
             $mod_category = @$gruppen_property_data['mod_category'];
             $mod_factor = @$gruppen_property_data['mod_factor'];
+			$variant_match = @$gruppen_property_data['variant-match'];
             $bonus = rp_character_format_properties_eval_bonus($data, $gruppen_property);
             $req = rp_character_format_properties_eval_req($data, $gruppen_property);
             $display = rp_character_format_properties_eval_display($data, $gruppen_property, $all_properties);
@@ -626,6 +628,8 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
             $template_row->set("ModQuery", $mod_query);
             $template_row->set("ModCategory", $mod_category);
             $template_row->set("ModFactor", $mod_factor);
+            $template_row->set("VariantMatch", $variant_match);
+			$template_row->set("CostFormula", @$gruppen_property_data['cost_formula']);
             $template_row->set("Hyperlink", $hyperlink);
 		    $properties_html .= $template_row->output();
 	    }

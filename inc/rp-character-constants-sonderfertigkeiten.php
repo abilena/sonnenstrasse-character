@@ -23,7 +23,7 @@ $sf_gruppe['liturgie']  = 'Liturgien';
 $sf_data = array();
 $sf_data['Akklimatisierung']             = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 150, 'req' => 'has("Konstitution", 12)' );
 $sf_data['Außergewöhnliche Schussweite'] = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' =>  50, 'req' => 'has("Immanspiel", 7) && has("Körperkraft", 14) && has("Gewandtheit", 14)', 'display' => 'has("Immanspiel")' );
-$sf_data['Berufsgeheimnis']              = array( 'gruppe' => 'allgemein', 'rarity' => 2, 'cost' => 100, 'req' => 'has("[@Variant]", 15)', 'param' => 'skill' );
+$sf_data['Berufsgeheimnis']              = array( 'gruppe' => 'allgemein', 'rarity' => 2, 'cost' => 100, 'req' => 'has("[@Variant]", 15)', 'variant-match' => 'talentgruppe=' );
 $sf_data['Fälscher']                     = array( 'gruppe' => 'allgemein', 'rarity' => 2, 'cost' => 100, 'req' => 'has("Alchimie", 5) && has("Malen/Zeichnen", 7) && has("Schriftlicher Ausdruck", 5)' );
 $sf_data['Kraftvolles Rempeln']          = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' =>  50, 'req' => 'has("Immanspiel", 7) && has("Körperkraft", 14)', 'display' => 'has("Immanspiel")' );
 $sf_data['Kulturkunde']                  = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 150, 'req' => 'has("Klugheit", 10) && has("Intuition", 10)' );
@@ -32,9 +32,7 @@ $sf_data['Nandusgefälliges Wissen']      = array( 'gruppe' => 'allgemein', 'rar
 $sf_data['Ortskenntnis']                 = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 150 );
 $sf_data['Rosstäuscher']                 = array( 'gruppe' => 'allgemein', 'rarity' => 4, 'cost' => 100, 'req' => 'has("Reiten", 7) && has("Sich verkleiden", 7) && has("Abrichten", 7) && has("Überreden", 7)' );
 $sf_data['Standfest']                    = array( 'gruppe' => 'allgemein', 'rarity' => 4, 'cost' => 200, 'req' => 'has("Gewandtheit", 12)' );
-$sf_data['Talentspezialisierung']        = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 0, 'cost_formula' => '20*[@AKT]', 'req' => 'has("[@Variant]", 7)', 'param' => 'skill' );
-$sf_data['Talentspezialisierung II']     = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 0, 'cost_formula' => '40*[@AKT]', 'req' => 'has("[@Variant]", 14)', 'param' => 'skill' );
-$sf_data['Talentspezialisierung III']    = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 0, 'cost_formula' => '60*[@AKT]', 'req' => 'has("[@Variant]", 21)', 'param' => 'skill' );
+$sf_data['Talentspezialisierung']        = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' =>   0, 'req' => 'has("[@Variant]", DUP*7)', 'variant-match' => 'talentgruppe=', 'cost_formula' => '20*AKT*DUP',  );
 
 $sf_data['Dschungelkundig']                      = array( 'gruppe' => 'gelände', 'rarity' => 7, 'cost' => '150' );
 $sf_data['Eiskundig']                            = array( 'gruppe' => 'gelände', 'rarity' => 7, 'cost' => '150' );
@@ -143,7 +141,7 @@ $sf_data['Unterwasserkampf']             = array( 'gruppe' => 'kampf', 'rarity' 
 $sf_data['Waffe zerbrechen']             = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 12) && has("Parade Basiswert", 9) && has("Binden")' );
 $sf_data['Waffenmeister']                = array( 'gruppe' => 'kampf', 'rarity' => 2, 'cost' => 400, 'match' => 'sfgruppe=Kampf', 'req' => 'has("[@Variant]", 18) && hasKampfAPs(2500) && has("Körperkraft", 16) && has("Gewandtheit", 16)' );
 $sf_data['Waffenmeister (Schild)']       = array( 'gruppe' => 'kampf', 'rarity' => 2, 'cost' => 400, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 16) && has("Gewandtheit", 15) && has("Schildkampf II") && has("Beidhändiger Kampf I") && (has("Parierwaffen I") || has("Binden"))' );
-$sf_data['Waffenspezialisierung']        = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' =>   0, 'match' => 'sfgruppe=Kampf', 'req' => 'has("[@Variant]", 7)', 'param' => 'skill', 'cost_formula' => '20*[@AKT]' );
+$sf_data['Waffenspezialisierung']        = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' =>   0, 'match' => 'sfgruppe=Kampf', 'req' => 'has("[@Variant]", DUP*7)', 'variant-match' => 'talentgruppe=Kampf', 'cost_formula' => '20*AKT*DUP' );
 $sf_data['Windmühle']                    = array( 'gruppe' => 'kampf', 'rarity' => 2, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Wuchtschlag") && has("Gegenhalten")' );
 $sf_data['Wuchtschlag']                  = array( 'gruppe' => 'kampf', 'rarity' => 7, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 12)' );
 
