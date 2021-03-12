@@ -666,6 +666,9 @@
 	color: var(--borderColor);
 }
 
+.aventurien-character-sheet-levelup .aventurien-character-sheet[data-activate="true"] table .aventurien-character-sheet-levelup-property:not([data-invest='0']) td span {
+	color: var(--baseColor);
+}
 
 .aventurien-character-sheet-levelup table tr td .aventurien-character-sheet-levelup-property-se {
     display: none;
