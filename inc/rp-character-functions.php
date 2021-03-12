@@ -616,6 +616,7 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 
 		    $template_row = new Sonnenstrasse\Template($path_templates . "/page/character.$tpl_display.$property_display_type.single.html");
             $template_row->setObject($gruppen_property);
+            $template_row->set("Type", (isset($gruppen_property->type) ? $gruppen_property->type : "feat"));
             $template_row->set("DisplayName", $display_name);
             $template_row->set("ReqFunction", $req);
             $template_row->set("DisplayValue", $display);
