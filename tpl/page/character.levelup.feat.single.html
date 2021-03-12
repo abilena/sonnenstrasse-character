@@ -4,8 +4,12 @@
      data-modmatch="[@ModMatch]" data-req="[@ReqFunction]" data-display="[@DisplayValue]" data-variant="[@Variant]" data-variantmatch="[@VariantMatch]" data-costformula="[@CostFormula]"
      onclick="return levelupFeat(this);">
 	<div class="aventurien-character-sheet-levelup-property-variant-matcher">
-		<select name="variant" id="aventurien-character-sheet-levelup-property-[@Id]-variant-matcher" onclick="return levelupFeatVariantFill(this, '[@VariantMatch]');">
-		</select>
+		<select name="variant" id="aventurien-character-sheet-levelup-property-[@Id]-variant-matcher"></select>
+		<script>
+			if ('[@VariantMatch]' != '') {
+				levelupFeatVariantFill('aventurien-character-sheet-levelup-property-[@Id]-variant-matcher', '[@VariantMatch]');
+			}
+		</script>
 		<input class="aventurien-character-sheet-levelup-property-variant-detail-input"></input>
 		<div class="aventurien-character-sheet-levelup-property-variant-pin"><a href="#" onclick="return levelupFeatVariant('[@Id]');"></a></div>
 	</div>

@@ -346,9 +346,11 @@ function levelupFeat(propertyElement)
     return false;
 }
 
-function levelupFeatVariantFill(selectElement, variantMatch)
+function levelupFeatVariantFill(selectElementId, variantMatch)
 {
-	if (selectElement.childNodes.length > 1)
+	var selectElement = document.getElementById(selectElementId);
+
+	if (selectElement == null || selectElement.childNodes.length > 1)
 		return true;
 
     var propertyElements = document.getElementsByClassName("aventurien-character-sheet-levelup-property");
