@@ -656,7 +656,7 @@
     text-align: center;
 }
 
-.aventurien-character-sheet-levelup .aventurien-character-sheet:not([data-activate="true"]) table .aventurien-character-sheet-levelup-property[data-template='true'],
+.aventurien-character-sheet-levelup .aventurien-character-sheet:not([data-activate="true"]) table .aventurien-character-sheet-levelup-property[data-template='true'][data-invest='0'],
 .aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-advantage-vorteil .aventurien-character-sheet-levelup-property[data-template='true'],
 .aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-advantage-nachteil .aventurien-character-sheet-levelup-property[data-template='true'] {
     display: none;
@@ -854,14 +854,14 @@
     text-overflow: ellipsis;
 }
 
-.aventurien-character-sheet-levelup table tr:hover td,
-.aventurien-character-sheet-levelup table tr:hover td span {
-    color: var(--hoverColor);
+.aventurien-character-sheet-levelup table .aventurien-character-sheet-levelup-property:hover td,
+.aventurien-character-sheet-levelup table .aventurien-character-sheet-levelup-property:hover td span {
+    color: var(--hoverColor) !important;
 }
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-ap-invest:nth-child(1) {
     font-weight: bold;
-    color: var(--selectedColor);
+    color: var(--selectedColor) !important;
 }
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property .aventurien-character-sheet-levelup-property-ap-plus {
@@ -920,7 +920,7 @@
 
 .aventurien-character-sheet-levelup .aventurien-character-sheet-levelup-property[data-increase] .aventurien-character-sheet-levelup-property-value {
     font-weight: bold;
-    color: var(--selectedColor);
+    color: var(--selectedColor) !important;
 }
 
 .aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property::before {
