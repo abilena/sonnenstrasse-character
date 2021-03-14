@@ -26,10 +26,10 @@ $sf_data['Außergewöhnliche Schussweite'] = array( 'gruppe' => 'allgemein', 'ra
 $sf_data['Berufsgeheimnis']              = array( 'gruppe' => 'allgemein', 'rarity' => 2, 'cost' => 100, 'req' => 'has("[@Variant]", 15)', 'variant-match' => 'talentgruppe=' );
 $sf_data['Fälscher']                     = array( 'gruppe' => 'allgemein', 'rarity' => 2, 'cost' => 100, 'req' => 'has("Alchimie", 5) && has("Malen/Zeichnen", 7) && has("Schriftlicher Ausdruck", 5)' );
 $sf_data['Kraftvolles Rempeln']          = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' =>  50, 'req' => 'has("Immanspiel", 7) && has("Körperkraft", 14)', 'display' => 'has("Immanspiel")' );
-$sf_data['Kulturkunde']                  = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 150, 'req' => 'has("Klugheit", 10) && has("Intuition", 10)' );
+$sf_data['Kulturkunde']                  = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 150, 'req' => 'has("Klugheit", 10) && has("Intuition", 10) && false', 'variant-match' => '*' );
 $sf_data['Meister der Improvisation']    = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 200, 'req' => 'has("Intuition", 12) && has("Fingerfertigkeit", 12)' );
 $sf_data['Nandusgefälliges Wissen']      = array( 'gruppe' => 'allgemein', 'rarity' => 4, 'cost' => 200, 'req' => 'has("Klugheit", 12) && has("Intuition", 12)' );
-$sf_data['Ortskenntnis']                 = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 150 );
+$sf_data['Ortskenntnis']                 = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' => 150, 'req' => 'false', 'variant-match' => '*' );
 $sf_data['Rosstäuscher']                 = array( 'gruppe' => 'allgemein', 'rarity' => 4, 'cost' => 100, 'req' => 'has("Reiten", 7) && has("Sich verkleiden", 7) && has("Abrichten", 7) && has("Überreden", 7)' );
 $sf_data['Standfest']                    = array( 'gruppe' => 'allgemein', 'rarity' => 4, 'cost' => 200, 'req' => 'has("Gewandtheit", 12)' );
 $sf_data['Talentspezialisierung']        = array( 'gruppe' => 'allgemein', 'rarity' => 7, 'cost' =>   0, 'req' => 'has("[@Variant]", DUP*7)', 'variant-match' => 'talentgruppe=', 'cost_formula' => '20*AKT*DUP',  );

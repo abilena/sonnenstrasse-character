@@ -312,7 +312,7 @@ function rp_character_format_properties_vorteile($properties, $levelup, $all_pro
 		'vorteil' => array(),
 		'nachteil' => array());
 
-    return rp_character_format_properties_generic($properties, $vorteil_data, $vorteil_gruppe, $gruppen_filter, 'vorteil', $levelup, 'advantage', 'vorteile', $all_properties);
+    return rp_character_format_properties_generic($properties, $vorteil_data, $vorteil_gruppe, $gruppen_filter, 'vorteil', $levelup, 'advantage', 'vorteile', $all_properties, 'advantage');
 }
 
 function rp_character_format_properties_template_id($name)
@@ -439,7 +439,7 @@ function rp_character_format_properties_eigenschaften($properties, $levelup, $al
 		'basiswert' => array(),
         'sozialstatus' => array());
 
-    return rp_character_format_properties_generic($properties, $eigenschaft_data, $eigenschaft_gruppe, $gruppen_filter, 'basiswert', $levelup, 'property', 'eigenschaften', $all_properties);
+    return rp_character_format_properties_generic($properties, $eigenschaft_data, $eigenschaft_gruppe, $gruppen_filter, 'basiswert', $levelup, 'property', 'eigenschaften', $all_properties, 'basic');
 }
 
 function rp_character_format_properties_sonderfertigkeiten($properties, $levelup, $all_properties)
@@ -460,7 +460,7 @@ function rp_character_format_properties_sonderfertigkeiten($properties, $levelup
 		'objekt' => array(),
 		'schamanen' => array());
 
-    return rp_character_format_properties_generic($properties, $sf_data, $sf_gruppe, $sf_filter, 'allgemein', $levelup, 'feat', 'sonderfertigkeiten', $all_properties);
+    return rp_character_format_properties_generic($properties, $sf_data, $sf_gruppe, $sf_filter, 'allgemein', $levelup, 'feat', 'sonderfertigkeiten', $all_properties, 'feat');
 }
 
 function rp_character_format_properties_talente($properties, $levelup, $all_properties)
@@ -479,7 +479,7 @@ function rp_character_format_properties_talente($properties, $levelup, $all_prop
 		'handwerk' => array(),
 		'gabe' => array());
 
-    return rp_character_format_properties_generic($properties, $talent_data, $talent_gruppe, $gruppen_filter, 'gabe', $levelup, 'property', 'talente', $all_properties);
+    return rp_character_format_properties_generic($properties, $talent_data, $talent_gruppe, $gruppen_filter, 'gabe', $levelup, 'property', 'talente', $all_properties, 'skill');
 }
 
 function rp_character_format_properties_zauber($properties, $levelup, $all_properties)
@@ -489,7 +489,7 @@ function rp_character_format_properties_zauber($properties, $levelup, $all_prope
     $gruppen_filter = array(
 		'zauber' => array());
 
-    return rp_character_format_properties_generic($properties, $zauber_data, $zauber_gruppe, $gruppen_filter, 'zauber', $levelup, 'property', 'zauber', $all_properties);
+    return rp_character_format_properties_generic($properties, $zauber_data, $zauber_gruppe, $gruppen_filter, 'zauber', $levelup, 'property', 'zauber', $all_properties, 'spell');
 }
 
 function rp_character_sort_properties_generic($property1, $property2)
@@ -497,7 +497,7 @@ function rp_character_sort_properties_generic($property1, $property2)
 	return strcmp(@$property1->name, @$property2->name);
 }
 
-function rp_character_format_properties_generic($properties, $data, $gruppen_data, $gruppen_filter, $gruppen_default, $levelup, $property_display_type, $type, $all_properties)
+function rp_character_format_properties_generic($properties, $data, $gruppen_data, $gruppen_filter, $gruppen_default, $levelup, $property_display_type, $type, $all_properties, $property_type)
 {
     $path_templates = plugin_dir_path(__FILE__) . "/../tpl";
     $tpl_display = ($levelup ? "levelup" : "display");
@@ -583,6 +583,10 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 				$data[$gruppen_property->name]['flavor'] = @$gruppen_property->info;
 			}
 
+			if (!isset($gruppen_property->type)) {
+				$gruppen_property->type = $property_type;
+			}
+
             $gruppen_property_data = @$data[$gruppen_property->name];
             $hyperlink = (!array_key_exists('hyperlink', $gruppen_property_data)) ? "" : $gruppen_property_data['hyperlink'];
             $category = (/* $value == "-" ||*/ empty($gruppen_property_data) || !array_key_exists('category', $gruppen_property_data)) ? "" : $gruppen_property_data['category'];
@@ -613,10 +617,14 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 			if (!$levelup && !empty($hyperlink)) {
 				$display_name = '<a href="'.$hyperlink.'" target="_blank">'.$display_name.'</a>';
 			}
+			$maximum = NULL;
+			if ($gruppen_property->type == 'ability') {
+				$maximum = round(1.5 * floatval($gruppen_property->gp));
+			}
 
 		    $template_row = new Sonnenstrasse\Template($path_templates . "/page/character.$tpl_display.$property_display_type.single.html");
             $template_row->setObject($gruppen_property);
-            $template_row->set("Type", (isset($gruppen_property->type) ? $gruppen_property->type : "feat"));
+            $template_row->set("Type", $gruppen_property->type);
             $template_row->set("DisplayName", $display_name);
             $template_row->set("ReqFunction", $req);
             $template_row->set("DisplayValue", $display);
@@ -632,6 +640,7 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
             $template_row->set("VariantMatch", $variant_match);
 			$template_row->set("CostFormula", @$gruppen_property_data['cost_formula']);
             $template_row->set("Hyperlink", $hyperlink);
+            $template_row->set("Maximum", $maximum);
 		    $properties_html .= $template_row->output();
 	    }
 

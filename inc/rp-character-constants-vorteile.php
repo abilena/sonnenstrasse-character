@@ -103,7 +103,6 @@ $vorteil_data['Meisterhandwerk']                               = array( 'gruppe'
 $vorteil_data['Nachtsicht']                                    = array( 'gruppe' => 'vorteil' );
 $vorteil_data['Natürlicher Rüstungsschutz']                    = array( 'gruppe' => 'vorteil' );
 $vorteil_data['Natürliche Waffen']                             = array( 'gruppe' => 'vorteil' );
-$vorteil_data['Ortskenntnis']                                  = array( 'gruppe' => 'vorteil' );
 $vorteil_data['Paktgeschenk: Alterslosigkeit']                 = array( 'gruppe' => 'vorteil' );
 $vorteil_data['Paktgeschenk: Dämonische Hilfe']                = array( 'gruppe' => 'vorteil' );
 $vorteil_data['Paktgeschenk: Dämonischer Fokus']               = array( 'gruppe' => 'vorteil' );

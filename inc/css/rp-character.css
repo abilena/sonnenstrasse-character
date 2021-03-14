@@ -1062,6 +1062,14 @@
 	outline: 1px solid slategrey;
 }
 
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-variantmatch='*'] .aventurien-character-sheet-levelup-property-variant-matcher select {
+	display: none;
+}
+
+.aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property[data-variantmatch='*'] .aventurien-character-sheet-levelup-property-variant-matcher input {
+	width: 140px;
+}
+
 .aventurien-character-sheet-levelup #aventurien-character-sheet-levelup-sonderfertigkeiten .aventurien-character-sheet-levelup-property-variant-matcher select {
     display: inline-block;
     width: 70px;
