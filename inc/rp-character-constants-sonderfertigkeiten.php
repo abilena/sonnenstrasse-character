@@ -124,7 +124,7 @@ $sf_data['Parierwaffen I']               = array( 'gruppe' => 'kampf', 'rarity' 
 $sf_data['Parierwaffen II']              = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Gewandtheit", 15) && has("Parierwaffen I")' );
 $sf_data['Reiterkampf']                  = array( 'gruppe' => 'kampf', 'rarity' => 5, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Reiten", 7)' );
 $sf_data['Reiterkampf (Streitwagen)']    = array( 'gruppe' => 'kampf', 'rarity' => 5, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Fahrzeug lenken", 7)' );
-$sf_data['Rüstungsgewöhnung I']          = array( 'gruppe' => 'kampf', 'rarity' => 6, 'cost' => 150, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 10)' );
+$sf_data['Rüstungsgewöhnung I']          = array( 'gruppe' => 'kampf', 'rarity' => 6, 'cost' => 150, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 10) && false', 'variant-match' => '*' );
 $sf_data['Rüstungsgewöhnung II']         = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' => 300, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 12) && has("Rüstungsgewöhnung I")' );
 $sf_data['Rüstungsgewöhnung III']        = array( 'gruppe' => 'kampf', 'rarity' => 2, 'cost' => 450, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 15) && has("Rüstungsgewöhnung II")' );
 $sf_data['Schildkampf I']                = array( 'gruppe' => 'kampf', 'rarity' => 6, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 12) && has("Linkhand")' );

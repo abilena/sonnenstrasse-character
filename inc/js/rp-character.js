@@ -508,8 +508,61 @@ function levelupFeatVariant(id)
 	return true;
 }
 
+if (!window.console) console = {};
+console.log = console.log || function(){};
+console.warn = console.warn || function(){};
+console.error = console.error || function(){};
+console.info = console.info || function(){};
+
 function levelupSave()
 {
+	var propertyObjects = [];
+	var propertyElements = document.getElementsByClassName("aventurien-character-sheet-levelup-property");
+	var propertyElementsCount = propertyElements.length;
+	for (var i = 0; i < propertyElementsCount; i++)
+	{
+		var propertyElement = propertyElements[i];
+		var invest = propertyElement.dataset.invest;
+		if ((invest) && (invest != '0'))
+		{
+			var propertyObject = new Object();
+			propertyObject.id = parseInt(propertyElement.dataset.property);
+			propertyObject.name  = propertyElement.dataset.name;
+			propertyObject.type = propertyElement.dataset.type;
+			propertyObject.variant = propertyElement.dataset.variant || "";
+			propertyObject.plan = propertyElement.dataset.plan || "";
+			propertyObject.invest = parseInt(invest);
+			propertyObjects.push(propertyObject);
+		}
+	}
+
+	var content = JSON.stringify(propertyObjects);
+
+	console.log(content);
+//	alert(content);
+
+	/*
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function () {
+		if (this.readyState == 4) {
+			if ((this.status == 200) && (this.responseText.substring(0, 9) == "succeeded")) {
+				window.location.reload(false);
+			} else {
+				console.error(this.responseText);
+			}
+		}
+	};
+
+	var data = new FormData();
+	data.append('module', module);
+	data.append('xmlFile', xmlFile.files[0]);
+	data.append('imgFile', imgFile.files[0]);
+	
+	xhttp.open("POST", baseUri + "/levelup-character.php", true);
+	xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	xhttp.send(data);
+	*/
+
     var overview = document.getElementById("aventurien-character-sheet-levelup-overview");
     blink(overview);
     return false;

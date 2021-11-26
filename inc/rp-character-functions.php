@@ -220,10 +220,10 @@ function rp_character_calculate_basic_properties($basissteigerungen, $eigenschaf
 	$basiswerte['Parade Basiswert']->value     = round(($in + $ge + $kk) / 5);
 	$basiswerte['Fernkampf Basiswert']->value  = round(($in + $ff + $kk) / 5);
 
-    $basissteigerungen['Initiative Basiswert']->value = "0";
-    $basissteigerungen['Attacke Basiswert']->value = "0";
-    $basissteigerungen['Parade Basiswert']->value = "0";
-    $basissteigerungen['Fernkampf Basiswert']->value = "0";
+	@$basissteigerungen['Initiative Basiswert']->value = "0";
+	@$basissteigerungen['Attacke Basiswert']->value = "0";
+	@$basissteigerungen['Parade Basiswert']->value = "0";
+	@$basissteigerungen['Fernkampf Basiswert']->value = "0";
 
 	return $basiswerte;
 }
@@ -257,8 +257,8 @@ function rp_character_calculate_energy_properties($basissteigerungen, $eigenscha
 	$energiewerte['Astralenergie']->value = round(($mu + $in + $ch) / 2) + intval(@$basissteigerungen['Astralenergie']->value) + intval(@$basissteigerungen['Astralenergie']->mod);
 	$energiewerte['Karmaenergie']->value  =                                intval(@$basissteigerungen['Karmaenergie']->value)  + intval(@$basissteigerungen['Astralenergie']->mod);
 
-	if (!$is_zauberer) { $energiewerte['Astralenergie']->value = "-"; $basissteigerungen['Astralenergie']->value = "-"; }
-	if (!$is_geweihter) { $energiewerte['Karmaenergie']->value = "-"; $basissteigerungen['Karmaenergie']->value = "-"; }
+	if (!$is_zauberer) { $energiewerte['Astralenergie']->value = "-"; @$basissteigerungen['Astralenergie']->value = "-"; }
+	if (!$is_geweihter) { $energiewerte['Karmaenergie']->value = "-"; @$basissteigerungen['Karmaenergie']->value = "-"; }
 
 	return $energiewerte;
 }
@@ -529,6 +529,7 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 
         $property->template = "false";
         $property->id = rp_character_format_properties_template_id($property->name);
+		if (isset($property->variant) && $property->variant != "") { $property->id .= "-" . rp_character_format_properties_template_id($property->variant); }
 		$gruppe = @$data[$property->name]['gruppe'];
 		if (!isset($gruppe)) { $gruppe = @$property->group; }
 		if (!isset($gruppe)) { $gruppe = $gruppen_default; }

@@ -193,14 +193,14 @@ function rp_character_import_hero($xml_content, $user, $portrait, $module)
 		return "Die hochgeladene XML Datei konnte nicht gelesen werden.";
 	}
 
-	$name = $xml->xpath('//helden/held/@name')[0];
-	$setting = $xml->xpath('//helden/held/basis/settings/@name')[0];
-	$gender = $xml->xpath('//helden/held/basis/geschlecht/@name')[0];
-	$weight = $xml->xpath('//helden/held/basis/rasse/groesse/@gewicht')[0];
-	$height = $xml->xpath('//helden/held/basis/rasse/groesse/@value')[0];
-	$birth_year = $xml->xpath('//helden/held/basis/rasse/aussehen/@gbjahr')[0];
-	$birth_month = $xml->xpath('//helden/held/basis/rasse/aussehen/@gbmonat')[0];
-	$birth_day = $xml->xpath('//helden/held/basis/rasse/aussehen/@gbtag')[0];
+	$name = (string)$xml->xpath('//helden/held/@name')[0];
+	$setting = (string)$xml->xpath('//helden/held/basis/settings/@name')[0];
+	$gender = (string)$xml->xpath('//helden/held/basis/geschlecht/@name')[0];
+	$weight = (string)$xml->xpath('//helden/held/basis/rasse/groesse/@gewicht')[0];
+	$height = (string)$xml->xpath('//helden/held/basis/rasse/groesse/@value')[0];
+	$birth_year = (string)$xml->xpath('//helden/held/basis/rasse/aussehen/@gbjahr')[0];
+	$birth_month = (string)$xml->xpath('//helden/held/basis/rasse/aussehen/@gbmonat')[0];
+	$birth_day = (string)$xml->xpath('//helden/held/basis/rasse/aussehen/@gbtag')[0];
 	
 	if ($setting != "DSA4.1")
 	{
@@ -213,32 +213,40 @@ function rp_character_import_hero($xml_content, $user, $portrait, $module)
 		return "Ein Held mit diesem Namen existiert bereits. Bitte lösche erst den bestehenden Helden damit du einen neuen hochladen kannst.";
 	}
 
-    $wpdb->query('START TRANSACTION');
+	$wpdb->query('START TRANSACTION');
 
-    $values = array(
-        'party' => -1, 
-        'creator' => $user->name, 
+	$values = array(
 		'hero_type' => 'hero',
-        'name' => $name,
+		'party' => -1, 
+		'creator' => $user->name, 
+		'name' => $name,
 		'display_name' => $name,
-		'portrait' => $portrait,
 		'gender' => $gender,
+		'status' => '',
+		'title' => '',
+		'portrait' => $portrait,
 		'weight' => $weight,
 		'height' => $height,
 		'birth_year' => $birth_year,
 		'birth_month' => $birth_month,
-		'birth_day' => $birth_day
-    );
+		'birth_day' => $birth_day,
+		'birth_place' => '',
+		'biography' => '',
+		'flavor' => '',
+		'gold' => 0,
+		'ap' => 0,
+		'ap_spent' => 0
+	);
 	
-    $success = $wpdb->insert($db_table_name, $values);
-	
+	$success = $wpdb->insert($db_table_name, $values);
+
 	if ($success == false)
 	{
-        $wpdb->query('ROLLBACK'); // // something went wrong, Rollback
+		$wpdb->query('ROLLBACK'); // // something went wrong, Rollback
 		return "failed\n\nCould not insert hero.";
 	}
 	
-	$hero = $wpdb->get_results("SELECT * FROM $db_table_name WHERE creator='" . $user->name . "' AND name='" . $name . "'");
+	$hero = $wpdb->get_results("SELECT * FROM " . $db_table_name . " WHERE creator='" . $user->name . "' AND name='" . $name . "'");
 	
 	if (empty($hero) || (count($hero) != 1))
 	{
