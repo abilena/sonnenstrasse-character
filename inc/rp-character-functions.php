@@ -807,7 +807,9 @@ function rp_character_hero_selector_html($solo_user, $selected_hero, $solo_modul
 	$template_menu_delete_hero->set("Header", "Ausgewählten Charakter Löschen");
 	$template_menu_delete_hero->set("OnClick", "setClass('aventurien-character-window','aventurien-character-window-delete')");
 	// "deleteCharacter('" . plugins_url() . "/sonnenstrasse-solo', '" . $solo_module . "', " . @$selected_hero->hero_id . ")");
-	if (count($heroes) >= 1) {
+	if (count($heroes) == 0) {
+		$delete = "";
+	} else {
 		$delete = $template_menu_delete_hero->output();
 	}
 	
