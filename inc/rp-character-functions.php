@@ -794,26 +794,28 @@ function rp_character_hero_selector_html($solo_user, $selected_hero, $solo_modul
 		$output = $hero_selector_items_html = $template_character_selector->output();
 		
 		$output .= '<div id="aventurien-solo-character-name">' . @$selected_hero->display_name . '</div>';
-
-		$template_menu_import_hero = new Sonnenstrasse\Template($path_templates . "/menu-item.html");
-		$template_menu_import_hero->set("Id", "import-hero");
-		$template_menu_import_hero->set("Header", "Charakter Importieren");
-		$template_menu_import_hero->set("OnClick", "setClass('aventurien-character-window','aventurien-character-window-import')");
-		$import = $template_menu_import_hero->output();
-		
-		$template_menu_delete_hero = new Sonnenstrasse\Template($path_templates . "/menu-item.html");
-		$template_menu_delete_hero->set("Id", "delete-hero");
-		$template_menu_delete_hero->set("Header", "Ausgewählten Charakter Löschen");
-		$template_menu_delete_hero->set("OnClick", "setClass('aventurien-character-window','aventurien-character-window-delete')");
-		// "deleteCharacter('" . plugins_url() . "/sonnenstrasse-solo', '" . $solo_module . "', " . @$selected_hero->hero_id . ")");
-		$delete = $template_menu_delete_hero->output();
-		
-		$template_menu = new Sonnenstrasse\Template($path_templates . "/menu.html");
-		$template_menu->set("MenuId", "aventurien-solo-menu-character-selection");
-		$template_menu->set("MenuTitle", "Charakter");
-		$template_menu->set("MenuItems", $create . $import . $delete);
-		$output .= $template_menu->output();
 	}
+
+	$template_menu_import_hero = new Sonnenstrasse\Template($path_templates . "/menu-item.html");
+	$template_menu_import_hero->set("Id", "import-hero");
+	$template_menu_import_hero->set("Header", "Charakter Importieren");
+	$template_menu_import_hero->set("OnClick", "setClass('aventurien-character-window','aventurien-character-window-import')");
+	$import = $template_menu_import_hero->output();
+	
+	$template_menu_delete_hero = new Sonnenstrasse\Template($path_templates . "/menu-item.html");
+	$template_menu_delete_hero->set("Id", "delete-hero");
+	$template_menu_delete_hero->set("Header", "Ausgewählten Charakter Löschen");
+	$template_menu_delete_hero->set("OnClick", "setClass('aventurien-character-window','aventurien-character-window-delete')");
+	// "deleteCharacter('" . plugins_url() . "/sonnenstrasse-solo', '" . $solo_module . "', " . @$selected_hero->hero_id . ")");
+	if (count($heroes) >= 1) {
+		$delete = $template_menu_delete_hero->output();
+	}
+	
+	$template_menu = new Sonnenstrasse\Template($path_templates . "/menu.html");
+	$template_menu->set("MenuId", "aventurien-solo-menu-character-selection");
+	$template_menu->set("MenuTitle", "Charakter");
+	$template_menu->set("MenuItems", $create . $import . $delete);
+	$output .= $template_menu->output();
 	
 	return $output;
 }
