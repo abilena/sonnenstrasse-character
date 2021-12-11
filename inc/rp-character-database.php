@@ -329,6 +329,25 @@ function rp_character_create_hero_from_archetype($archetype_id, $user, $party) {
             throw new Exception('Failed to set property $type on hero $hero_id with value $name.');
         }
     }
+	
+	if (function_exists("rp_inventory_hero_html_by_id"))
+	{
+		$db_table_name = $wpdb->prefix . 'sonnenstrasse_inventory';
+		$items = $wpdb->get_results("SELECT * FROM $db_table_name WHERE owner=$archetype_id");
+		foreach ($items as $item)
+		{
+			unset($item->item_id);
+			$item->owner = $hero_id;
+
+			$succeeded = $wpdb->insert($db_table_name, (array) $item);
+		
+			if ($succeeded == false)
+			{
+				$name = $item->name;
+				throw new Exception('Failed to copy item $name to hero $hero_id.');
+			}
+		}
+	}
 
     $wpdb->query('COMMIT');
 	return $hero_id;

@@ -128,6 +128,11 @@ function rp_character_hero_html_by_id_old($hero_id, $solo_user, $style, $solo_mo
 		$character_html = $hero->name;
 	}
 
+	$inventory_html = "";
+	if (function_exists("rp_inventory_hero_html_by_id"))
+	{
+		$inventory_html = rp_inventory_hero_html_by_id($hero_id, $hero->name);
+	}
 	
 	$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.html");
 	$tpl_character->set("PluginBaseUri", $path_url);
@@ -136,6 +141,7 @@ function rp_character_hero_html_by_id_old($hero_id, $solo_user, $style, $solo_mo
 	$tpl_character->set("Portrait", $path_url . "/../../uploads/portraits/" . $hero->portrait);
 	$tpl_character->set("PortraitClass", $portrait_class);
 	$tpl_character->set("Content", "");
+	$tpl_character->set("Inventory", $inventory_html);
 	$output = $tpl_character->output();
 	
 	return $output;
@@ -661,6 +667,7 @@ function rp_character_hero_full_html($hero, $solo_user)
     $path_local = plugin_dir_path(__FILE__);
 	$path_url = plugins_url() . "/sonnenstrasse-character";
 	
+	$inventory_html = "";
 	$properties_basic_html = "";
 	$properties_vorteile_html = "";
 	$properties_eigenschaften_html = "";
@@ -676,6 +683,11 @@ function rp_character_hero_full_html($hero, $solo_user)
     $levelup_sonderfertigkeiten_html = "";
 	if (!empty($hero) && !empty($hero->name))
 	{
+		if (function_exists("rp_inventory_hero_html_by_id"))
+		{
+			$inventory_html = rp_inventory_hero_html_by_id($hero->hero_id, $hero->name);
+		}
+
 		$status = $hero->status;
 		$title = $hero->title;
 		$gender = $hero->gender;
@@ -750,6 +762,7 @@ function rp_character_hero_full_html($hero, $solo_user)
     $tpl_character->set("LevelupSonderfertigkeiten", $levelup_sonderfertigkeiten_html);
 
 	$tpl_character->set("Content", "");
+	$tpl_character->set("Inventory", $inventory_html);
 	$output = $tpl_character->output();
 	
 	return $output;

@@ -104,6 +104,47 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
     return $property_html;
 }
 
+function rp_character_equipment($hero_id, $name)
+{
+    $path_local = plugin_dir_path(__FILE__);
+    $path_url = plugins_url() . "/sonnenstrasse-inventory";
+
+    rp_inventory_get_item_containers($hero_id, $name, $container_ids, $container_content, $container_orders);
+
+    $header_content = "";
+    $tpl_inventory_header = new Sonnenstrasse\Template($path_local . "../../sonnenstrasse-inventory/tpl/inventory_admin_header.html");
+    $tpl_inventory_header->set("Owner", $hero_id);
+    $tpl_inventory_header->set("PluginBaseUri", $path_url);
+    $header_content .= $tpl_inventory_header->output();
+
+    $containers_html = "";
+    $index = 0;
+    foreach ($container_orders as $hosts_container_order => $hosts_container_id) {
+
+        $container = $container_ids[$hosts_container_id];
+        $contained_items = $container_content[$hosts_container_id];
+        $container_html = rp_inventory_itemcontainer_html($hero_id, TRUE, FALSE, TRUE, TRUE, TRUE, $container, $contained_items, $hosts_container_id, $index);
+
+        $containers_html .= $container_html;
+        $index++;
+    }
+
+    $tpl_inventory = new Sonnenstrasse\Template($path_local . "../../sonnenstrasse-inventory/tpl/inventory.html");
+    $tpl_inventory->set("PluginBaseUri", $path_url);
+    $tpl_inventory->set("HeaderContent", "");
+    $tpl_inventory->set("Containers", $containers_html);
+    $tpl_inventory_html = $tpl_inventory->output();
+
+    $tpl_inventory_equipment = new Sonnenstrasse\Template($path_local . "../../sonnenstrasse-inventory/tpl/inventory_admin_equipment.html");
+    $tpl_inventory_equipment->set("Buttons", $header_content);
+    $tpl_inventory_equipment->set("Equipment", $tpl_inventory_html);
+    $output = $tpl_inventory_equipment->output();
+	
+	$output .= "<script type=\"text/javascript\" src=\"$path_url/inc/rp-inventory-admin.js\"></script>";
+    
+    return $output;
+}
+
 // displays the options page content
 function rp_character_admin_options() { ?>	
     <div class="wrap">
@@ -283,9 +324,9 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_details->set("Sonderfertigkeiten", rp_character_property($selected_hero->hero_id, "feat", "Sonderfertigkeiten", false));
                 echo ($tpl_character_admin_hero_details->output());
 
-				if (class_exists( 'Sonnenstrasse\Inventory')) {
-					echo (rp_inventory_equipment($selected_hero->hero_id, $selected_hero->name));
-				}
+                if (function_exists("rp_inventory_hero_html_by_id")) {
+                    echo (rp_character_equipment($selected_hero->hero_id, $selected_hero->name));
+                }
             }
         }
     }
