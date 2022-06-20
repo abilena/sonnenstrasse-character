@@ -514,7 +514,7 @@ console.warn = console.warn || function(){};
 console.error = console.error || function(){};
 console.info = console.info || function(){};
 
-function levelupSave()
+function levelupSave(baseUri, id)
 {
 	var propertyObjects = [];
 	var propertyElements = document.getElementsByClassName("aventurien-character-sheet-levelup-property");
@@ -539,9 +539,7 @@ function levelupSave()
 	var content = JSON.stringify(propertyObjects);
 
 	console.log(content);
-//	alert(content);
 
-	/*
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if (this.readyState == 4) {
@@ -553,15 +551,9 @@ function levelupSave()
 		}
 	};
 
-	var data = new FormData();
-	data.append('module', module);
-	data.append('xmlFile', xmlFile.files[0]);
-	data.append('imgFile', imgFile.files[0]);
-	
-	xhttp.open("POST", baseUri + "/levelup-character.php", true);
-	xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-	xhttp.send(data);
-	*/
+	xhttp.open("POST", baseUri + "/levelup-hero.php?id=" + id, true);
+	xhttp.setRequestHeader("Content-Type", "application/json");
+	xhttp.send(content);
 
     var overview = document.getElementById("aventurien-character-sheet-levelup-overview");
     blink(overview);

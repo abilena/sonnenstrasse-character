@@ -135,6 +135,7 @@ function rp_character_hero_html_by_id_old($hero_id, $solo_user, $style, $solo_mo
 	}
 	
 	$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.html");
+	$tpl_character->set("Hero", $hero_id);
 	$tpl_character->set("PluginBaseUri", $path_url);
 	$tpl_character->set("Character", $character_html);
 	$tpl_character->set("Module", $solo_module);
@@ -858,6 +859,44 @@ function rp_character_hero_archetypes_html($solo_module)
 	}
 	
 	return $output;
+}
+
+function rp_character_levelup_hero($hero_id, $properties)
+{
+	$existing_properties = rp_character_get_properties($hero_id, "%");
+
+	foreach ($properties as $property)
+	{
+		$id = $property->id;
+		$name = $property->name;
+		$type = $property->type;
+		$variant = $property->variant;
+		$plan = $property->plan;
+		$invest = $property->invest;
+
+		$existing_property = array_column($existing_properties, null, 'property_id')[$id] ?? null;
+
+		if ($type == "skill" || $type == "spell" || $type == "ability" || $type == "basic")
+		{
+			if (is_null($existing_property))
+			{
+				$value = count(explode("|", $plan));
+				rp_character_set_property($hero_id, $type, $name, $variant, null, $value, null, null, null, null, null, null, null, null, null, null, $plan, null, null, null);
+			}
+			else
+			{
+				$existing_property->progression .= "|" . $plan;
+				$existing_property->value += count(explode("|", $plan));
+				rp_character_edit_property((array) $existing_property);
+			}
+		}
+		else
+		{
+			rp_character_set_property($hero_id, $type, $name, $variant, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		}
+	}
+
+	echo("succeeded");
 }
 
 ?>

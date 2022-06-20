@@ -416,6 +416,19 @@ function rp_character_regroup_hero($hero_id, $group_id) {
 	return "succeeded";
 }
 
+function rp_character_invest_ap_hero($hero_id, $ap) {
+	global $wpdb;
+    $db_table_name = $wpdb->prefix . 'sonnenstrasse_heroes';
+
+    $wpdb->query('START TRANSACTION');
+
+    $updated = $wpdb->update($db_table_name, array('ap' => $ap), array('hero_id' => $hero_id));
+	
+    $wpdb->query('COMMIT');
+
+	return "succeeded";
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Properties
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
