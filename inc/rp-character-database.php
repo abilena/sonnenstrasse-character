@@ -103,6 +103,24 @@ function rp_character_create_tables() {
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 	}
+	
+	$db_table_name = $wpdb->prefix . 'sonnenstrasse_experience';
+	// create the ECPT metabox database table
+	if($wpdb->get_var("show tables like '$db_table_name'") != $db_table_name) 
+	{
+		$sql = "CREATE TABLE " . $db_table_name . " (
+		`experience_id` mediumint(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		`hero` mediumint(9) NOT NULL,
+		`adventure` tinytext NOT NULL,
+		`dm` tinytext,
+		`region` tinytext,
+		`se` tinytext,
+		UNIQUE KEY experience_id (experience_id)
+		);";
+
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}
 }
 
 /*
@@ -122,6 +140,7 @@ function rp_character_drop_tables() {
     $wpdb->query("DROP TABLE IF EXISTS " . $wpdb->prefix . 'sonnenstrasse_properties');
     $wpdb->query("DROP TABLE IF EXISTS " . $wpdb->prefix . 'sonnenstrasse_heroes');
     $wpdb->query("DROP TABLE IF EXISTS " . $wpdb->prefix . 'sonnenstrasse_partys');
+    $wpdb->query("DROP TABLE IF EXISTS " . $wpdb->prefix . 'sonnenstrasse_experience');
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
