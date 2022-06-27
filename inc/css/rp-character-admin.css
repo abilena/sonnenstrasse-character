@@ -338,3 +338,63 @@
     text-decoration: none!important;
     vertical-align: middle;
 }
+
+.rp-character-admin-card-experience {
+    max-width: initial;
+}
+
+.rp-character-admin-table-experience .rp-character-admin-table-buttons {
+    width: auto;
+}
+
+.rp-character-xp-admin #rp-character-admin-select-party,
+.rp-character-xp-admin #rp-character-admin-select-hero {
+    width: 300px;
+}
+
+.rp-character-admin-table-experience tr td:nth-child(1) {
+    text-align: right;
+    width: 40px;
+}
+
+.rp-character-admin-table-experience tr td:nth-child(1) span {
+    margin-right: 5px;
+}
+
+.rp-character-admin-table-experience tr td:nth-child(2) input,
+.rp-character-admin-table-experience tr td:nth-child(5) input {
+    width: 250px;
+}
+
+#rp-character-admin-table-experience-ap {
+    text-align: right;
+    width: 40px;
+}
+
+.rp-character-admin-table-experience tr td:nth-child(2) span a::before {
+    content: "\f464";
+    top: -2px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none !important;
+    vertical-align: middle;
+}
+
+.rp-character-admin-table-experience tr td:nth-child(6) span a::before {
+    content: "\f182";
+    top: -2px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none !important;
+    vertical-align: middle;
+}

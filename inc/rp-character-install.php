@@ -55,6 +55,8 @@ function rp_character_plugin_actions($links, $file) {
  	if ($file == 'rp-character/rp-character.php' && function_exists("admin_url")) {
 		$settings_link = '<a href="' . admin_url('options-general.php?page=rp-character') . '">' . __('Tools', 'rp-character') . '</a>';
 		array_unshift($links, $settings_link); 
+		$settings_link = '<a href="' . admin_url('options-general.php?page=rp-character-xp') . '">' . __('Tools', 'rp-character-xp') . '</a>';
+		array_unshift($links, $settings_link); 
 	}
 	return $links;
 }
@@ -64,6 +66,8 @@ add_action('admin_menu', 'rp_character_add_pages');
 function rp_character_add_pages() {
     // Add a new submenu under Options:
 	$css = add_submenu_page( 'tools.php', 'Sonnenstrasse Characters', 'Character editor', 'manage_options', 'rp-character', 'rp_character_options');
+	add_action("admin_head-$css", 'rp_character_css');
+	$css = add_submenu_page( 'tools.php', 'Sonnenstrasse Characters', 'Experience editor', 'manage_options', 'rp-character-xp', 'rp_character_options_xp');
 	add_action("admin_head-$css", 'rp_character_css');
 }
 
@@ -79,6 +83,11 @@ function rp_character_css() {
 function rp_character_options() { 
     // displays the options page content
     rp_character_admin_options();
+}
+
+function rp_character_options_xp() { 
+    // displays the options page content
+    rp_character_xp_admin_options();
 }
 
 ?>

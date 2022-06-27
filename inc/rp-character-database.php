@@ -110,8 +110,10 @@ function rp_character_create_tables() {
 	{
 		$sql = "CREATE TABLE " . $db_table_name . " (
 		`experience_id` mediumint(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		`hero` mediumint(9) NOT NULL,
-		`adventure` tinytext NOT NULL,
+		`hero` mediumint(9),
+		`party` mediumint(9),
+		`ap` mediumint(9),
+		`adventure` tinytext,
 		`dm` tinytext,
 		`region` tinytext,
 		`se` tinytext,
@@ -232,6 +234,8 @@ function rp_character_delete_party($id) {
                 $deleted = TRUE;
             }
         }
+
+        $wpdb->delete($wpdb->prefix . 'sonnenstrasse_experience', array('party' => $id));
     }
 
     if ($deleted === TRUE)
@@ -253,7 +257,10 @@ function rp_character_get_heroes($party_id) {
    	global $wpdb;
     $db_table_name = $wpdb->prefix . 'sonnenstrasse_heroes';
     
-    $db_results = $wpdb->get_results("SELECT * FROM $db_table_name WHERE party=$party_id ORDER BY name");
+    if ($party_id == -9)
+        $db_results = $wpdb->get_results("SELECT * FROM $db_table_name ORDER BY name");
+    else
+        $db_results = $wpdb->get_results("SELECT * FROM $db_table_name WHERE party=$party_id ORDER BY name");
 
     return $db_results;
 }
@@ -403,6 +410,7 @@ function rp_character_delete_hero($hero_id, $module = null, $user = null)
     }
 
 	$wpdb->delete($wpdb->prefix . 'sonnenstrasse_properties', array('hero' => $hero_id));
+	$wpdb->delete($wpdb->prefix . 'sonnenstrasse_experience', array('hero' => $hero_id));
 	$wpdb->delete($wpdb->prefix . 'sonnenstrasse_solo_states', array('hero_id' => $hero_id));
 
 	if (!empty($module))
@@ -608,6 +616,121 @@ function rp_character_edit_detail($arguments) {
         $wpdb->query('ROLLBACK'); // // something went wrong, Rollback
         return "failed\n\n" . $output;
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Experience
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function rp_character_get_experience_sum($hero_id, $party_id) {
+	global $wpdb;
+	$db_xp_table_name = $wpdb->prefix . 'sonnenstrasse_experience';
+
+	$where = "FALSE";
+	if (!empty($hero_id))
+		$where .= " OR hero=$hero_id ";
+	if (!empty($party_id))
+		$where .= " OR party=$party_id ";
+
+	$ap = $wpdb->get_var("SELECT SUM(ap) FROM $db_xp_table_name WHERE $where");
+
+	return $ap;
+}
+
+function rp_character_get_experience($hero_id, $party_id) {
+	global $wpdb;
+	$db_xp_table_name = $wpdb->prefix . 'sonnenstrasse_experience';
+
+	$where = "FALSE";
+	if (!empty($hero_id))
+		$where .= " OR hero=$hero_id ";
+	if (!empty($party_id))
+		$where .= " OR party=$party_id ";
+
+	$db_results = $wpdb->get_results("SELECT * FROM $db_xp_table_name WHERE $where");
+
+	return $db_results;
+}
+
+function rp_character_add_experience($arguments) {
+	global $wpdb;
+	$db_table_name = $wpdb->prefix . 'sonnenstrasse_experience';
+
+	$wpdb->query('START TRANSACTION');
+
+	$values = array(
+		'hero' => @$arguments['hero_id'], 
+		'party' => @$arguments['party_id'], 
+		'ap' => @$arguments['ap'], 
+		'adventure' => @$arguments['adventure'], 
+		'dm' => @$arguments['dm'],
+		'region' => @$arguments['region'],
+		'se' => @$arguments['se']
+	);
+	$wpdb->insert($db_table_name, $values);
+
+	$wpdb->query('COMMIT');
+}
+
+function rp_character_edit_experience($arguments) {
+   	global $wpdb;
+	$db_table_name = $wpdb->prefix . 'sonnenstrasse_experience';
+
+	$wpdb->query('START TRANSACTION');
+
+	$values = array(
+		'hero' => @$arguments['hero_id'], 
+		'party' => @$arguments['party_id'], 
+		'ap' => @$arguments['ap'], 
+		'adventure' => @$arguments['adventure'], 
+		'dm' => @$arguments['dm'],
+		'region' => @$arguments['region'],
+		'se' => @$arguments['se']
+	);
+	$wpdb->update($db_table_name, $values, array('experience_id' => $arguments['id']));
+
+	$wpdb->query('COMMIT');
+}
+
+function rp_character_delete_experience($id) {
+   	global $wpdb;
+	$db_table_name = $wpdb->prefix . 'sonnenstrasse_experience';
+
+	$output = "";
+	$output .= "id: $id\n";
+	$output .= "\n";
+
+	$deleted = FALSE;
+	$wpdb->query('START TRANSACTION');
+
+	if ($id > 0)
+	{
+		$results = $wpdb->get_results("SELECT * FROM $db_table_name WHERE experience_id=$id");
+		if (count($results) == 0)
+		{
+			$output .= "experience with id $id not found in table!\n";
+			$output .= "\n";
+		}
+		else
+		{
+			$rows = $wpdb->query("DELETE FROM $db_table_name WHERE experience_id=$id");
+
+			if ($rows == 1)
+			{
+				$deleted = TRUE;
+			}
+		}
+	}
+
+	if ($deleted === TRUE)
+	{
+		$wpdb->query('COMMIT'); // if you come here then well done
+		return "succeeded";
+	}
+	else {
+		$wpdb->query('ROLLBACK'); // // something went wrong, Rollback
+		return "failed\n\n" . $output;
+	}
 }
 
 ?>

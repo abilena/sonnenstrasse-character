@@ -342,4 +342,71 @@ function rp_character_admin_options() { ?>
 <?php 
 } // end function rp_inventory_admin_options() 
 
+// displays the xp options page content
+function rp_character_xp_admin_options() { ?>	
+    <div class="wrap">
+	<form method="post" id="next_page_form" action="options.php">
+		<?php settings_fields('rp_character');
+		$options = get_option('rp_character'); ?>
+
+    <h1>Sonnenstrasse Characters XP</h1>
+    <div class="rp-character-admin rp-character-xp-admin">
+<?php
+
+    $path_local = plugin_dir_path(__FILE__);
+    $path_url = plugins_url() . "/sonnenstrasse-character";
+
+    $partys_html = "";
+    $partys = rp_character_get_partys();
+    array_unshift($partys, (object) array('party_id' => -9, 'name' => '-'));
+    $party_id = (array_key_exists("party_id", $_REQUEST) ? $_REQUEST["party_id"] : -9);
+    foreach ($partys as $row_id => $party)
+    {
+        $tpl_character_admin_party = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_party.html");
+        $tpl_character_admin_party->set("Id", $party->party_id);
+        $tpl_character_admin_party->set("Name", $party->name);
+        $tpl_character_admin_party->set("Selected", ($party->party_id == $party_id) ? "selected" : "");
+        $partys_html .= $tpl_character_admin_party->output();
+    }
+
+    $heroes_html = "";
+    $heroes = rp_character_get_heroes($party_id);
+    array_unshift($heroes, (object) array('hero_id' => -9, 'name' => '-'));
+    $hero_id = (array_key_exists("hero_id", $_REQUEST) ? $_REQUEST["hero_id"] : -9);
+    foreach ($heroes as $row_id => $hero)
+    {
+        $tpl_character_admin_hero = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_party.html");
+        $tpl_character_admin_hero->set("Id", $hero->hero_id);
+        $tpl_character_admin_hero->set("Name", $hero->name);
+        $tpl_character_admin_hero->set("Selected", ($hero->hero_id == $hero_id) ? "selected" : "");
+        $heroes_html .= $tpl_character_admin_hero->output();
+    }
+
+    $xp_html = "";
+    $experiences = rp_character_get_experience(($hero_id == -9) ? NULL : $hero_id, ($party_id == -9) ? NULL : $party_id);
+    foreach ($experiences as $row_id => $experience)
+    {
+        $tpl_character_admin_xp = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_xp_row.html");
+        $tpl_character_admin_xp->setObject($experience);
+        $xp_html .= $tpl_character_admin_xp->output();
+    }
+
+    $tpl_character_admin_partys = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_xp.html");
+    $tpl_character_admin_partys->set("CurrentUser", wp_get_current_user()->user_login);
+    $tpl_character_admin_partys->set("Partys", $partys_html);
+    $tpl_character_admin_partys->set("Heroes", $heroes_html);
+    $tpl_character_admin_partys->set("Experience", $xp_html);
+
+    echo ($tpl_character_admin_partys->output());
+
+ ?>
+    </div>
+    <p class="submit">
+	<input type="submit" name="submit" class="button-primary" value="<?php _e('Update Options', 'rp-inventory'); ?>" />
+	</p>
+	</form>
+	</div>
+<?php 
+} // end function rp_character_xp_admin_options() 
+
 ?>

@@ -1,0 +1,44 @@
+<div class="card">
+    <table>
+        <tr>
+            <td><h2>Abenteuergruppe</h2></td>
+            <td class="rp-character-admin-table-buttons">
+                <select id="rp-character-admin-select-party" onchange="getSelectedParty(false)">
+                    [@Partys]
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><h2>Held</h2></td>
+            <td class="rp-character-admin-table-buttons">
+                <select id="rp-character-admin-select-hero" onchange="getSelectedHero()">
+                    [@Heroes]
+                </select>
+            </td>
+        </tr>
+    </table>
+    <div id="rp-character-admin-table-party-add" style="display: none;">
+        <div id="rp-character-admin-table-party-add-shading"></div>
+    </div>
+</div>
+<div class="card rp-character-admin-card-experience">
+    <table class="rp-character-admin-table-experience">
+        <tr>
+            <th>AP</th>
+            <th>Abenteuer</th>
+            <th>Meister</th>
+            <th>Region</th>
+            <th>Spezielle Erfahrungen</th>
+            <th></th>
+        </tr>
+        [@Experience]
+        <tr>
+            <td><input id="rp-character-admin-table-experience-ap" value="0"></input></td>
+            <td><input id="rp-character-admin-table-experience-adventure" value="Neues Abenteuer"></input></td>
+            <td><input id="rp-character-admin-table-experience-dm" value="[@CurrentUser]"></input></td>
+            <td><input id="rp-character-admin-table-experience-region" value=""></input></td>
+            <td><input id="rp-character-admin-table-experience-se" value=""></input></td>
+            <td class="rp-character-admin-table-buttons"><input class="button-primary" type="button" value="Hinzuf&uuml;gen" onclick="addExperience()"></input></td>
+        </tr>
+    </table>
+</div>

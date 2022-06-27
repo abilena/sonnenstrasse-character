@@ -27,11 +27,37 @@ function getSelectedParty(doShowPartyDetails) {
                 showPartyDetails(false);
             }
             else {
-                reloadScroll("page=rp-character&party_id=" + selectedParty.value);
+                var params = (new URL(document.location)).searchParams;
+                var page = params.get("page");
+                reloadScroll("page=" + page + "&party_id=" + selectedParty.value);
             }
         }
     };
     xhttp.open("GET", "../wp-content/plugins/sonnenstrasse-character/get-party.php?id=" + selectedParty.value, true);
+    xhttp.send();
+}
+
+function getSelectedHero() {
+
+    var heroSelector = document.getElementById("rp-character-admin-select-hero");
+    if (heroSelector.selectedIndex < 0)
+        return;
+
+    var selectedHero = heroSelector.options[heroSelector.selectedIndex];
+    var params = (new URL(document.location)).searchParams;
+    var page = params.get("page");
+    var party = params.get("party_id");
+
+    document.getElementById("rp-character-admin-table-party-add-shading").style.display = "block";
+    isLoading = true;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            reloadScroll("page=" + page + "&party_id=" + party + "&hero_id=" + selectedHero.value);
+        }
+    };
+    xhttp.open("GET", "../wp-content/plugins/sonnenstrasse-character/get-heroes.php?party_id=" + party, true);
     xhttp.send();
 }
 
@@ -397,4 +423,69 @@ function saveDetail(hero_id, detail_type) {
     xhttp.send(parameters);    
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Experience
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function addExperience() {
+
+    var params = (new URL(document.location)).searchParams;
+    var page = params.get("page");
+    var party = params.get("party_id");
+    var hero = params.get("hero_id");
+    if (hero > 0)
+        party = null;
+    else
+        hero = null;
+
+    document.getElementById("rp-character-admin-table-party-add-shading").style.display = "block";
+    isLoading = true;
+
+    var parameters = (hero != null ? "hero_id=" + hero : "");
+    parameters += (party != null ? "&party_id=" + party : "");
+    parameters += "&ap=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-ap").value);
+    parameters += "&adventure=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-adventure").value);
+    parameters += "&dm=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-dm").value);
+    parameters += "&region=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-region").value);
+    parameters += "&se=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-se").value);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200 && this.responseText.substring(0, 9).toLowerCase() != "succeeded")
+            reloadScroll("page=" + page + "&action=add" + (party != null ? "&party_id=" + party : "") + (hero != null ? "&hero_id=" + hero : ""));
+        else console.error(this.responseText);
+    };
+
+    xhttp.open("POST", "../wp-content/plugins/sonnenstrasse-character/add-experience.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(parameters);
+}
+
+function deleteExperience(experience_id) {
+
+    var params = (new URL(document.location)).searchParams;
+    var page = params.get("page");
+    var party = params.get("party_id");
+    var hero = params.get("hero_id");
+    if (hero > 0)
+        party = null;
+    else
+        hero = null;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            reloadScroll("page=" + page + "&action=delete" + "&experience_id=" + experience_id + (party != null ? "&party_id=" + party : "") + (hero != null ? "&hero_id=" + hero : ""));
+        }
+    };
+    xhttp.open("GET", "../wp-content/plugins/sonnenstrasse-character/delete-experience.php?id=" + experience_id, true);
+    xhttp.send();
+
+    return false;
+}
+
+function editExperience(experience_id) {
+
+    return false;
+}
 
