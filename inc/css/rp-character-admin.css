@@ -371,7 +371,7 @@
     width: 40px;
 }
 
-.rp-character-admin-table-experience tr td:nth-child(2) span a::before {
+.rp-character-admin-table-experience-action-edit::before {
     content: "\f464";
     top: -2px;
     color: #82878c;
@@ -385,7 +385,7 @@
     vertical-align: middle;
 }
 
-.rp-character-admin-table-experience tr td:nth-child(6) span a::before {
+.rp-character-admin-table-experience-action-delete::before {
     content: "\f182";
     top: -2px;
     color: #82878c;
@@ -398,3 +398,34 @@
     text-decoration: none !important;
     vertical-align: middle;
 }
+
+.rp-character-admin-table-experience-type-hero::before {
+    content: "\f110";
+    top: -2px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none !important;
+    vertical-align: middle;
+    padding-right: 4px;
+}
+
+.rp-character-admin-table-experience-type-group::before {
+    content: "\f307";
+    top: -2px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none !important;
+    vertical-align: middle;
+    padding-right: 4px;
+}
+

@@ -46,7 +46,7 @@ function rp_character_hero_html($name) {
 
             $container = $container_ids[$hosts_container_id];
             $contained_items = $container_content[$hosts_container_id];
-            $container_html = rp_inventory_itemcontainer_html($hero_id, FALSE, FALSE, $is_user, $is_admin, $is_owner, $container, $contained_items, $hosts_container_id, $index);
+            $container_html = rp_inventory_itemcontainer_html($hero_id, FALSE, FALSE, $is_user, $is_admin, $is_owner, $container, $contained_items, $hosts_container_id, $index, 0);
 
             $containers_html .= $container_html;
             $index++;
@@ -640,7 +640,7 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
             $template_row->set("Category", $category);
             $template_row->set("Bonus", $bonus);
             $template_row->set("ProgressionSteps", $progression_html);
-            $template_row->set("Gruppe", $gruppen_data[$gruppe]);
+            $template_row->set("Gruppe", @$gruppen_data[$gruppe]);
             $template_row->set("ModMatch", $mod_match);
             $template_row->set("ModQuery", $mod_query);
             $template_row->set("ModCategory", $mod_category);
@@ -656,7 +656,7 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
         $template_table->set("Gruppe", $gruppe);
         $template_table->set("DisplayValue", $display_any);
         $template_table->set("Empty", $empty);
-        $template_table->set("Name", $gruppen_data[$gruppe]);
+        $template_table->set("Name", @$gruppen_data[$gruppe]);
         $template_table->set("Properties", $properties_html);
 		$html .= $template_table->output();
     }
@@ -682,6 +682,8 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$levelup_talente_html = "";
     $levelup_zauber_html = "";
     $levelup_sonderfertigkeiten_html = "";
+	$ap_total = 0;
+	$ap_spent = 0;
 	if (!empty($hero) && !empty($hero->name))
 	{
 		if (function_exists("rp_inventory_hero_html_by_id"))
@@ -739,16 +741,19 @@ function rp_character_hero_full_html($hero, $solo_user)
         $levelup_talente_html .= rp_character_format_properties_talente($talente, TRUE, $alles);
         $levelup_zauber_html .= rp_character_format_properties_zauber($zauber, TRUE, $alles);
         $levelup_sonderfertigkeiten_html .= rp_character_format_properties_sonderfertigkeiten($sonderfertigkeiten, TRUE, $alles);
+
+		$ap_total = rp_character_get_experience_sum($hero->hero_id, $hero->party);
+		$ap_spent = rp_character_hero_calculate_experience_spent($alles);
 	}
 
 	$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.html");
 	$tpl_character->set("PluginBaseUri", $path_url);
-    $tpl_character->set("Hero", $hero->hero_id);
+	$tpl_character->set("Hero", $hero->hero_id);
 	$tpl_character->set("Character", $hero->name);
-    $tpl_character->set("Portrait", (empty($hero->portrait) ? ($path_url . "/../sonnenstrasse-base/img/glow2.gif") : ($path_url . "/../../uploads/portraits/" . $hero->portrait)));
+	$tpl_character->set("Portrait", (empty($hero->portrait) ? ($path_url . "/../sonnenstrasse-base/img/glow2.gif") : ($path_url . "/../../uploads/portraits/" . $hero->portrait)));
 	$tpl_character->set("PortraitClass", (empty($hero->portrait) ? "empty" : "image"));
-    $tpl_character->set("ApTotal", (empty($hero->ap) ? "0" : $hero->ap));
-    $tpl_character->set("ApFree", $hero->ap - $hero->ap_spent);
+	$tpl_character->set("ApTotal", $ap_total);
+	$tpl_character->set("ApFree", $ap_total - $ap_spent);
 	$tpl_character->set("PropertiesBasic", $properties_basic_html);
 	$tpl_character->set("PropertiesVorteile", $properties_vorteile_html);
 	$tpl_character->set("PropertiesEigenschaften", $properties_eigenschaften_html);
@@ -756,17 +761,95 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$tpl_character->set("PropertiesZauber", $properties_zauber_html);
 	$tpl_character->set("PropertiesSonderfertigkeiten", $properties_sonderfertigkeiten_html);
 
-    $tpl_character->set("LevelupVorteile", $levelup_vorteile_html);
+	$tpl_character->set("LevelupVorteile", $levelup_vorteile_html);
 	$tpl_character->set("LevelupEigenschaften", $levelup_eigenschaften_html);
-    $tpl_character->set("LevelupTalente", $levelup_talente_html);
-    $tpl_character->set("LevelupZauber", $levelup_zauber_html);
-    $tpl_character->set("LevelupSonderfertigkeiten", $levelup_sonderfertigkeiten_html);
+	$tpl_character->set("LevelupTalente", $levelup_talente_html);
+	$tpl_character->set("LevelupZauber", $levelup_zauber_html);
+	$tpl_character->set("LevelupSonderfertigkeiten", $levelup_sonderfertigkeiten_html);
 
 	$tpl_character->set("Content", "");
 	$tpl_character->set("Inventory", $inventory_html);
 	$output = $tpl_character->output();
 	
 	return $output;
+}
+
+function rp_character_hero_calculate_experience_spent($properties)
+{
+	$ap_spent = 0;
+	foreach ($properties as $property)
+	{
+		if(!isset($property->name))
+			continue;
+
+		$ap_spent += rp_character_hero_calculate_experience_progression($property);
+	}
+
+	return $ap_spent;
+}
+
+$SKT = [
+  [1, 1, 1, 2, 4, 5, 6, 8, 9, 11, 12, 14, 15, 17, 19, 20, 22, 24, 25, 27, 29, 31, 32, 34, 36, 38, 40, 42, 43, 45, 48],
+  [1, 2, 3, 4, 6, 7, 8, 10, 11, 13, 14, 16, 17, 19, 21, 22, 24, 26, 27, 29, 31, 33, 34, 36, 38, 40, 42, 44, 45, 47, 50],
+  [2, 4, 6, 8, 11, 14, 17, 19, 22, 25, 28, 32, 35, 38, 41, 45, 48, 51, 55, 58, 62, 65, 69, 73, 76, 80, 84, 87, 91, 95, 100],
+  [2, 6, 9, 13, 17, 21, 25, 29, 34, 38, 43, 47, 51, 55, 60, 65, 70, 75, 80, 85, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 150],
+  [3, 7, 12, 17, 22, 27, 33, 39, 45, 50, 55, 65, 70, 75, 85, 90, 95, 105, 110, 115, 125, 130, 140, 145, 150, 160, 165, 170, 180, 190, 200],
+  [4, 9, 15, 21, 28, 34, 41, 48, 55, 65, 70, 80, 85, 95, 105, 110, 120, 130, 135, 145, 155, 165, 170, 180, 190, 200, 210, 220, 230, 240, 250],
+  [6, 14, 22, 32, 41, 50, 60, 75, 85, 95, 105, 120, 130, 140, 155, 165, 180, 195, 210, 220, 230, 250, 260, 270, 290, 300, 310, 330, 340, 350, 375],
+  [8, 18, 30, 42, 55, 70, 85, 95, 110, 125, 140, 160, 175, 190, 210, 220, 240, 260, 270, 290, 310, 330, 340, 360, 380, 400, 420, 440, 460, 480, 500],
+  [16, 35, 60, 85, 110, 140, 165, 195, 220, 250, 280, 320, 350, 380, 410, 450, 480, 510, 550, 580, 620, 650, 690, 720, 760, 800, 830, 870, 910, 950, 1000]
+];
+
+function rp_character_hero_calculate_experience_progression($property)
+{
+	global $SKT, $character_const_dictionary;
+
+	$ap = 0;
+	$plan = $property->progression;
+	$type = $property->type;
+	$property_template = @$character_const_dictionary[$type][$property->name];
+
+	if ($type == "skill" || $type == "spell" || $type == "ability" || $type == "basic")
+	{
+		if ($plan == "")
+			return $ap;
+
+		$steps = explode("|", $plan);
+		$stepsCount = count($steps);
+		for ($stepIndex = 0; $stepIndex < $stepsCount; $stepIndex++)
+		{
+			$step = $steps[$stepIndex];
+
+			$splits = explode(";", $step);
+			if ($splits[0] == "x")
+			{
+				$category_type = "";
+				if (count($splits) > 1) {
+					$category_type = $splits[1];
+				} else if (!empty($property_template)) {
+					$category_type = $property_template['category'];
+				} else {
+					$category_type = @$property->category . "H";
+				}
+
+				$category = hexdec(bin2hex(mb_substr(strtoupper($category_type), 0, 1, 'UTF-8'))) - 64;
+				$category = max(0, min(8, $category));
+
+				$costs = $SKT[$category];
+				$ap += $costs[min(30, $stepIndex)];
+			}
+		}
+	}
+	else if ($type == "feat")
+	{
+		if (!empty($property_template)) {
+			$ap += @$property_template['cost'];
+		} else {
+			$ap += $property->cost;
+		}
+	}
+
+	return $ap;
 }
 
 function rp_character_hero_selector_html($solo_user, $selected_hero, $solo_module)
@@ -892,7 +975,7 @@ function rp_character_levelup_hero($hero_id, $properties)
 		}
 		else
 		{
-			rp_character_set_property($hero_id, $type, $name, $variant, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+			rp_character_set_property($hero_id, $type, $name, $variant, null, null, null, null, null, null, $invest, null, null, null, null, null, null, null, null, null);
 		}
 	}
 

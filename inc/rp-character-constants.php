@@ -11,10 +11,10 @@ require_once('rp-character-constants-sonderfertigkeiten.php');
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $character_const_dictionary = array();
-$character_const_dictionary['EIGENSCHAFTEN'] = $eigenschaft_data;
-$character_const_dictionary['VORTEILE'] = $vorteil_data;
-$character_const_dictionary['TALENT'] = $talent_data;
-$character_const_dictionary['ZAUBER'] = $zauber_data;
-$character_const_dictionary['SF'] = $sf_data;
+$character_const_dictionary['ability'] = $eigenschaft_data;
+$character_const_dictionary['advantage'] = $vorteil_data;
+$character_const_dictionary['skill'] = $talent_data;
+$character_const_dictionary['spell'] = $zauber_data;
+$character_const_dictionary['feat'] = $sf_data;
 
 ?>

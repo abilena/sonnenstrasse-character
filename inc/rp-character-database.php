@@ -633,6 +633,8 @@ function rp_character_get_experience_sum($hero_id, $party_id) {
 		$where .= " OR party=$party_id ";
 
 	$ap = $wpdb->get_var("SELECT SUM(ap) FROM $db_xp_table_name WHERE $where");
+	if (empty($ap))
+		$ap = 0;
 
 	return $ap;
 }

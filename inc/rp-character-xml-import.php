@@ -308,7 +308,7 @@ function rp_character_set_property_xml_vorteile($xml, $hero_id)
 	foreach ($elemente as $element)
 	{
 		$property = rp_character_xml_read_name($element, 'name', 'value', 'advantage');
-		$property = rp_character_xml_read_steigerungen($xml, "VORTEILE", $element['name'], $property);
+		$property = rp_character_xml_read_steigerungen($xml, "advantage", $element['name'], $property);
 		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, $property->gp, "", $property->ap, null, null, null, null, null, null, null, null, null, null);
 	}
 }
@@ -355,7 +355,7 @@ function rp_character_set_property_xml_eigenschaften($xml, $hero_id)
 		$property->mod = (int)$element['mod'];
 		$property->type = $typen[$property->name];
 
-		$property = rp_character_xml_read_steigerungen($xml, "EIGENSCHAFTEN", $element['name'], $property);
+		$property = rp_character_xml_read_steigerungen($xml, "ability", $element['name'], $property);
 		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, $property->mod, null, $property->gp, "", $property->ap, null, null, null, null, null, $property->progression, null, null, null);
 	}
 }
@@ -367,7 +367,7 @@ function rp_character_set_property_xml_talente($xml, $hero_id)
 	foreach ($elemente as $element)
 	{
 		$property = rp_character_xml_read_name($element, 'name', 'name', 'skill');
-		$property = rp_character_xml_read_steigerungen($xml, "TALENT", $element['name'], $property);
+		$property = rp_character_xml_read_steigerungen($xml, "skill", $element['name'], $property);
 		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, null, $property->gp, "", $property->ap, null, null, null, null, null, $property->progression, null, null, null);
 	}
 }
@@ -379,7 +379,7 @@ function rp_character_set_property_xml_zauber($xml, $hero_id)
 	foreach ($elemente as $element)
 	{
 		$property = rp_character_xml_read_name($element, 'name', 'name', 'spell');
-		$property = rp_character_xml_read_steigerungen($xml, "ZAUBER", $element['name'], $property);
+		$property = rp_character_xml_read_steigerungen($xml, "spell", $element['name'], $property);
 		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, null, $property->gp, "", $property->ap, null, null, null, null, null, $property->progression, null, null, null);
 	}
 }
@@ -391,7 +391,7 @@ function rp_character_set_property_xml_sonderfertigkeiten($xml, $hero_id)
 	foreach ($elemente as $element)
 	{
 		$property = rp_character_xml_read_name($element, 'name', 'name', 'feat');
-		$property = rp_character_xml_read_steigerungen($xml, "SF", $element['name'], $property);
+		$property = rp_character_xml_read_steigerungen($xml, "feat", $element['name'], $property);
 		rp_character_set_property($hero_id, $property->type, $property->name, $property->variante, $property->info, $property->value, null, null, $property->gp, "", $property->ap, null, null, null, null, null, $property->progression, null, null, null);
 	}
 }

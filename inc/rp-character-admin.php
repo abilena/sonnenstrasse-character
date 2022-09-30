@@ -123,7 +123,7 @@ function rp_character_equipment($hero_id, $name)
 
         $container = $container_ids[$hosts_container_id];
         $contained_items = $container_content[$hosts_container_id];
-        $container_html = rp_inventory_itemcontainer_html($hero_id, TRUE, FALSE, TRUE, TRUE, TRUE, $container, $contained_items, $hosts_container_id, $index);
+        $container_html = rp_inventory_itemcontainer_html($hero_id, TRUE, FALSE, TRUE, TRUE, TRUE, $container, $contained_items, $hosts_container_id, $index, 0);
 
         $containers_html .= $container_html;
         $index++;
@@ -388,6 +388,7 @@ function rp_character_xp_admin_options() { ?>
     {
         $tpl_character_admin_xp = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_xp_row.html");
         $tpl_character_admin_xp->setObject($experience);
+        $tpl_character_admin_xp->set("Source", (!is_null($experience->hero) ? "hero" : "group"));
         $xp_html .= $tpl_character_admin_xp->output();
     }
 
