@@ -1,0 +1,27 @@
+<tr>
+    <td><input id="rp-character-admin-table-experience-ap" value="[@Ap]"></input></td>
+    <td><input id="rp-character-admin-table-experience-adventure" value="[@Adventure]"></input></td>
+    <td><input id="rp-character-admin-table-experience-dm" value="[@Dm]"></input></td>
+    <td style="white-space: nowrap;"><input id="rp-character-admin-table-experience-date-year" value=""></input><select id="rp-character-admin-table-experience-date-month">
+            <option value="1">PRA</option>
+            <option value="2">RON</option>
+            <option value="3">EFF</option>
+            <option value="4">TRA</option>
+            <option value="5">BOR</option>
+            <option value="6">HES</option>
+            <option value="7">FIR</option>
+            <option value="8">TSA</option>
+            <option value="9">PHE</option>
+            <option value="10">PER</option>
+            <option value="11">ING</option>
+            <option value="12">RAH</option>
+            <option value="13">NL</option>
+        </select><input id="rp-character-admin-table-experience-date-day" value=""></input><script>
+            window.onload = function () {
+                fillExperienceDate('[@Date]');
+            };
+        </script></td>
+    <td><input id="rp-character-admin-table-experience-region" value="[@Region]"></input></td>
+    <td><input id="rp-character-admin-table-experience-se" value="[@Se]"></input></td>
+    <td class="rp-character-admin-table-buttons" style="text-align:left;"><span><a href="#" class="rp-character-admin-table-experience-action-save" onclick="[@Action]Experience([@ExperienceId])"></a></span></td>
+</tr>

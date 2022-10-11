@@ -383,20 +383,39 @@ function rp_character_xp_admin_options() { ?>
     }
 
     $xp_html = "";
+    $xp_edit_id = (array_key_exists("xp_edit", $_REQUEST) ? $_REQUEST["xp_edit"] : 0);
     $experiences = rp_character_get_experience(($hero_id == -9) ? NULL : $hero_id, ($party_id == -9) ? NULL : $party_id);
     foreach ($experiences as $row_id => $experience)
     {
-        $tpl_character_admin_xp = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_xp_row.html");
+        $edit_query = http_build_query(array_merge($_GET, array("xp_edit" => $experience->experience_id)));
+        $edit = ($xp_edit_id == $experience->experience_id) ? "_edit" : "";
+        $tpl_character_admin_xp = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_xp" . $edit . "_row.html");
         $tpl_character_admin_xp->setObject($experience);
         $tpl_character_admin_xp->set("Source", (!is_null($experience->hero) ? "hero" : "group"));
+        $tpl_character_admin_xp->set("EditQuery", $edit_query);
+        $tpl_character_admin_xp->set("Action", "edit");
+        $tpl_character_admin_xp->set("ActionLabel", "&Auml;ndern");
         $xp_html .= $tpl_character_admin_xp->output();
     }
 
+    $edit = ($xp_edit_id == 0) ? "_edit" : "";
+    $tpl_character_admin_xp = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_xp" . $edit . "_row.html");
+    $tpl_character_admin_xp->set("ExperienceId", "");
+    $tpl_character_admin_xp->set("Ap", "0");
+    $tpl_character_admin_xp->set("Adventure", "Neues Abenteuer");
+    $tpl_character_admin_xp->set("Dm", wp_get_current_user()->user_login);
+    $tpl_character_admin_xp->set("Date", "1014-01-24");
+    $tpl_character_admin_xp->set("Region", "");
+    $tpl_character_admin_xp->set("Se", "");
+    $tpl_character_admin_xp->set("Action", "add");
+    $tpl_character_admin_xp->set("ActionLabel", "Hinzuf&uuml;gen");
+    $xp_add_html .= $tpl_character_admin_xp->output();
+
     $tpl_character_admin_partys = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_xp.html");
-    $tpl_character_admin_partys->set("CurrentUser", wp_get_current_user()->user_login);
     $tpl_character_admin_partys->set("Partys", $partys_html);
     $tpl_character_admin_partys->set("Heroes", $heroes_html);
     $tpl_character_admin_partys->set("Experience", $xp_html);
+    $tpl_character_admin_partys->set("EditRow", $xp_add_html);
 
     echo ($tpl_character_admin_partys->output());
 

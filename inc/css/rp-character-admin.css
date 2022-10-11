@@ -399,6 +399,20 @@
     vertical-align: middle;
 }
 
+.rp-character-admin-table-experience-action-save::before {
+    content: "\f147";
+    top: -2px;
+    color: #82878c;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none !important;
+    vertical-align: middle;
+}
+
 .rp-character-admin-table-experience-type-hero::before {
     content: "\f110";
     top: -2px;
@@ -427,5 +441,30 @@
     text-decoration: none !important;
     vertical-align: middle;
     padding-right: 4px;
+}
+
+#rp-character-admin-table-experience-dm {
+    width: 80px;
+}
+
+#rp-character-admin-table-experience-date-year {
+    width: 48px;
+}
+
+#rp-character-admin-table-experience-date-month {
+    width: 60px;
+    height: 25px;
+    line-height: 12px;
+    min-height: 25px;
+    vertical-align: bottom;
+}
+
+#rp-character-admin-table-experience-date-day {
+    width: 48px;
+}
+
+#rp-character-admin-table-experience-adventure,
+#rp-character-admin-table-experience-se {
+    width: -webkit-fill-available;
 }
 

@@ -115,6 +115,7 @@ function rp_character_create_tables() {
 		`ap` mediumint(9),
 		`adventure` tinytext,
 		`dm` tinytext,
+		`date` tinytext,
 		`region` tinytext,
 		`se` tinytext,
 		UNIQUE KEY experience_id (experience_id)
@@ -649,7 +650,7 @@ function rp_character_get_experience($hero_id, $party_id) {
 	if (!empty($party_id))
 		$where .= " OR party=$party_id ";
 
-	$db_results = $wpdb->get_results("SELECT * FROM $db_xp_table_name WHERE $where");
+	$db_results = $wpdb->get_results("SELECT * FROM $db_xp_table_name WHERE $where ORDER BY date ASC");
 
 	return $db_results;
 }
@@ -666,6 +667,7 @@ function rp_character_add_experience($arguments) {
 		'ap' => @$arguments['ap'], 
 		'adventure' => @$arguments['adventure'], 
 		'dm' => @$arguments['dm'],
+		'date' => @$arguments['date'],
 		'region' => @$arguments['region'],
 		'se' => @$arguments['se']
 	);
@@ -681,11 +683,10 @@ function rp_character_edit_experience($arguments) {
 	$wpdb->query('START TRANSACTION');
 
 	$values = array(
-		'hero' => @$arguments['hero_id'], 
-		'party' => @$arguments['party_id'], 
 		'ap' => @$arguments['ap'], 
 		'adventure' => @$arguments['adventure'], 
 		'dm' => @$arguments['dm'],
+		'date' => @$arguments['date'],
 		'region' => @$arguments['region'],
 		'se' => @$arguments['se']
 	);

@@ -441,11 +441,16 @@ function addExperience() {
     document.getElementById("rp-character-admin-table-party-add-shading").style.display = "block";
     isLoading = true;
 
+    var date = document.getElementById("rp-character-admin-table-experience-date-year").value.padStart(4, '0') + "-" +
+        document.getElementById("rp-character-admin-table-experience-date-month").value.padStart(2, '0') + "-" +
+        document.getElementById("rp-character-admin-table-experience-date-day").value.padStart(2, '0');
+
     var parameters = (hero != null ? "hero_id=" + hero : "");
     parameters += (party != null ? "&party_id=" + party : "");
     parameters += "&ap=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-ap").value);
     parameters += "&adventure=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-adventure").value);
     parameters += "&dm=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-dm").value);
+    parameters += "&date=" + encodeURIComponent(date);
     parameters += "&region=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-region").value);
     parameters += "&se=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-se").value);
 
@@ -457,6 +462,40 @@ function addExperience() {
     };
 
     xhttp.open("POST", "../wp-content/plugins/sonnenstrasse-character/add-experience.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(parameters);
+}
+
+function editExperience(experience_id) {
+
+    var params = (new URL(document.location)).searchParams;
+    var page = params.get("page");
+    var party = params.get("party_id");
+    var hero = params.get("hero_id");
+
+    document.getElementById("rp-character-admin-table-party-add-shading").style.display = "block";
+    isLoading = true;
+
+    var date = document.getElementById("rp-character-admin-table-experience-date-year").value.padStart(4, '0') + "-" +
+        document.getElementById("rp-character-admin-table-experience-date-month").value.padStart(2, '0') + "-" +
+        document.getElementById("rp-character-admin-table-experience-date-day").value.padStart(2, '0');
+
+    var parameters = "id=" + encodeURIComponent(experience_id);
+    parameters += "&ap=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-ap").value);
+    parameters += "&adventure=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-adventure").value);
+    parameters += "&dm=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-dm").value);
+    parameters += "&date=" + encodeURIComponent(date);
+    parameters += "&region=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-region").value);
+    parameters += "&se=" + encodeURIComponent(document.getElementById("rp-character-admin-table-experience-se").value);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200 && this.responseText.substring(0, 9).toLowerCase() != "succeeded")
+            reloadScroll("page=" + page + (party != null ? "&party_id=" + party : "") + (hero != null ? "&hero_id=" + hero : ""));
+        else console.error(this.responseText);
+    };
+
+    xhttp.open("POST", "../wp-content/plugins/sonnenstrasse-character/edit-experience.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(parameters);
 }
@@ -484,8 +523,19 @@ function deleteExperience(experience_id) {
     return false;
 }
 
-function editExperience(experience_id) {
+function fillExperienceDate(dateString) {
 
-    return false;
+    var splits = dateString.split("-");
+
+    if (splits.length != 3)
+        return;
+
+    var year = splits[0];
+    var month = splits[1];
+    var day = splits[2];
+
+    document.getElementById("rp-character-admin-table-experience-date-year").value = year;
+    document.getElementById("rp-character-admin-table-experience-date-month").selectedIndex = (month - 1);
+    document.getElementById("rp-character-admin-table-experience-date-day").value = day;
 }
 
