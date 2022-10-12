@@ -589,6 +589,10 @@
 
 .aventurien-character-sheet-full #aventurien-character-sheet-abenteuerpunkte table tr td:nth-child(1) {
     width: 200px;
+    max-width: 200px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .aventurien-character-sheet-full #aventurien-character-sheet-abenteuerpunkte table tr td:nth-child(2) {
