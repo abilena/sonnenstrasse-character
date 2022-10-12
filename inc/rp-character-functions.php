@@ -227,6 +227,12 @@ function rp_character_calculate_basic_properties($basissteigerungen, $eigenschaf
 	$basiswerte['Parade Basiswert']->value     = round(($in + $ge + $kk) / 5);
 	$basiswerte['Fernkampf Basiswert']->value  = round(($in + $ff + $kk) / 5);
 
+	$basiswerte['Magieresistenz']->name = "Magieresistenz";
+	$basiswerte['Initiative Basiswert']->name = "Initiative Basiswert";
+	$basiswerte['Attacke Basiswert']->name = "Attacke Basiswert";
+	$basiswerte['Parade Basiswert']->name = "Parade Basiswert";
+	$basiswerte['Fernkampf Basiswert']->name = "Fernkampf Basiswert";
+
 	@$basissteigerungen['Initiative Basiswert']->value = "0";
 	@$basissteigerungen['Attacke Basiswert']->value = "0";
 	@$basissteigerungen['Parade Basiswert']->value = "0";
