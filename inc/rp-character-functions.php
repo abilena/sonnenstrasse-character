@@ -683,6 +683,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$properties_talente_html = "";
 	$properties_zauber_html = "";
 	$properties_sonderfertigkeiten_html = "";
+	$abenteuerpunkte_html = "";
     $levelup_vorteile_html = "";
     $levelup_eigenschaften_html = "";
 	$levelup_talente_html = "";
@@ -750,6 +751,15 @@ function rp_character_hero_full_html($hero, $solo_user)
 
 		$ap_total = rp_character_get_experience_sum($hero->hero_id, $hero->party);
 		$ap_spent = rp_character_hero_calculate_experience_spent($alles);
+
+		$ap_table = rp_character_get_experience($hero->hero_id, $hero->party);
+		foreach ($ap_table as $ap_entry)
+		{
+			$ap = $ap_entry->ap;
+			$adventure = $ap_entry->adventure;
+
+			$abenteuerpunkte_html .= "<tr><td>".$adventure."</td><td>".$ap."</td></tr>";
+		}
 	}
 
 	$tpl_character = new Sonnenstrasse\Template($path_local . "../tpl/page/character.html");
@@ -766,6 +776,7 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$tpl_character->set("PropertiesTalente", $properties_talente_html);
 	$tpl_character->set("PropertiesZauber", $properties_zauber_html);
 	$tpl_character->set("PropertiesSonderfertigkeiten", $properties_sonderfertigkeiten_html);
+	$tpl_character->set("Abenteuerpunkte", $abenteuerpunkte_html);
 
 	$tpl_character->set("LevelupVorteile", $levelup_vorteile_html);
 	$tpl_character->set("LevelupEigenschaften", $levelup_eigenschaften_html);

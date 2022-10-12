@@ -355,6 +355,7 @@
 .aventurien-character-sheet-tabs-selected-talente            .aventurien-character-sheet-tabs-talente            a { color: var(--hoverColor); }
 .aventurien-character-sheet-tabs-selected-zauber             .aventurien-character-sheet-tabs-zauber             a { color: var(--hoverColor); }
 .aventurien-character-sheet-tabs-selected-sonderfertigkeiten .aventurien-character-sheet-tabs-sonderfertigkeiten a { color: var(--hoverColor); }
+.aventurien-character-sheet-tabs-selected-abenteuerpunkte    .aventurien-character-sheet-tabs-abenteuerpunkte    a { color: var(--hoverColor); }
 
 
 
@@ -420,6 +421,7 @@
 .aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-tabs-talente a { color: var(--selectedColor); }
 .aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-tabs-zauber a { color: var(--selectedColor); }
 .aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-tabs-sonderfertigkeiten a { color: var(--selectedColor); }
+.aventurien-character-sheet-tabs-selected-abenteuerpunkte #aventurien-character-sheet-tabs-abenteuerpunkte a { color: var(--selectedColor); }
 
 .aventurien-character-sheet-tabs-selected-basis #aventurien-character-sheet-basis, .aventurien-character-sheet-tabs-selected-basis #aventurien-character-sheet-levelup-basis { display: block; }
 .aventurien-character-sheet-tabs-selected-vorteile #aventurien-character-sheet-vorteile, .aventurien-character-sheet-tabs-selected-vorteile #aventurien-character-sheet-levelup-vorteile { display: block; }
@@ -427,6 +429,7 @@
 .aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-talente, .aventurien-character-sheet-tabs-selected-talente #aventurien-character-sheet-levelup-talente { display: block; }
 .aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-zauber, .aventurien-character-sheet-tabs-selected-zauber #aventurien-character-sheet-levelup-zauber { display: block; }
 .aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-sonderfertigkeiten, .aventurien-character-sheet-tabs-selected-sonderfertigkeiten #aventurien-character-sheet-levelup-sonderfertigkeiten { display: block; }
+.aventurien-character-sheet-tabs-selected-abenteuerpunkte #aventurien-character-sheet-abenteuerpunkte, .aventurien-character-sheet-tabs-selected-abenteuerpunkte #aventurien-character-sheet-levelup-abenteuerpunkte { display: block; }
 
 .aventurien-character-sheet {
 	display: none;
@@ -582,6 +585,15 @@
 	line-height: 15px;
 	margin-block-start: 0.5em;
 	margin-block-end: 0.25em;
+}
+
+.aventurien-character-sheet-full #aventurien-character-sheet-abenteuerpunkte table tr td:nth-child(1) {
+    width: 200px;
+}
+
+.aventurien-character-sheet-full #aventurien-character-sheet-abenteuerpunkte table tr td:nth-child(2) {
+    width: 40px;
+    text-align: right;
 }
 
 /*************************************************************************************************
