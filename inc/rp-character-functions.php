@@ -994,13 +994,13 @@ function rp_character_levelup_hero($hero_id, $properties)
 		{
 			if (is_null($existing_property))
 			{
-				$value = count(explode("|", $plan));
+				$value = count(explode("|", $plan)) - 1;
 				rp_character_set_property($hero_id, $type, $name, $variant, null, $value, null, null, null, null, null, null, null, null, null, null, $plan, null, null, null);
 			}
 			else
 			{
 				$existing_property->progression .= "|" . $plan;
-				$existing_property->value += count(explode("|", $plan));
+				$existing_property->value = count(explode("|", $existing_property->progression)) - 1;
 				rp_character_edit_property((array) $existing_property);
 			}
 		}
