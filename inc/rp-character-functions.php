@@ -799,7 +799,7 @@ function rp_character_hero_calculate_experience_spent($properties)
 		if(!isset($property->name))
 			continue;
 
-		$ap_spent += rp_character_hero_calculate_experience_progression($property);
+		$ap_spent += rp_character_hero_calculate_experience_progression($property, "ap");
 	}
 
 	return $ap_spent;
@@ -817,7 +817,7 @@ $SKT = [
   [16, 35, 60, 85, 110, 140, 165, 195, 220, 250, 280, 320, 350, 380, 410, 450, 480, 510, 550, 580, 620, 650, 690, 720, 760, 800, 830, 870, 910, 950, 1000]
 ];
 
-function rp_character_hero_calculate_experience_progression($property)
+function rp_character_hero_calculate_experience_progression($property, $calulcation_type)
 {
 	global $SKT, $character_const_dictionary;
 
@@ -838,7 +838,7 @@ function rp_character_hero_calculate_experience_progression($property)
 			$step = $steps[$stepIndex];
 
 			$splits = explode(";", $step);
-			if ($splits[0] == "x")
+			if (($calulcation_type == "ap" && $splits[0] == "x") || ($calulcation_type == "tgp" && $splits[0] == "o"))
 			{
 				$category_type = "";
 				if (count($splits) > 1) {
@@ -867,8 +867,10 @@ function rp_character_hero_calculate_experience_progression($property)
 	}
 	else if ($type == "advantage" || $type == "disadvantage")
 	{
-		if (!empty($property->ap)) {
+		if ($calulcation_type == "ap" && !empty($property->ap)) {
 			$ap += $property->ap;
+		} else if ($calulcation_type == "tgp" && !empty($property->tgp)) {
+			$ap += $property->tgp;
 		}
 	}
 

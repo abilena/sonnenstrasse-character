@@ -47,8 +47,8 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
                 }
 
                 $total_gp += $property->gp;
-                $total_tgp += $property->tgp;
-                $total_ap += $property->ap;
+                $total_tgp += empty($property->progression) ? $property->tgp : rp_character_hero_calculate_experience_progression($property, "tgp");
+                $total_ap += empty($property->progression) ? $property->ap : rp_character_hero_calculate_experience_progression($property, "ap");
 
                 $tpl_character_admin_property = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_property.html");
                 $tpl_character_admin_property->set("Label", $property_label);
@@ -72,8 +72,8 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
             $sum_ap = 0;
             foreach ($properties as $row_id => $property) {
                 $sum_gp += $property->gp;
-                $sum_tgp += $property->tgp;
-                $sum_ap += $property->ap;
+                $sum_tgp += empty($property->progression) ? $property->tgp : rp_character_hero_calculate_experience_progression($property, "tgp");
+                $sum_ap += empty($property->progression) ? $property->ap : rp_character_hero_calculate_experience_progression($property, "ap");
             }
 
             $tpl_character_admin_property = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_property.html");
@@ -249,9 +249,12 @@ function rp_character_admin_options() { ?>
                 $properties_html = "";
                 $properties = rp_character_get_properties($hero_id, $property_type);
                 foreach ($properties as $row_id => $property) {
-                    $total_gp += $property->gp;
-                    $total_tgp += $property->tgp;
-                    $total_ap += $property->ap;
+                    $gp = $property->gp;
+                    $tgp = empty($property->progression) ? $property->tgp : rp_character_hero_calculate_experience_progression($property, "tgp");
+                    $ap = empty($property->progression) ? $property->ap : rp_character_hero_calculate_experience_progression($property, "ap");
+                    $total_gp += $gp;
+                    $total_tgp += $tgp;
+                    $total_ap += $ap;
                     $edit_query = http_build_query(array_merge($_GET, array("property_edit" => $property->property_id)));
                     $edit = ($property_edit_id == $property->property_id) ? "_edit" : "";
                     $tpl_character_admin_hero_property = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_hero_property" . $edit . ".html");
@@ -260,9 +263,9 @@ function rp_character_admin_options() { ?>
                     $tpl_character_admin_hero_property->set("Type", $property_type);
                     $tpl_character_admin_hero_property->set("Name", $property->name);
                     $tpl_character_admin_hero_property->set("Cost", rp_character_property_format_cost($property->cost));
-                    $tpl_character_admin_hero_property->set("GP", rp_character_property_format_cost($property->gp));
-                    $tpl_character_admin_hero_property->set("TGP", rp_character_property_format_cost($property->tgp));
-                    $tpl_character_admin_hero_property->set("AP", rp_character_property_format_cost($property->ap));
+                    $tpl_character_admin_hero_property->set("GP", rp_character_property_format_cost($gp));
+                    $tpl_character_admin_hero_property->set("TGP", rp_character_property_format_cost($tgp));
+                    $tpl_character_admin_hero_property->set("AP", rp_character_property_format_cost($ap));
                     $tpl_character_admin_hero_property->set("Mod", @$property->mod);
                     $tpl_character_admin_hero_property->set("Info", @$property->info);
                     $tpl_character_admin_hero_property->set("Value", @$property->value);
