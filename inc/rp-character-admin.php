@@ -24,7 +24,7 @@ function rp_character_detail($hero_id, $detail_type, $detail_label, $detail_valu
     return $detail_html;
 }
 
-function rp_character_property($hero_id, $property_type, $property_label, $show_detailed) {
+function rp_character_property($hero_id, $property_type, $property_label, $show_detailed, &$total_gp, &$total_tgp, &$total_ap) {
     $path_local = plugin_dir_path(__FILE__);
     $path_url = plugins_url() . "/sonnenstrasse-character";
     $edit_query = http_build_query(array_merge($_GET, array("property" => $property_type, "property_label" => $property_label)));
@@ -100,6 +100,10 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
         $tpl_character_admin_property->set("BaseUrl", $path_url);
         $property_html .= $tpl_character_admin_property->output();
     }
+
+    $total_gp += $sum_gp;
+    $total_tgp += $sum_tgp;
+    $total_ap += $sum_ap;
 
     return $property_html;
 }
@@ -213,6 +217,9 @@ function rp_character_admin_options() { ?>
             $detail_label = (array_key_exists("detail_label", $_REQUEST) ? $_REQUEST["detail_label"] : "");
             $property_type = (array_key_exists("property", $_REQUEST) ? $_REQUEST["property"] : "");
             $property_label = (array_key_exists("property_label", $_REQUEST) ? $_REQUEST["property_label"] : "");
+            $total_gp = 0;
+            $total_tgp = 0;
+            $total_ap = 0;
 
             if (!empty($detail_type)) {
 
@@ -238,6 +245,9 @@ function rp_character_admin_options() { ?>
                 $properties_html = "";
                 $properties = rp_character_get_properties($hero_id, $property_type);
                 foreach ($properties as $row_id => $property) {
+                    $total_gp += $property->gp;
+                    $total_tgp += $property->tgp;
+                    $total_ap += $property->ap;
                     $edit_query = http_build_query(array_merge($_GET, array("property_edit" => $property->property_id)));
                     $edit = ($property_edit_id == $property->property_id) ? "_edit" : "";
                     $tpl_character_admin_hero_property = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_hero_property" . $edit . ".html");
@@ -313,16 +323,19 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_details->set("Portrait", rp_character_detail($selected_hero->hero_id, "portrait", "Portrait", $selected_hero->portrait));
                 $tpl_character_admin_hero_details->set("Gold", rp_character_detail($selected_hero->hero_id, "gold", "Gold", $selected_hero->gold));
                 $tpl_character_admin_hero_details->set("Ap", rp_character_detail($selected_hero->hero_id, "ap", "AP", $selected_hero->ap));
-                $tpl_character_admin_hero_details->set("Race", rp_character_property($selected_hero->hero_id, "race", "Rasse", true));
-                $tpl_character_admin_hero_details->set("Culture", rp_character_property($selected_hero->hero_id, "culture", "Kultur", true));
-                $tpl_character_admin_hero_details->set("Profession", rp_character_property($selected_hero->hero_id, "profession", "Profession", true));
-                $tpl_character_admin_hero_details->set("Vorteile", rp_character_property($selected_hero->hero_id, "advantage", "Vorteile", true));
-                $tpl_character_admin_hero_details->set("Nachteile", rp_character_property($selected_hero->hero_id, "disadvantage", "Nachteile", true));
-                $tpl_character_admin_hero_details->set("Eigenschaften", rp_character_property($selected_hero->hero_id, "ability", "Eigenschaften", false));
-                $tpl_character_admin_hero_details->set("Basiswerte", rp_character_property($selected_hero->hero_id, "basic", "Basiswerte", false));
-                $tpl_character_admin_hero_details->set("Talente", rp_character_property($selected_hero->hero_id, "skill", "Talente", false));
-                $tpl_character_admin_hero_details->set("Zauber", rp_character_property($selected_hero->hero_id, "spell", "Zauber", false));
-                $tpl_character_admin_hero_details->set("Sonderfertigkeiten", rp_character_property($selected_hero->hero_id, "feat", "Sonderfertigkeiten", false));
+                $tpl_character_admin_hero_details->set("Race", rp_character_property($selected_hero->hero_id, "race", "Rasse", true, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Culture", rp_character_property($selected_hero->hero_id, "culture", "Kultur", true, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Profession", rp_character_property($selected_hero->hero_id, "profession", "Profession", true, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Vorteile", rp_character_property($selected_hero->hero_id, "advantage", "Vorteile", true, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Nachteile", rp_character_property($selected_hero->hero_id, "disadvantage", "Nachteile", true, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Eigenschaften", rp_character_property($selected_hero->hero_id, "ability", "Eigenschaften", false, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Basiswerte", rp_character_property($selected_hero->hero_id, "basic", "Basiswerte", false, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Talente", rp_character_property($selected_hero->hero_id, "skill", "Talente", false, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Zauber", rp_character_property($selected_hero->hero_id, "spell", "Zauber", false, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Sonderfertigkeiten", rp_character_property($selected_hero->hero_id, "feat", "Sonderfertigkeiten", false, $total_gp, $total_tgp, $total_ap));
+                $tpl_character_admin_hero_details->set("Sum_GP", $total_gp);
+                $tpl_character_admin_hero_details->set("Sum_TGP", $total_tgp);
+                $tpl_character_admin_hero_details->set("Sum_AP", $total_ap);
                 echo ($tpl_character_admin_hero_details->output());
 
                 if (function_exists("rp_inventory_hero_html_by_id")) {
