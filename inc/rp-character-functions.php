@@ -865,6 +865,12 @@ function rp_character_hero_calculate_experience_progression($property)
 			$ap += $property->cost;
 		}
 	}
+	else if ($type == "advantage" || $type == "disadvantage")
+	{
+		if (!empty($property->ap)) {
+			$ap += $property->ap;
+		}
+	}
 
 	return $ap;
 }
