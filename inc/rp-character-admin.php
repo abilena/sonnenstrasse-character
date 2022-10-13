@@ -317,6 +317,7 @@ function rp_character_admin_options() { ?>
             }
             else {
 
+                $experience_sum = rp_character_get_experience_sum($selected_hero->hero_id, $selected_hero->party);
                 $tpl_character_admin_hero_details = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_hero_details.html");
                 $tpl_character_admin_hero_details->set("Id", $selected_hero->hero_id);
                 $tpl_character_admin_hero_details->set("Heading", $selected_hero->name);
@@ -329,7 +330,7 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_details->set("Flavor", rp_character_detail($selected_hero->hero_id, "flavor", "Flavor", $selected_hero->flavor));
                 $tpl_character_admin_hero_details->set("Portrait", rp_character_detail($selected_hero->hero_id, "portrait", "Portrait", $selected_hero->portrait));
                 $tpl_character_admin_hero_details->set("Gold", rp_character_detail($selected_hero->hero_id, "gold", "Gold", $selected_hero->gold));
-                $tpl_character_admin_hero_details->set("Ap", rp_character_detail($selected_hero->hero_id, "ap", "AP", rp_character_get_experience_sum($selected_hero->hero_id, $selected_hero->party)));
+                $tpl_character_admin_hero_details->set("Ap", rp_character_detail($selected_hero->hero_id, "ap", "AP", $experience_sum));
                 $tpl_character_admin_hero_details->set("Race", rp_character_property($selected_hero->hero_id, "race", "Rasse", true, $total_gp, $total_tgp, $total_ap));
                 $tpl_character_admin_hero_details->set("Culture", rp_character_property($selected_hero->hero_id, "culture", "Kultur", true, $total_gp, $total_tgp, $total_ap));
                 $tpl_character_admin_hero_details->set("Profession", rp_character_property($selected_hero->hero_id, "profession", "Profession", true, $total_gp, $total_tgp, $total_ap));
@@ -343,6 +344,9 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_details->set("Sum_GP", $total_gp);
                 $tpl_character_admin_hero_details->set("Sum_TGP", $total_tgp);
                 $tpl_character_admin_hero_details->set("Sum_AP", $total_ap);
+                $tpl_character_admin_hero_details->set("Rest_GP", 110 - $total_gp);
+                $tpl_character_admin_hero_details->set("Rest_TGP", 0 - $total_tgp);
+                $tpl_character_admin_hero_details->set("Rest_AP", $experience_sum - $total_ap);
                 echo ($tpl_character_admin_hero_details->output());
 
                 if (function_exists("rp_inventory_hero_html_by_id")) {
