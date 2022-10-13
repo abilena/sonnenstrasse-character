@@ -15,6 +15,8 @@ function blink(target)
     target.classList.add("blink");
 }
 
+var AKT = [5, 5, 10, 15, 20, 25, 40, 50, 100];
+
 var SKT = [
   [1, 1, 1, 2, 4, 5, 6, 8, 9, 11, 12, 14, 15, 17, 19, 20, 22, 24, 25, 27, 29, 31, 32, 34, 36, 38, 40, 42, 43, 45, 48],
   [1, 2, 3, 4, 6, 7, 8, 10, 11, 13, 14, 16, 17, 19, 21, 22, 24, 26, 27, 29, 31, 33, 34, 36, 38, 40, 42, 44, 45, 47, 50],
@@ -27,7 +29,7 @@ var SKT = [
   [16, 35, 60, 85, 110, 140, 165, 195, 220, 250, 280, 320, 350, 380, 410, 450, 480, 510, 550, 580, 620, 650, 690, 720, 760, 800, 830, 870, 910, 950, 1000]
 ];
 
-function levelupCalculateAp(initial, plan)
+function levelupCalculateAp(activation, initial, plan)
 {
     var ap = 0;
     var steps = plan.split('|').filter(Boolean);
@@ -40,9 +42,17 @@ function levelupCalculateAp(initial, plan)
         var category = splits[1].toUpperCase().charCodeAt(0) - 64;
         category = Math.max(0, Math.min(8, category));
 
+        if (activation == "true" && stepIndex == 0)
+            continue;
+
         var costs = SKT[category];
-        ap += costs[Math.min(30, initial + stepIndex)];
+        ap += costs[Math.min(30, Math.max(0, initial) + stepIndex - (activation == "true" ? 1 : 0))];
     }
+
+    if (activation == "true") {
+        var akt_cost = AKT[category] * (1 + Math.abs(initial));
+        ap += akt_cost;
+}
 
     return ap;
 }
@@ -306,6 +316,7 @@ function levelupProperty(id, inc)
     var progression = propertyElement.dataset.progression;
     var plan = propertyElement.dataset.plan;
     var se = seBoxElement.checked;
+    var activation = propertyElement.dataset.template;
 
 	var maximum = propertyElement.dataset.maximum;
 	if (maximum)
@@ -323,7 +334,10 @@ function levelupProperty(id, inc)
         plan = "";
     }
 
-    var prevInvest = levelupCalculateAp(initial, plan);
+    var prevInvest = levelupCalculateAp(activation, initial, plan);
+
+    if (activation == "true" && plan == "")
+        plan = ("x;" + category);
 
     if (inc < 0)
     {
@@ -359,7 +373,7 @@ function levelupProperty(id, inc)
         plan = splits.join('|');
     }
 
-    var newInvest = levelupCalculateAp(initial, plan);
+    var newInvest = levelupCalculateAp(activation, initial, plan);
 
     var levelupElement = document.getElementById("aventurien-character-sheet-levelup");
     var freeAp = Number(levelupElement.dataset.free) - Number(levelupElement.dataset.invest);
