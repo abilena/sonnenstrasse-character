@@ -805,6 +805,8 @@ function rp_character_hero_calculate_experience_spent($properties)
 	return $ap_spent;
 }
 
+$AKT = [5, 5, 10, 15, 20, 25, 40, 50, 100];
+
 $SKT = [
   [1, 1, 1, 2, 4, 5, 6, 8, 9, 11, 12, 14, 15, 17, 19, 20, 22, 24, 25, 27, 29, 31, 32, 34, 36, 38, 40, 42, 43, 45, 48],
   [1, 2, 3, 4, 6, 7, 8, 10, 11, 13, 14, 16, 17, 19, 21, 22, 24, 26, 27, 29, 31, 33, 34, 36, 38, 40, 42, 44, 45, 47, 50],
@@ -819,7 +821,7 @@ $SKT = [
 
 function rp_character_hero_calculate_experience_progression($property, $calulcation_type)
 {
-	global $SKT, $character_const_dictionary;
+	global $AKT, $SKT, $character_const_dictionary;
 
 	$ap = 0;
 	$plan = $property->progression;
@@ -838,7 +840,7 @@ function rp_character_hero_calculate_experience_progression($property, $calulcat
 			$step = $steps[$stepIndex];
 
 			$splits = explode(";", $step);
-			if (($calulcation_type == "ap" && $splits[0] == "x") || ($calulcation_type == "tgp" && $splits[0] == "o"))
+			if (($calulcation_type == "ap" && $splits[0] == "x") || ($calulcation_type == "ap" && $splits[0] == "s") || ($calulcation_type == "tgp" && $splits[0] == "o"))
 			{
 				$category_type = "";
 				if (count($splits) > 1) {
@@ -852,8 +854,12 @@ function rp_character_hero_calculate_experience_progression($property, $calulcat
 				$category = hexdec(bin2hex(mb_substr(strtoupper($category_type), 0, 1, 'UTF-8'))) - 64;
 				$category = max(0, min(8, $category));
 
+				$akt_cost = $AKT[$category];
+				if ($property->mod < 0)
+					$akt_cost *= (1 + abs($property->mod));
+
 				$costs = $SKT[$category];
-				$ap += $costs[min(30, $stepIndex)];
+				$ap += ($stepIndex == 0 ? $akt_cost : $costs[min(30, max(0, $stepIndex - 1))]);
 			}
 		}
 	}
