@@ -46,6 +46,10 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
                     $name .= " (" . $property->info . ")";
                 }
 
+                $total_gp += $property->gp;
+                $total_tgp += $property->tgp;
+                $total_ap += $property->ap;
+
                 $tpl_character_admin_property = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_property.html");
                 $tpl_character_admin_property->set("Label", $property_label);
                 $tpl_character_admin_property->set("GP", rp_character_property_format_cost($property->gp));
