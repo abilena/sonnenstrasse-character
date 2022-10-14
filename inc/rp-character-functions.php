@@ -196,7 +196,7 @@ function rp_character_progression_encode_html($steps)
         if (empty($text)) {
             $progression_html .= "<span class=\"step $source\"></span>";
         } else {
-            $progression_html .= "<span class=\"step $source\" data-tooltip=\"$text\"></span>";
+            $progression_html .= "<span class=\"step $source\" data-tooltip=\"SE: $text\"></span>";
         }
     }
     return $progression_html;
