@@ -768,6 +768,14 @@ function rp_character_hero_full_html($hero, $solo_user)
 	$tpl_character->set("Character", $hero->name);
 	$tpl_character->set("Portrait", (empty($hero->portrait) ? ($path_url . "/../sonnenstrasse-base/img/glow2.gif") : ($path_url . "/../../uploads/portraits/" . $hero->portrait)));
 	$tpl_character->set("PortraitClass", (empty($hero->portrait) ? "empty" : "image"));
+	$tpl_character->set("MU", @$eigenschaften["Mut"]->value ?? 0);
+	$tpl_character->set("KL", @$eigenschaften["Klugheit"]->value ?? 0);
+	$tpl_character->set("IN", @$eigenschaften["Intuition"]->value ?? 0);
+	$tpl_character->set("CH", @$eigenschaften["Charisma"]->value ?? 0);
+	$tpl_character->set("FF", @$eigenschaften["Fingerfertigkeit"]->value ?? 0);
+	$tpl_character->set("GE", @$eigenschaften["Gewandtheit"]->value ?? 0);
+	$tpl_character->set("KO", @$eigenschaften["Konstitution"]->value ?? 0);
+	$tpl_character->set("KK", @$eigenschaften["Körperkraft"]->value ?? 0);
 	$tpl_character->set("ApTotal", $ap_total);
 	$tpl_character->set("ApFree", $ap_total - $ap_spent);
 	$tpl_character->set("PropertiesBasic", $properties_basic_html);
