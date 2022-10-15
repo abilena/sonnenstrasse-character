@@ -28,6 +28,7 @@ $eigenschaft_data['Attacke Basiswert']       = array( 'gruppe' => 'basiswert',  
 $eigenschaft_data['Parade Basiswert']        = array( 'gruppe' => 'basiswert',    'category' => NULL, 'basis' => true, 'factor' => 1/5, 'base' => 'Intuition+Gewandtheit+Körperkraft' );
 $eigenschaft_data['Fernkampf Basiswert']     = array( 'gruppe' => 'basiswert',    'category' => NULL, 'basis' => true, 'factor' => 1/5, 'base' => 'Intuition+Fingerfertigkeit+Körperkraft' );
 $eigenschaft_data['Initiative Basiswert']    = array( 'gruppe' => 'basiswert',    'category' => NULL, 'basis' => true, 'factor' => 1/5, 'base' => 'Mut+Mut+Intuition+Gewandtheit' );
+$eigenschaft_data['Geschwindigkeit']         = array( 'gruppe' => 'basiswert',    'category' => NULL, 'basis' => true, 'factor' => 1,   'base' => '8' );
 $eigenschaft_data['Sozialstatus']            = array( 'gruppe' => 'sozialstatus', 'category' => NULL, 'basis' => true );
 
 ?>

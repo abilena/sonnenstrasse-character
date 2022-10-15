@@ -524,7 +524,7 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
         $property->ap = NULL;
         $property->value = 0;
         $property->probe = @$property->probe;
-        $property->progression = "";
+        $property->progression = (@$property->basis ? "a;A" : "");
         $property->info = "";
         $property->variant = "";
         $property->template = (@$property->basis ? "false" : "true");

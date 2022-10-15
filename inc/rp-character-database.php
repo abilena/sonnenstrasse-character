@@ -467,6 +467,19 @@ function rp_character_get_properties($hero_id, $property_type) {
     
     $db_results = $wpdb->get_results("SELECT * FROM $db_table_name WHERE hero=$hero_id AND type LIKE '$property_type' ORDER BY name");
 
+    if ($property_type == "skill") {
+        global $talent_data, $talent_gruppe;
+        foreach ($db_results as $db_result) {
+            if (empty($db_result->group)) {
+                $talent = $talent_data[$db_result->name];
+                if (!empty($talent)) {
+                    $db_result->gruppenNummer = array_search($talent["gruppe"], array_keys($talent_gruppe));
+                }
+            }
+        }
+        usort($db_results, function($a, $b) { return (($a->gruppenNummer == $b->gruppenNummer) ? strcmp($a->name, $b->name) : ($a->gruppenNummer - $b->gruppenNummer)); });
+    }
+
     return $db_results;
 }
 
