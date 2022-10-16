@@ -317,6 +317,10 @@ function rp_character_admin_options() { ?>
             }
             else {
 
+                $eigenschaften = rp_character_get_simple_proprerties($hero_id, "ability");
+                $klugheit = @$eigenschaften["Klugheit"]->gp ?? 0;
+                $intuition = @$eigenschaften["Intuition"]->gp ?? 0;
+
                 $experience_sum = rp_character_get_experience_sum($selected_hero->hero_id, $selected_hero->party);
                 $tpl_character_admin_hero_details = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_hero_details.html");
                 $tpl_character_admin_hero_details->set("Id", $selected_hero->hero_id);
@@ -345,7 +349,7 @@ function rp_character_admin_options() { ?>
                 $tpl_character_admin_hero_details->set("Sum_TGP", $total_tgp);
                 $tpl_character_admin_hero_details->set("Sum_AP", $total_ap);
                 $tpl_character_admin_hero_details->set("Rest_GP", 110 - $total_gp);
-                $tpl_character_admin_hero_details->set("Rest_TGP", 0 - $total_tgp);
+                $tpl_character_admin_hero_details->set("Rest_TGP", (($klugheit + $intuition) * 20) - $total_tgp);
                 $tpl_character_admin_hero_details->set("Rest_AP", $experience_sum - $total_ap);
                 echo ($tpl_character_admin_hero_details->output());
 
