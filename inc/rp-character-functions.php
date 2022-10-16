@@ -813,7 +813,7 @@ function rp_character_hero_calculate_experience_spent($properties)
 	return $ap_spent;
 }
 
-$AKT = [5, 5, 10, 15, 20, 25, 40, 50, 100];
+$AKT = [1, 1, 2, 3, 4, 5, 8, 10, 20];
 
 $SKT = [
   [1, 1, 1, 2, 4, 5, 6, 8, 9, 11, 12, 14, 15, 17, 19, 20, 22, 24, 25, 27, 29, 31, 32, 34, 36, 38, 40, 42, 43, 45, 48],
@@ -862,7 +862,7 @@ function rp_character_hero_calculate_experience_progression($property, $calulcat
 				$category = hexdec(bin2hex(mb_substr(strtoupper($category_type), 0, 1, 'UTF-8'))) - 64;
 				$category = max(0, min(8, $category));
 
-				$akt_cost = $AKT[$category];
+				$akt_cost = $AKT[$category] * (($calulcation_type == "ap") ? 5 : 1);
 				if ($property->mod < 0)
 					$akt_cost *= (1 + abs($property->mod));
 
