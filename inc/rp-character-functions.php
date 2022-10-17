@@ -641,6 +641,9 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 			$maximum = NULL;
 			if ($gruppen_property->type == 'ability') {
 				$maximum = round(1.5 * floatval($gruppen_property->gp));
+			} else if ($gruppen_property->type == 'skill' || $gruppen_property->type == 'spell') {
+				$ap = empty($gruppen_property->progression) ? $gruppen_property->ap : rp_character_hero_calculate_experience_progression($gruppen_property, "ap");
+				$gruppen_property->ap = (!empty($ap) ? $ap : "");
 			}
 
 		    $template_row = new Sonnenstrasse\Template($path_templates . "/page/character.$tpl_display.$property_display_type.single.html");
