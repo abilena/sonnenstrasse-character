@@ -337,7 +337,7 @@ function levelupProperty(id, inc)
     var prevInvest = levelupCalculateAp(activation, initial, plan);
 
     if (activation == "true" && plan == "")
-        plan = ("x;" + category);
+        plan = ((se ? "s" : "x") + ";" + (se ? (String.fromCharCode(category.charCodeAt(0) - 1) + ";;SE") : category));
 
     if (inc < 0)
     {
@@ -361,7 +361,7 @@ function levelupProperty(id, inc)
         if (se)
         {
             category = String.fromCharCode(category.charCodeAt(0) - 1);
-            newPlanStep = "s;" + category + ";;Spezielle Erfahrung";
+            newPlanStep = "s;" + category + ";;SE";
         }
         else
         {
