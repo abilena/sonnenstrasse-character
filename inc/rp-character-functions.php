@@ -214,6 +214,7 @@ function rp_character_calculate_basic_properties($basissteigerungen, $eigenschaf
 	$kk = intval(@$eigenschaften['Körperkraft']->value);
 
 	$basiswerte = array();
+	$basiswerte['Geschwindigkeit']      = rp_character_clone_property(@$basissteigerungen['Geschwindigkeit']);
 	$basiswerte['Magieresistenz']       = rp_character_clone_property(@$basissteigerungen['Magieresistenz']);
 	$basiswerte['Initiative Basiswert'] = rp_character_clone_property(@$basissteigerungen['Initiative Basiswert']);
 	$basiswerte['Attacke Basiswert']    = rp_character_clone_property(@$basissteigerungen['Attacke Basiswert']);
@@ -221,18 +222,21 @@ function rp_character_calculate_basic_properties($basissteigerungen, $eigenschaf
 	$basiswerte['Fernkampf Basiswert']  = rp_character_clone_property(@$basissteigerungen['Fernkampf Basiswert']);
 	$basiswerte['Ausweichen']           = rp_character_clone_property(@$basissteigerungen['Parade Basiswert']);
 
+	$basiswerte['Geschwindigkeit']->value      = round(8) + @$basissteigerungen['Geschwindigkeit']->mod;
 	$basiswerte['Magieresistenz']->value       = round(($mu + $kl + $ko) / 5) + @$basissteigerungen['Magieresistenz']->value + @$basissteigerungen['Magieresistenz']->mod;
 	$basiswerte['Initiative Basiswert']->value = round(($mu + $mu + $in + $ge) / 5);
 	$basiswerte['Attacke Basiswert']->value    = round(($mu + $ge + $kk) / 5);
 	$basiswerte['Parade Basiswert']->value     = round(($in + $ge + $kk) / 5);
 	$basiswerte['Fernkampf Basiswert']->value  = round(($in + $ff + $kk) / 5);
 
+	$basiswerte['Geschwindigkeit']->name = "Geschwindigkeit";
 	$basiswerte['Magieresistenz']->name = "Magieresistenz";
 	$basiswerte['Initiative Basiswert']->name = "Initiative Basiswert";
 	$basiswerte['Attacke Basiswert']->name = "Attacke Basiswert";
 	$basiswerte['Parade Basiswert']->name = "Parade Basiswert";
 	$basiswerte['Fernkampf Basiswert']->name = "Fernkampf Basiswert";
 
+	@$basissteigerungen['Geschwindigkeit']->value = "0";
 	@$basissteigerungen['Initiative Basiswert']->value = "0";
 	@$basissteigerungen['Attacke Basiswert']->value = "0";
 	@$basissteigerungen['Parade Basiswert']->value = "0";
@@ -373,7 +377,10 @@ function rp_character_format_properties_eval_bonus($data, $property)
         $summands = explode("+", $base);
         foreach ($summands as $summand)
         {
-            $resultString .= "levelupGetVal('" . rp_character_format_properties_template_id($summand) . "')+";
+			if (is_numeric($summand))
+				$resultString .= $summand . "+";
+			else
+	            $resultString .= "levelupGetVal('" . rp_character_format_properties_template_id($summand) . "')+";
         }
 
         $resultString = rtrim($resultString, "+");
