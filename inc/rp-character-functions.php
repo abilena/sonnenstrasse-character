@@ -873,6 +873,9 @@ function rp_character_hero_calculate_experience_progression($property, $calulcat
 				if (count($splits) > 2) {
 					$factor = floatval($splits[2]);
 				}
+				if (empty($factor)) {
+					$factor = 1.0;
+				}
 
 				$category = hexdec(bin2hex(mb_substr(strtoupper($category_type), 0, 1, 'UTF-8'))) - 64;
 				$category = max(0, min(8, $category));
@@ -897,6 +900,9 @@ function rp_character_hero_calculate_experience_progression($property, $calulcat
 			$factor = 1.0;
 			if (count($splits) > 2) {
 				$factor = floatval($splits[2]);
+			}
+			if (empty($factor)) {
+				$factor = 1.0;
 			}
 
 			$cost = floatval(!empty($property->cost) ? $property->cost : @$property_template['cost']);

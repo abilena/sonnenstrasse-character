@@ -478,6 +478,18 @@ function rp_character_get_properties($hero_id, $property_type) {
             }
         }
         usort($db_results, function($a, $b) { return (($a->gruppenNummer == $b->gruppenNummer) ? strcmp($a->name, $b->name) : ($a->gruppenNummer - $b->gruppenNummer)); });
+    } 
+    else if ($property_type == "feat") {
+        global $sf_data, $sf_gruppe;
+        foreach ($db_results as $db_result) {
+            if (empty($db_result->group)) {
+                $sf = @$sf_data[$db_result->name];
+                if (!empty($sf)) {
+                    $db_result->gruppenNummer = array_search($sf["gruppe"], array_keys($sf_gruppe));
+                }
+            }
+        }
+        usort($db_results, function($a, $b) { return (($a->gruppenNummer == $b->gruppenNummer) ? strcmp($a->name, $b->name) : ($a->gruppenNummer - $b->gruppenNummer)); });
     }
 
     return $db_results;
