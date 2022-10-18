@@ -234,7 +234,7 @@ $talent_data['Talentschub']             = array( 'gruppe' => 'gabe', 'category' 
 $talent_data['Tierempathie']            = array( 'gruppe' => 'gabe', 'category' => 'F', 'basis' => false, 'probe' => 'MU/IN/CH' );
 $talent_data['Zwergennase']             = array( 'gruppe' => 'gabe', 'category' => 'F', 'basis' => false, 'probe' => 'IN/IN/FF' );
 
-$talent_data['Liturgiekenntnis']        = array( 'gruppe' => 'liturgiekenntnis', 'category' => 'F', 'basis' => false, 'probe' => '--/--/--' );
+$talent_data['Liturgiekenntnis']        = array( 'gruppe' => 'liturgiekenntnis', 'category' => 'F', 'basis' => false, 'probe' => 'MU/IN/CH' );
 
 $talent_data['Ritualkenntnis: Alchimist']       = array( 'gruppe' => 'ritualkenntnis', 'category' => 'D', 'basis' => false, 'probe' => '--/--/--' );
 $talent_data['Ritualkenntnis: Derwisch']        = array( 'gruppe' => 'ritualkenntnis', 'category' => 'E', 'basis' => false, 'probe' => '--/--/--' );
