@@ -227,6 +227,15 @@
     position: absolute;
     top: 0px;
     padding: 1px;
+    white-space: nowrap;
+}
+
+.rp-character-admin-table-property-variant:not(:empty)::before {
+    content: " (";
+}
+
+.rp-character-admin-table-property-variant:not(:empty)::after {
+    content: ")";
 }
 
 .rp-character-admin-table-properties input {
