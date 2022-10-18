@@ -108,7 +108,7 @@ $sf_data['Gezielter Stich']              = array( 'gruppe' => 'kampf', 'rarity' 
 $sf_data['Halbschwert']                  = array( 'gruppe' => 'kampf', 'rarity' => 5, 'cost' => 150, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Aufmerksamkeit")' );
 $sf_data['Hammerschlag']                 = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Mut", 15) && has("Niederwerfen")' );
 $sf_data['Improvisierte Waffen']         = array( 'gruppe' => 'kampf', 'rarity' => 2, 'cost' => 100, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Intuition", 12) && has("Gewandtheit", 12) && has("Raufen", 10)' );
-$sf_data['Kampfgespür']                  = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Intuition", 15) && has("Aufmerksamkeit") && has("Kampfreflexe")' );
+$sf_data['Kampfgespür']                  = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 300, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Intuition", 15) && has("Aufmerksamkeit") && has("Kampfreflexe")' );
 $sf_data['Kampfreflexe']                 = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' => 300, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Initiative Basiswert", 10)' );
 $sf_data['Kampf im Wasser']              = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' => 100, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Gewandtheit", 12) && has("Körperbeherrschung", 7)' );
 $sf_data['Klingensturm']                 = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 100, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Attacke Basiswert", 9) && has("Kampfreflexe") && has("Ausfall")' );
