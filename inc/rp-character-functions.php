@@ -642,7 +642,7 @@ function rp_character_format_properties_generic($properties, $data, $gruppen_dat
 			if ($gruppen_property->type == 'ability') {
 				$maximum = round(1.5 * floatval($gruppen_property->gp));
 			} else if ($gruppen_property->type == 'skill' || $gruppen_property->type == 'spell') {
-				$ap = empty($gruppen_property->progression) ? $gruppen_property->ap : rp_character_hero_calculate_experience_progression($gruppen_property, "ap");
+				$ap = rp_character_hero_calculate_experience_progression($gruppen_property, "ap");
 				$gruppen_property->ap = (!empty($ap) ? $ap : "");
 			}
 
@@ -869,6 +869,11 @@ function rp_character_hero_calculate_experience_progression($property, $calulcat
 					$category_type = @$property->category . "H";
 				}
 
+				$factor = 1.0;
+				if (count($splits) > 2) {
+					$factor = floatval($splits[2]);
+				}
+
 				$category = hexdec(bin2hex(mb_substr(strtoupper($category_type), 0, 1, 'UTF-8'))) - 64;
 				$category = max(0, min(8, $category));
 
@@ -877,16 +882,25 @@ function rp_character_hero_calculate_experience_progression($property, $calulcat
 					$akt_cost *= (1 + abs($property->mod));
 
 				$costs = $SKT[$category];
-				$ap += ($stepIndex == 0 ? $akt_cost : $costs[min(30, max(0, $stepIndex - 1))]);
+				$ap += $factor * ($stepIndex == 0 ? $akt_cost : $costs[min(30, max(0, $stepIndex - 1))]);
 			}
 		}
 	}
 	else if ($type == "feat")
 	{
-		if (!empty($property_template)) {
-			$ap += @$property_template['cost'];
-		} else {
-			$ap += $property->cost;
+		if ($plan == "")
+			$plan = "x";
+
+		$splits = explode(";", explode("|", $plan)[0]);
+		if (($calulcation_type == "ap" && $splits[0] == "x") || ($calulcation_type == "ap" && $splits[0] == "s") || ($calulcation_type == "tgp" && $splits[0] == "o"))
+		{
+			$factor = 1.0;
+			if (count($splits) > 2) {
+				$factor = floatval($splits[2]);
+			}
+
+			$cost = floatval(@$property_template['cost'] ?? $property->cost);
+			$ap += $factor * $cost;
 		}
 	}
 	else if ($type == "advantage" || $type == "disadvantage")
@@ -1012,8 +1026,24 @@ function rp_character_levelup_hero($hero_id, $properties)
 		{
 			if (is_null($existing_property))
 			{
+				$info = null;
 				$value = count(explode("|", $plan)) - 1;
-				rp_character_set_property($hero_id, $type, $name, $variant, null, $value, null, null, null, null, null, null, null, null, null, null, $plan, null, null, null);
+				$mod = null;
+				$cost = null;
+				$gp = null;
+				$tgp = null;
+				$ap = null;
+				$at = null;
+				$pa = null;
+				$ebe = null;
+				$rarity = null;
+				$requirements = null;
+				$progression = $plan;
+				$group = null;
+				$flavor = null;
+				$hyperlink = null;
+
+				rp_character_set_property($hero_id, $type, $name, $variant, $info, $value, $mod, $cost, $gp, $tgp, $ap, $at, $pa, $ebe, $rarity, $requirements, $progression, $group, $flavor, $hyperlink);
 			}
 			else
 			{
@@ -1024,7 +1054,24 @@ function rp_character_levelup_hero($hero_id, $properties)
 		}
 		else
 		{
-			rp_character_set_property($hero_id, $type, $name, $variant, null, null, null, null, null, null, $invest, null, null, null, null, null, null, null, null, null);
+			$info = null;
+			$value = null;
+			$mod = null;
+			$cost = null;
+			$gp = null;
+			$tgp = null;
+			$ap = $invest;
+			$at = null;
+			$pa = null;
+			$ebe = null;
+			$rarity = null;
+			$requirements = null;
+			$progression = null;
+			$group = null;
+			$flavor = null;
+			$hyperlink = null;
+
+			rp_character_set_property($hero_id, $type, $name, $variant, $info, $value, $mod, $cost, $gp, $tgp, $ap, $at, $pa, $ebe, $rarity, $requirements, $progression, $group, $flavor, $hyperlink);
 		}
 	}
 

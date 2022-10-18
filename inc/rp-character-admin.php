@@ -47,8 +47,8 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
                 }
 
                 $total_gp += $property->gp;
-                $total_tgp += empty($property->progression) ? $property->tgp : rp_character_hero_calculate_experience_progression($property, "tgp");
-                $total_ap += empty($property->progression) ? $property->ap : rp_character_hero_calculate_experience_progression($property, "ap");
+                $total_tgp += rp_character_hero_calculate_experience_progression($property, "tgp");
+                $total_ap += rp_character_hero_calculate_experience_progression($property, "ap");
 
                 $tpl_character_admin_property = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_property.html");
                 $tpl_character_admin_property->set("Label", $property_label);
@@ -72,8 +72,8 @@ function rp_character_property($hero_id, $property_type, $property_label, $show_
             $sum_ap = 0;
             foreach ($properties as $row_id => $property) {
                 $sum_gp += $property->gp;
-                $sum_tgp += empty($property->progression) ? $property->tgp : rp_character_hero_calculate_experience_progression($property, "tgp");
-                $sum_ap += empty($property->progression) ? $property->ap : rp_character_hero_calculate_experience_progression($property, "ap");
+                $sum_tgp += rp_character_hero_calculate_experience_progression($property, "tgp");
+                $sum_ap += rp_character_hero_calculate_experience_progression($property, "ap");
             }
 
             $tpl_character_admin_property = new Sonnenstrasse\Template($path_local . "../tpl/admin/character_admin_property.html");
@@ -250,8 +250,8 @@ function rp_character_admin_options() { ?>
                 $properties = rp_character_get_properties($hero_id, $property_type);
                 foreach ($properties as $row_id => $property) {
                     $gp = $property->gp;
-                    $tgp = empty($property->progression) ? $property->tgp : rp_character_hero_calculate_experience_progression($property, "tgp");
-                    $ap = empty($property->progression) ? $property->ap : rp_character_hero_calculate_experience_progression($property, "ap");
+                    $tgp = rp_character_hero_calculate_experience_progression($property, "tgp");
+                    $ap = rp_character_hero_calculate_experience_progression($property, "ap");
                     $total_gp += $gp;
                     $total_tgp += $tgp;
                     $total_ap += $ap;
