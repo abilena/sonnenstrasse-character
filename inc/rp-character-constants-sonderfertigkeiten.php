@@ -131,7 +131,7 @@ $sf_data['Schildkampf I']                = array( 'gruppe' => 'kampf', 'rarity' 
 $sf_data['Schildkampf II']               = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 15) && has("Schildkampf I")' );
 $sf_data['Schildspalter']                = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 100, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 15) && has("Niederwerfen")' );
 $sf_data['Schnellziehen']                = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Gewandtheit", 12) && has("Fingerfertigkeit", 10)' );
-$sf_data['Spießgespann']                 = array( 'gruppe' => 'kampf', 'rarity' => 2, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Speere", 10) && has("Sturmangriff")' );
+$sf_data['Spießgespann']                 = array( 'gruppe' => 'kampf', 'rarity' => 2, 'cost' => 100, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Speere", 10) && has("Sturmangriff")' );
 $sf_data['Sturmangriff']                 = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 100, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Mut", 12) && has("Wuchtschlag")' );
 $sf_data['Tod von links']                = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 100, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Parierwaffen II")' );
 $sf_data['Todesstoß']                    = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Mut", 15) && has("Gezielter Stich")' );
