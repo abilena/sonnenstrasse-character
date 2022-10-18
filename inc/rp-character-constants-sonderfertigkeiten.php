@@ -145,12 +145,12 @@ $sf_data['Waffenspezialisierung']        = array( 'gruppe' => 'kampf', 'rarity' 
 $sf_data['Windmühle']                    = array( 'gruppe' => 'kampf', 'rarity' => 2, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Wuchtschlag") && has("Gegenhalten")' );
 $sf_data['Wuchtschlag']                  = array( 'gruppe' => 'kampf', 'rarity' => 7, 'cost' => 200, 'match' => 'sfgruppe=Kampf', 'req' => 'has("Körperkraft", 12)' );
 
-$sf_data['Waffenloser Kampfstil: Bornländisch']    = array( 'gruppe' => 'kampf', 'rarity' => -1000, 'cost' => -1000, 'req' => 'false' );
-$sf_data['Waffenloser Kampfstil: Gladiatorenstil'] = array( 'gruppe' => 'kampf', 'rarity' => -1000, 'cost' => -1000, 'req' => 'false' );
-$sf_data['Waffenloser Kampfstil: Hammerfaust']     = array( 'gruppe' => 'kampf', 'rarity' => -1000, 'cost' => -1000, 'req' => 'false' );
-$sf_data['Waffenloser Kampfstil: Hruruzat']        = array( 'gruppe' => 'kampf', 'rarity' => -1000, 'cost' => -1000, 'req' => 'false' );
-$sf_data['Waffenloser Kampfstil: Mercenario']      = array( 'gruppe' => 'kampf', 'rarity' => -1000, 'cost' => -1000, 'req' => 'false' );
-$sf_data['Waffenloser Kampfstil: Unauer Schule']   = array( 'gruppe' => 'kampf', 'rarity' => -1000, 'cost' => -1000, 'req' => 'false' );
+$sf_data['Waffenloser Kampfstil: Bornländisch']    = array( 'gruppe' => 'kampf', 'rarity' => 6, 'cost' => 100, 'req' => 'has("Raufen", 5) && has("Ringen", 5)' );
+$sf_data['Waffenloser Kampfstil: Gladiatorenstil'] = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 150, 'req' => 'has("Raufen", 7) && has("Ringen", 7)' );
+$sf_data['Waffenloser Kampfstil: Hammerfaust']     = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' => 150, 'req' => 'has("Raufen", 7)' );
+$sf_data['Waffenloser Kampfstil: Hruruzat']        = array( 'gruppe' => 'kampf', 'rarity' => 3, 'cost' => 200, 'req' => 'has("Raufen", 10) && has("Ringen", 7)' );
+$sf_data['Waffenloser Kampfstil: Mercenario']      = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' => 200, 'req' => 'has("Raufen", 10) && has("Ringen", 7)' );
+$sf_data['Waffenloser Kampfstil: Unauer Schule']   = array( 'gruppe' => 'kampf', 'rarity' => 4, 'cost' => 150, 'req' => 'has("Ringen", 10)' );
 
 $sf_data['Auspendeln']          = array( 'gruppe' => 'manöver' );
 $sf_data['Beinarbeit']          = array( 'gruppe' => 'manöver' );
