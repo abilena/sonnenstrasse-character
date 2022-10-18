@@ -899,7 +899,7 @@ function rp_character_hero_calculate_experience_progression($property, $calulcat
 				$factor = floatval($splits[2]);
 			}
 
-			$cost = floatval(@$property_template['cost'] ?? $property->cost);
+			$cost = floatval(!empty($property->cost) ? $property->cost : @$property_template['cost']);
 			$ap += $factor * $cost;
 		}
 	}
