@@ -605,6 +605,13 @@
 	margin-block-end: 0.25em;
 }
 
+.aventurien-character-sheet-full #aventurien-character-sheet-abenteuerpunkte table tr td {
+    font-family: Andalus;
+    font-weight: normal;
+    font-size: 11px;
+	line-height: 12px;
+}
+
 .aventurien-character-sheet-full #aventurien-character-sheet-abenteuerpunkte table tr td:nth-child(1) {
     width: 200px;
     max-width: 200px;
